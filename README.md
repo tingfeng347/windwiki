@@ -126,19 +126,21 @@ components/
 ├── panel-toggle.tsx   # 折叠按钮：默认导出知识树那个，另导出 PanelButton 给导航栏用
 ├── panel-toggle.css
 ├── nav-actions.tsx    # 导航栏右侧按钮组：全屏 + 目录折叠（portal 进 .rp-nav__right）
-└── nav-actions.css
+├── nav-actions.css
+└── nav-state.ts       # 导航栏自动隐藏的滚动监听脚本（内联注入，配 styles/nav-auto-hide.css）
 
 styles/
-├── index.css          # globalStyles 入口，汇总下面两份
+├── index.css          # globalStyles 入口，汇总下面三份
 ├── home.css           # 首页 Hero 垂直居中
-└── panel.css          # 去掉知识树竖线、两个面板折叠后的布局
+├── panel.css          # 去掉知识树竖线、两个面板折叠后的布局
+└── nav-auto-hide.css  # 导航栏滚动后淡出并把高度还给内容（配 components/nav-state.ts）
 ```
 
 导航由各级 `_nav.json`（顶部）与 `_meta.json`（知识树）生成，不要改 `rspress.config.ts` 维护大型导航数组。站点为纯中文（`rspress.config.ts` 的 `lang: 'zh'`），没有多语言与语言切换。
 
 使用 Rspress 默认主题，**没有 `theme/` 目录、没有 fork 主题组件**：首页使用默认的 `pageType: home` 布局，只配置 `hero`（站点名、标语、按钮），不配置 `features` 卡片，内容都在 `docs/index.mdx` 的 frontmatter 里。默认主题自带知识树、页面大纲、深浅色、代码复制与前后页导航。
 
-四处对默认主题的改动，都记在这里以免以后当成 bug：
+五处对默认主题的改动，都记在这里以免以后当成 bug：
 
 1. **`styles/index.css`（`rspress.config.ts` 的 `globalStyles`）**——首页 Hero 在视口内垂直居中；去掉知识树嵌套项的竖向引导线；两个面板折叠后的布局。`globalStyles` 注入在主题样式**之前**，同特异性会被主题覆盖，所以覆盖规则统一用重复类名提高一级特异性（例如 `.rp-home-hero.rp-home-hero`）。
 2. **`components/panel-toggle.tsx` 与 `nav-actions.tsx`（`globalUIComponents`）**——两个面板的折叠按钮。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。知识树按钮渲染在 `<Layout />` 的兄弟位置，用 `position: fixed` 贴在知识树右上角；目录按钮放进导航栏，和全屏按钮同属 `nav-actions` 的 portal 容器——**两个按钮必须在同一个容器里、顺序写死**，各自 portal 的话先后只能取决于 React 挂载顺序。
@@ -150,7 +152,13 @@ styles/
    折叠目录时只让正文在剩余空间里居中（`margin-inline: auto`），不能用 `justify-content`——那会把侧边栏一起挪走。
 
    `nav-actions.tsx` 里同时有全屏按钮。Rspress 的导航项来自 `_nav.json`、只支持链接，没有插入自定义按钮的插槽，所以整体用 `createPortal` 挂进 `.rp-nav__right`。portal 目标只能在浏览器里查到，因此首屏渲染返回 `null`、挂载后再挂载 portal，避免 hydration 不匹配。
-3. **`builderConfig.html.tags`**——在 `<head>` 注入内联脚本，首次绘制前从 localStorage 恢复两个面板的折叠状态。Rspress 的 `head` 配置类型是 `[string, Record<string, string>][]`，带不了内联内容，所以走 Rsbuild 的 `html.tags`。
+3. **`components/nav-state.ts` + `styles/nav-auto-hide.css`**——导航栏滚动后自动隐藏，鼠标移到顶部再显示回来。`<head>` 里的内联脚本只负责切 `<html>` 的 `data-windwiki-nav`，隐藏与显示全交给 CSS。两点值得记牢：
+
+   - **隐藏时把导航栏占的 64px 还给了内容**，不只是画成透明：把 `--rp-nav-height` 置 0，让知识树、大纲、菜单栏、首页 Hero 的偏移一起收掉，再用负外边距抵消 `.rp-nav` 在流内占的高度。不这么做，内容利用率不会变。
+   - **隐藏和显示必须用两个不同的阈值（滞回：160 / 80）**。收起导航栏会让文档少 64px，Chrome 的滚动锚定为了保持画面稳定会把 `scrollY` 回退 64px；只有一个阈值时就会掉回阈值以下 → 又展开 → 再收起，形成振荡（实测在阈值附近 900ms 内触发了 57 次 scroll）。两个阈值间隔大于 64px 即稳定。
+
+   只在 `@media (hover: hover) and (min-width: 1024px)` 下生效：显示依赖 hover，触摸屏没有 hover，隐藏了就点不回来。注意 headless Chrome 默认报告 `hover: none`，验证这个特性要用 `--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4`，否则会误判成实现有问题。
+4. **`builderConfig.html.tags`**——在 `<head>` 注入两段内联脚本：首次绘制前恢复两个面板的折叠状态，以及导航栏自动隐藏的滚动监听。都放在这里是因为浏览器恢复上次滚动位置发生在脚本执行之后，用 React 组件会先闪一下。Rspress 的 `head` 配置类型是 `[string, Record<string, string>][]`，带不了内联内容，所以走 Rsbuild 的 `html.tags`。
 
    > 这段脚本是拼出来的一行代码，**每条语句必须以分号结尾**。少了分号不会有换行可供 ASI 插入，整段脚本会直接 SyntaxError、一个面板都恢复不了，而且只在浏览器控制台报错——构建和 `tsc` 都不会发现。
 
