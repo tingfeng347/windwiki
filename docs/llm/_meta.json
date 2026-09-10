@@ -8,5 +8,20 @@
     "type": "dir",
     "name": "python-basics",
     "label": "Python 基础"
+  },
+  {
+    "type": "dir",
+    "name": "data-structures-and-algorithms",
+    "label": "数据结构与算法"
+  },
+  {
+    "type": "dir",
+    "name": "linux-shell-git",
+    "label": "Linux、Shell 与 Git"
+  },
+  {
+    "type": "dir",
+    "name": "mysql",
+    "label": "MySQL"
   }
 ]
