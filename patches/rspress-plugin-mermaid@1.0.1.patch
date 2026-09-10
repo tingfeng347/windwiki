@@ -1,0 +1,91 @@
+diff --git a/components/MermaidRender.tsx b/components/MermaidRender.tsx
+index 3fe8bc8456f1c3a33df1c27b3addbcb3a253b777..73856657d2db052dc84a12a6da936676b4cfb68f 100644
+--- a/components/MermaidRender.tsx
++++ b/components/MermaidRender.tsx
+@@ -1,41 +1,63 @@
+-import React, { useEffect, useId, useState } from 'react';
++import React, { useEffect, useId, useRef, useState } from 'react';
+ 
+ import mermaid, { type MermaidConfig } from 'mermaid';
+ 
+ import type { MermaidRendererProps } from '../src/typings';
+ 
++// mermaid.render is not safe to call concurrently: overlapping calls share
++// global mermaid state and, with the same element id, can clobber each other
++// and return an empty diagram. Serialize every render through one promise
++// chain, and give each attempt a unique id.
++let renderQueue: Promise<unknown> = Promise.resolve();
++
++function enqueue<T>(task: () => Promise<T>): Promise<T> {
++  const run = renderQueue.then(task, task);
++  renderQueue = run.catch(() => undefined);
++  return run;
++}
++
+ const MermaidRenderer: React.FC<MermaidRendererProps> = (props) => {
+   const { code, config = {} } = props;
+ 
+   const id = useId();
++  const seq = useRef(0);
++  const salt = useRef(0);
+ 
+   const [svg, setSvg] = useState('');
+ 
+   const [renderError, setRenderError] = useState(false);
+ 
+   const renderMermaid2SVG = React.useCallback(async () => {
+-    // https://github.com/mermaid-js/mermaid/blob/1b40f552b20df4ab99a986dd58c9d254b3bfd7bc/packages/mermaid/src/docs/.vitepress/theme/Mermaid.vue#L53
+-    const hasDarkClass = document.documentElement.classList.contains('dark');
+-
+-    const mermaidConfig: MermaidConfig = {
+-      securityLevel: 'loose',
+-      startOnLoad: false,
+-      theme: hasDarkClass ? 'dark' : 'default',
+-      ...config,
+-    };
+-
+-    try {
+-      mermaid.initialize(mermaidConfig);
+-
+-      const { svg } = await mermaid.render(
+-        id.replace(/:/g, ''),
+-        code as string,
+-      );
+-
+-      setSvg(svg);
+-    } catch (error) {
+-      setRenderError(true);
+-    }
++    const current = ++seq.current;
++    const renderId = `${id.replace(/:/g, '')}-${salt.current++}`;
++
++    await enqueue(async () => {
++      // https://github.com/mermaid-js/mermaid/blob/1b40f552b20df4ab99a986dd58c9d254b3bfd7bc/packages/mermaid/src/docs/.vitepress/theme/Mermaid.vue#L53
++      const hasDarkClass = document.documentElement.classList.contains('dark');
++
++      const mermaidConfig: MermaidConfig = {
++        securityLevel: 'loose',
++        startOnLoad: false,
++        theme: hasDarkClass ? 'dark' : 'default',
++        ...config,
++      };
++
++      try {
++        mermaid.initialize(mermaidConfig);
++        await mermaid.parse(code as string);
++
++        const { svg } = await mermaid.render(renderId, code as string);
++
++        if (current === seq.current) {
++          setSvg(svg);
++          setRenderError(false);
++        }
++      } catch (error) {
++        if (current === seq.current) {
++          setRenderError(true);
++        }
++      }
++    });
+   }, [code, config, id]);
+ 
+   useEffect(() => {

@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  rspress-plugin-mermaid@1.0.1:
+    hash: 8ba8c4234a20856178a6c9bc1c36866b0e65baa140ef74bdeffa98c241b70afb
+    path: patches/rspress-plugin-mermaid@1.0.1.patch
+
 importers:
 
   .:
@@ -34,7 +39,7 @@ importers:
         version: 1.0.1(@rspress/core@2.0.21(@rspack/core@2.2.3(@swc/helpers@0.5.23))(micromark-util-types@2.0.2)(micromark@4.0.2))
       rspress-plugin-mermaid:
         specifier: ^1.0.1
-        version: 1.0.1(@rspress/core@2.0.21(@rspack/core@2.2.3(@swc/helpers@0.5.23))(micromark-util-types@2.0.2)(micromark@4.0.2))
+        version: 1.0.1(patch_hash=8ba8c4234a20856178a6c9bc1c36866b0e65baa140ef74bdeffa98c241b70afb)(@rspress/core@2.0.21(@rspack/core@2.2.3(@swc/helpers@0.5.23))(micromark-util-types@2.0.2)(micromark@4.0.2))
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -3235,7 +3240,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  rspress-plugin-mermaid@1.0.1(@rspress/core@2.0.21(@rspack/core@2.2.3(@swc/helpers@0.5.23))(micromark-util-types@2.0.2)(micromark@4.0.2)):
+  rspress-plugin-mermaid@1.0.1(patch_hash=8ba8c4234a20856178a6c9bc1c36866b0e65baa140ef74bdeffa98c241b70afb)(@rspress/core@2.0.21(@rspack/core@2.2.3(@swc/helpers@0.5.23))(micromark-util-types@2.0.2)(micromark@4.0.2)):
     dependencies:
       '@rspress/core': 2.0.21(@rspack/core@2.2.3(@swc/helpers@0.5.23))(micromark-util-types@2.0.2)(micromark@4.0.2)
       mermaid: 10.9.8
