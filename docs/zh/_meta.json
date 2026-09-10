@@ -13,13 +13,13 @@
   {
     "type": "dir",
     "name": "llm",
-    "label": "LLM",
+    "label": "大语言模型",
     "collapsed": false
   },
   {
     "type": "dir",
     "name": "computer-vision",
-    "label": "Computer Vision",
+    "label": "计算机视觉",
     "collapsed": false
   },
   {
@@ -31,25 +31,25 @@
   {
     "type": "dir",
     "name": "point-cloud",
-    "label": "Point Cloud",
+    "label": "点云",
     "collapsed": false
   },
   {
     "type": "dir",
     "name": "research",
-    "label": "Research",
+    "label": "研究",
     "collapsed": false
   },
   {
     "type": "dir",
     "name": "engineering",
-    "label": "Engineering",
+    "label": "工程实践",
     "collapsed": false
   },
   {
     "type": "dir",
     "name": "tools",
-    "label": "Tools",
+    "label": "工具",
     "collapsed": false
   }
 ]

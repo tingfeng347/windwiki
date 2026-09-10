@@ -2,7 +2,7 @@
 description: 通过一个可运行的 Python 示例理解 Agent 的状态、决策、工具调用与停止条件。
 ---
 
-# Agent Architecture
+# Agent 架构
 
 用一个最小运行循环，理解 Agent 如何在任务、模型和工具之间协调执行。
 
@@ -22,7 +22,7 @@ description: 通过一个可运行的 Python 示例理解 Agent 的状态、决�
 | Memory | 保存后续步骤需要的状态 | 区分本次任务状态与跨任务存储 |
 | Runtime | 驱动循环并决定是否继续 | 设置步数上限、超时和错误处理 |
 
-## Runtime Loop
+## 运行循环
 
 1. 接收任务，创建初始状态。
 2. 把任务与最新观察传给决策函数。
@@ -32,7 +32,7 @@ description: 通过一个可运行的 Python 示例理解 Agent 的状态、决�
 
 成本可以用简单预算表示：$C = \sum_{i=1}^{N} c_i$，其中 $N$ 是执行步数，$c_i$ 是第 $i$ 步的开销。步数限制不能代替真实的时间和费用预算，但能避免无界循环。
 
-## Architecture
+## 架构
 
 ```mermaid
 graph LR
@@ -44,7 +44,7 @@ graph LR
 
 图中的 Agent 包含 Runtime：模型提出动作，运行时执行工具，工具结果再进入下一轮上下文。
 
-## Minimal Example
+## 最小示例
 
 将下面代码保存为 `minimal_agent.py`，使用 Python 3.10+ 运行 `python minimal_agent.py`。示例使用确定性决策函数模拟模型输出，无需 API Key 或第三方依赖。
 
@@ -94,8 +94,8 @@ if __name__ == "__main__":
 
 第一轮调用 `add`，第二轮读到观察结果后结束。`decide` 只演示一个固定任务；接入真实模型时，应在这个边界解析并校验模型输出，同时保持工具执行逻辑独立。
 
-## Next Steps
+## 下一步
 
 实际接入模型前，先为运行时补充超时、错误分类和执行记录；遇到不可重复的外部操作时，还需要考虑重试与幂等性。
 
-继续浏览 [Agent Engineering](./index.md)，或到 [Engineering](../engineering/index.md) 查看运行环境与工程实践的分类范围。
+继续浏览 [Agent](./index.md)，或到 [工程实践](../engineering/index.md) 查看运行环境与工程实践的分类范围。

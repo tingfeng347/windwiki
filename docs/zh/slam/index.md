@@ -14,4 +14,4 @@ Visual SLAM、Semantic SLAM、Loop Closure。
 
 ## 阅读入口
 
-关注 Visual SLAM、Semantic SLAM 和 Loop Closure。三维点集的几何处理归入 [Point Cloud](../point-cloud/index.md)。
+关注 Visual SLAM、Semantic SLAM 和 Loop Closure。三维点集的几何处理归入 [点云](../point-cloud/index.md)。

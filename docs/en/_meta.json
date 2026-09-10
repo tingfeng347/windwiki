@@ -1,0 +1,55 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "Home"
+  },
+  {
+    "type": "dir",
+    "name": "agent",
+    "label": "Agent",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "llm",
+    "label": "LLM",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "computer-vision",
+    "label": "Computer Vision",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "slam",
+    "label": "SLAM",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "point-cloud",
+    "label": "Point Cloud",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "research",
+    "label": "Research",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "engineering",
+    "label": "Engineering",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "tools",
+    "label": "Tools",
+    "collapsed": false
+  }
+]

@@ -1,4 +1,3 @@
-import path from 'node:path';
 import { defineConfig, normalizeHref } from '@rspress/core';
 import { pluginSitemap } from '@rspress/plugin-sitemap';
 import katex from 'rspress-plugin-katex';
@@ -15,11 +14,23 @@ export default defineConfig({
   base,
   siteOrigin,
   title: 'WindWiki',
-  description:
-    "Tingfeng347's engineering knowledge base for Agent, LLM, Computer Vision, SLAM and Point Cloud.",
+  description: 'Tingfeng347 的工程知识库：Agent、LLM、计算机视觉、SLAM 与点云。',
   lang: 'zh',
+  locales: [
+    {
+      lang: 'zh',
+      label: '中文',
+      title: 'WindWiki',
+      description: 'Tingfeng347 的工程知识库：Agent、LLM、计算机视觉、SLAM 与点云。',
+    },
+    {
+      lang: 'en',
+      label: 'English',
+      title: 'WindWiki',
+      description: "Tingfeng347's engineering knowledge base for Agent, LLM, Computer Vision, SLAM and Point Cloud.",
+    },
+  ],
   icon: '/favicon.svg',
-  globalStyles: path.join(import.meta.dirname, 'styles/index.css'),
   llms: true,
   // KaTeX handles math nodes after the built-in code highlighter.
   markdown: {
@@ -58,7 +69,5 @@ export default defineConfig({
       docRepoBaseUrl: 'https://github.com/tingfeng347/windwiki/edit/main/docs',
     },
     llmsUI: { placement: 'outline', viewOptions: false },
-    enableContentAnimation: false,
-    enableAppearanceAnimation: false,
   },
 });

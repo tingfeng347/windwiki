@@ -1,11 +1,11 @@
 [
   {
-    "text": "Docs",
+    "text": "文档",
     "link": "/agent/",
     "activeMatch": "^/(agent|llm|computer-vision|slam|point-cloud|research|engineering|tools)/"
   },
   {
-    "text": "Blog",
+    "text": "博客",
     "link": "https://tingfeng347.github.io/"
   },
   {
