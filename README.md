@@ -123,10 +123,10 @@ docs/
 components/
 ├── panel-state.ts     # 面板折叠状态的常量与防闪烁脚本（无 DOM 依赖，config 也引它）
 ├── panel-store.ts     # 面板折叠状态的客户端读写（useSyncExternalStore）
-├── panel-toggle.tsx   # 左侧知识树 / 右侧目录的折叠按钮，同一个模块注册两次
+├── panel-toggle.tsx   # 折叠按钮：默认导出知识树那个，另导出 PanelButton 给导航栏用
 ├── panel-toggle.css
-├── fullscreen-toggle.tsx # 导航栏全屏按钮（portal 进 .rp-nav__right）
-└── fullscreen-toggle.css
+├── nav-actions.tsx    # 导航栏右侧按钮组：全屏 + 目录折叠（portal 进 .rp-nav__right）
+└── nav-actions.css
 
 styles/
 ├── index.css          # globalStyles 入口，汇总下面两份
@@ -141,15 +141,18 @@ styles/
 四处对默认主题的改动，都记在这里以免以后当成 bug：
 
 1. **`styles/index.css`（`rspress.config.ts` 的 `globalStyles`）**——首页 Hero 在视口内垂直居中；去掉知识树嵌套项的竖向引导线；两个面板折叠后的布局。`globalStyles` 注入在主题样式**之前**，同特异性会被主题覆盖，所以覆盖规则统一用重复类名提高一级特异性（例如 `.rp-home-hero.rp-home-hero`）。
-2. **`components/panel-toggle.tsx`（`globalUIComponents`）**——左侧知识树与右侧目录的折叠按钮。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点，同一个模块注册两次、各带一个 `panel` 参数；组件渲染在 `<Layout />` 的兄弟位置，因此按钮用 `position: fixed` 定位。
+2. **`components/panel-toggle.tsx` 与 `nav-actions.tsx`（`globalUIComponents`）**——两个面板的折叠按钮。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。知识树按钮渲染在 `<Layout />` 的兄弟位置，用 `position: fixed` 贴在知识树右上角；目录按钮放进导航栏，和全屏按钮同属 `nav-actions` 的 portal 容器——**两个按钮必须在同一个容器里、顺序写死**，各自 portal 的话先后只能取决于 React 挂载顺序。
 
    **按钮和折叠都只在一个断点生效：≥1280px。** 两者必须同进同退，否则窄屏下没有按钮可恢复、会卡在隐藏状态。选 1280px 是因为 `<1280px` 时 Rspress 在导航栏下方多一条「菜单 / 目录」工具栏，左上角已被它自己的控件占据（实测 1000px 下它占 20–70px），固定在角落的按钮会压住它和正文边缘。
 
    按钮的图标由 CSS 按 `<html>` 上的 `data-windwiki-sidebar` / `data-windwiki-outline` 切换、不经过 React（服务端读不到折叠状态，让图标依赖它会产生 hydration 不匹配）；`aria-pressed` 走 `useSyncExternalStore`，React 先用服务端快照渲染、hydration 后再用客户端快照校正，所以静态 HTML 和浏览器里都正确。
 
    折叠目录时只让正文在剩余空间里居中（`margin-inline: auto`），不能用 `justify-content`——那会把侧边栏一起挪走。
-3. **`components/fullscreen-toggle.tsx`（`globalUIComponents`）**——导航栏全屏按钮。Rspress 的导航项来自 `_nav.json`、只支持链接，没有插入自定义按钮的插槽，所以用 `createPortal` 把按钮挂进 `.rp-nav__right`。portal 目标只能在浏览器里查到，因此首屏渲染返回 `null`、挂载后再挂载 portal，避免 hydration 不匹配。
-4. **`builderConfig.html.tags`**——在 `<head>` 注入内联脚本，首次绘制前从 localStorage 恢复两个面板的折叠状态。Rspress 的 `head` 配置类型是 `[string, Record<string, string>][]`，带不了内联内容，所以走 Rsbuild 的 `html.tags`。
+
+   `nav-actions.tsx` 里同时有全屏按钮。Rspress 的导航项来自 `_nav.json`、只支持链接，没有插入自定义按钮的插槽，所以整体用 `createPortal` 挂进 `.rp-nav__right`。portal 目标只能在浏览器里查到，因此首屏渲染返回 `null`、挂载后再挂载 portal，避免 hydration 不匹配。
+3. **`builderConfig.html.tags`**——在 `<head>` 注入内联脚本，首次绘制前从 localStorage 恢复两个面板的折叠状态。Rspress 的 `head` 配置类型是 `[string, Record<string, string>][]`，带不了内联内容，所以走 Rsbuild 的 `html.tags`。
+
+   > 这段脚本是拼出来的一行代码，**每条语句必须以分号结尾**。少了分号不会有换行可供 ASI 插入，整段脚本会直接 SyntaxError、一个面板都恢复不了，而且只在浏览器控制台报错——构建和 `tsc` 都不会发现。
 
 4. **`builderConfig.output.dataUriLimit`**——设为 `{ image: 0 }`，禁止把图片内联成 base64 data URI。默认阈值是 4096 字节，小于它的图片会被内联；正文图片走打包器，于是几张几十 KB 的小图会变成 base64 塞进 `llms-full.txt`，对喂给模型的 markdown 没有意义。设成 0 之后所有图片都是可解析的 URL。
 
