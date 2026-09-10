@@ -1,0 +1,17 @@
+[
+  {
+    "type": "file",
+    "name": "01-basics",
+    "label": "第1章 数据结构与算法基础"
+  },
+  {
+    "type": "file",
+    "name": "02-common-structures",
+    "label": "第2章 常见的数据结构"
+  },
+  {
+    "type": "file",
+    "name": "03-algorithms",
+    "label": "第3章 算法"
+  }
+]
