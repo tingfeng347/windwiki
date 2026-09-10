@@ -1,0 +1,37 @@
+/*
+ * 首页只有 Hero。默认的上下 5rem 外边距会让内容贴着顶部，下方留出大片空白。
+ * 这里让 Hero 撑满「视口高度减去导航栏」，并把内容垂直居中，让空白上下均分。
+ *
+ * globalStyles 在默认主题样式之前注入，同特异性时会被主题覆盖，
+ * 因此用重复类名把特异性提高一级，而不是依赖注入顺序。
+ */
+.rp-home-hero.rp-home-hero {
+  align-items: center;
+  min-height: calc(100vh - var(--rp-nav-height, 64px));
+  /* svh 取移动端工具栏完全展开时的视口高度，避免地址栏收起时 Hero 被截断。 */
+  min-height: calc(100svh - var(--rp-nav-height, 64px));
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/*
+ * 视口 ≤1000px 时 Hero 变为 column-reverse，容器被拉伸到整个高度，
+ * 需要由容器自己把内容居中，否则仍然贴顶。
+ */
+.rp-home-hero__container {
+  justify-content: center;
+}
+
+/* 首页不再配置 features，隐藏空容器，否则它会在 Hero 下方留出 20px 并撑出滚动条。 */
+.rp-home-feature:empty {
+  display: none;
+}
+
+/*
+ * 默认主题把装饰背景硬编码为 1000px 高。Hero 撑满视口后，多出的部分会变成
+ * 下方可滚动的空白，破坏垂直居中，所以让背景正好覆盖一屏。
+ */
+.rp-home-background.rp-home-background {
+  height: 100vh;
+  height: 100svh;
+}

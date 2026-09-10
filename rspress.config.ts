@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { defineConfig, normalizeHref } from '@rspress/core';
 import { pluginSitemap } from '@rspress/plugin-sitemap';
 import katex from 'rspress-plugin-katex';
@@ -14,10 +15,12 @@ export default defineConfig({
   base,
   siteOrigin,
   title: 'WindWiki',
-  description: 'Tingfeng347 的工程知识库：大模型学习笔记与工程实践。',
+  description: 'Tingfeng347 的工程知识库：记录技术学习笔记与工程实践。',
   lang: 'zh',
   icon: '/favicon.svg',
   llms: true,
+  // globalStyles 需要绝对路径；首页 Hero 的垂直居中样式放在这里。
+  globalStyles: path.join(import.meta.dirname, 'styles/home.css'),
   // KaTeX handles math nodes after the built-in code highlighter.
   markdown: {
     shiki: {
