@@ -1,0 +1,39 @@
+/*
+ * 去掉知识树嵌套项的竖向引导线。
+ *
+ * 这两条 ::before 是默认主题画的（.rp-sidebar-item--group-item），在 rspress.rs 上看不到
+ * 只是因为那边目录是扁平的、根本没有嵌套项。这里的目录有三层（大模型 → Python 基础 → 各章），
+ * 所以每条嵌套项都会拉出一条通高灰线，active 时再叠一段与灰线断开的短蓝线。
+ *
+ * globalStyles 注入在主题样式之前，同特异性会被覆盖，所以用重复类名提高一级特异性。
+ */
+.rp-sidebar-item--group-item.rp-sidebar-item--group-item::before,
+.rp-sidebar-item--group-item.rp-sidebar-item--group-item
+  .rp-sidebar-item__left.rp-sidebar-item__left::before {
+  display: none;
+}
+
+/*
+ * 折叠状态。data 属性由 components/sidebar-toggle.tsx 写入，
+ * 并在首次绘制前由 rspress.config.ts 的内联脚本从 localStorage 恢复。
+ *
+ * 只在 ≥1280px 生效，两个原因：
+ * 1. <1280px 时导航栏下方有一条「菜单 / 目录」工具栏，左上角已被 Rspress 自己的控件占据，
+ *    固定在左侧的折叠按钮会和它、以及正文左边缘（36px）叠在一起。
+ * 2. 折叠按钮本身也只在 ≥1280px 显示。若在这里收窄生效范围，用户在窄屏就没有按钮可恢复，
+ *    会卡在隐藏状态。两边必须用同一个断点。
+ */
+@media (min-width: 1280px) {
+  html[data-windwiki-sidebar='hidden'] .rp-doc-layout__sidebar {
+    display: none;
+  }
+
+  /*
+   * 侧边栏让出的空间：正文和大纲整体居中。
+   * 正文是 flex:1 且 flex-basis 为 0，会自适应剩余宽度、不会溢出容器；
+   * <1280px 时大纲还是浮层、不占布局位置，所以各宽度下都不会被挤出可视区。
+   */
+  html[data-windwiki-sidebar='hidden'] .rp-doc-layout__container {
+    justify-content: center;
+  }
+}

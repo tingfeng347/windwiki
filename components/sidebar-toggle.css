@@ -1,0 +1,74 @@
+/*
+ * 折叠按钮。组件挂在 <Layout /> 的兄弟位置，不在侧边栏内部，
+ * 所以只能用 fixed 定位：展开时贴在侧边栏右上角，折叠后挪到正文左侧的留白里。
+ * 正文左内边距是 var(--rp-content-padding-x)（>768px 时为 80px），按钮不会压到文字。
+ */
+.windwiki-sidebar-toggle {
+  position: fixed;
+  top: calc(var(--rp-nav-height, 64px) + 14px);
+  left: calc(
+    var(--rp-sidebar-margin-left, 0px) + var(--rp-sidebar-width, 320px) - 46px
+  );
+  /* 侧边栏是 --rp-z-index-sidebar(50)，按钮要压在它上面 */
+  z-index: 51;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+
+  border: 1px solid var(--rp-c-divider-light);
+  border-radius: 8px;
+  background-color: var(--rp-c-bg);
+  color: var(--rp-c-text-2);
+  cursor: pointer;
+  /* 不给 left 加过渡：折叠时按钮是瞬间换位的，让它滑过整篇正文反而突兀。 */
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+.windwiki-sidebar-toggle:hover {
+  color: var(--rp-c-text-1);
+  border-color: var(--rp-c-brand);
+}
+
+.windwiki-sidebar-toggle:focus-visible {
+  outline: 2px solid var(--rp-c-brand);
+  outline-offset: 2px;
+}
+
+.windwiki-sidebar-toggle__icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+html[data-windwiki-sidebar='hidden'] .windwiki-sidebar-toggle {
+  left: 16px;
+}
+
+/* 图标按折叠状态切换，避免组件依赖 React state 造成 hydration 不匹配 */
+html[data-windwiki-sidebar='hidden'] .windwiki-sidebar-toggle__icon--collapse,
+html:not([data-windwiki-sidebar='hidden'])
+  .windwiki-sidebar-toggle__icon--expand {
+  display: none;
+}
+
+/*
+ * <1280px 时隐藏按钮，和 styles/sidebar.css 的折叠断点保持一致。
+ * 这个区间里 Rspress 自己有「菜单」控件（把侧边栏作为抽屉打开），
+ * 而固定在左上角的按钮会和它以及正文左边缘重叠。
+ */
+@media (max-width: 1279px) {
+  .windwiki-sidebar-toggle {
+    display: none;
+  }
+}
