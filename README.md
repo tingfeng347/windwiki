@@ -157,12 +157,14 @@ styles/
    - **隐藏时把导航栏占的 64px 还给了内容**，不只是画成透明：把 `--rp-nav-height` 置 0，让知识树、大纲、菜单栏、首页 Hero 的偏移一起收掉，再用负外边距抵消 `.rp-nav` 在流内占的高度。不这么做，内容利用率不会变。
    - **隐藏和显示必须用两个不同的阈值（滞回：160 / 80）**。收起导航栏会让文档少 64px，Chrome 的滚动锚定为了保持画面稳定会把 `scrollY` 回退 64px；只有一个阈值时就会掉回阈值以下 → 又展开 → 再收起，形成振荡（实测在阈值附近 900ms 内触发了 57 次 scroll）。两个阈值间隔大于 64px 即稳定。
 
+   - **隐藏时必须让导航栏不吃指针事件（`pointer-events: none`），只在最顶端留一条 10px 感应区**。否则隐藏的导航栏仍占着并捕获顶部 64px，鼠标停在这片区域（比如刚点完全屏按钮）`:hover` 就一直成立，导航栏再也隐藏不掉——全屏时鼠标本来就在顶部，所以特别容易触发。
+
    只在 `@media (hover: hover) and (min-width: 1024px)` 下生效：显示依赖 hover，触摸屏没有 hover，隐藏了就点不回来。注意 headless Chrome 默认报告 `hover: none`，验证这个特性要用 `--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4`，否则会误判成实现有问题。
 4. **`builderConfig.html.tags`**——在 `<head>` 注入两段内联脚本：首次绘制前恢复两个面板的折叠状态，以及导航栏自动隐藏的滚动监听。都放在这里是因为浏览器恢复上次滚动位置发生在脚本执行之后，用 React 组件会先闪一下。Rspress 的 `head` 配置类型是 `[string, Record<string, string>][]`，带不了内联内容，所以走 Rsbuild 的 `html.tags`。
 
    > 这段脚本是拼出来的一行代码，**每条语句必须以分号结尾**。少了分号不会有换行可供 ASI 插入，整段脚本会直接 SyntaxError、一个面板都恢复不了，而且只在浏览器控制台报错——构建和 `tsc` 都不会发现。
 
-4. **`builderConfig.output.dataUriLimit`**——设为 `{ image: 0 }`，禁止把图片内联成 base64 data URI。默认阈值是 4096 字节，小于它的图片会被内联；正文图片走打包器，于是几张几十 KB 的小图会变成 base64 塞进 `llms-full.txt`，对喂给模型的 markdown 没有意义。设成 0 之后所有图片都是可解析的 URL。
+5. **`builderConfig.output.dataUriLimit`**——设为 `{ image: 0 }`，禁止把图片内联成 base64 data URI。默认阈值是 4096 字节，小于它的图片会被内联；正文图片走打包器，于是几张几十 KB 的小图会变成 base64 塞进 `llms-full.txt`，对喂给模型的 markdown 没有意义。设成 0 之后所有图片都是可解析的 URL。
 
    > 该选项只覆盖 `image`；`svg` / `font` / `media` / `assets` 仍是默认的 4096。将来若在正文里引用小 SVG，需要把 `svg` 也设为 0，否则会出现同样的内联。
 

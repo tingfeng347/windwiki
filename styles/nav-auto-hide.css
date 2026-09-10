@@ -23,19 +23,31 @@
 
     /* 只淡出、不上移出屏幕——留在原地才能被 hover 命中，从而鼠标移入显示 */
     opacity: 0;
-    transform: translateY(-8px);
-    transition:
-      opacity 0.35s ease,
-      transform 0.35s ease;
+    transition: opacity 0.35s ease;
+
+    /* 关键：隐藏时不吃指针事件。否则这片 64px 高的区域一直捕获 :hover，
+       鼠标停在这里（比如刚点完全屏按钮）导航栏就再也隐藏不掉。
+       唤出改为下面那条很窄的感应区。 */
+    pointer-events: none;
+  }
+
+  /* 顶部 10px 的感应区：鼠标移到这里才把导航栏显示回来 */
+  html[data-windwiki-nav='hidden'] .rp-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    pointer-events: auto;
   }
 
   html[data-windwiki-nav='hidden'] .rp-nav:hover,
   html[data-windwiki-nav='hidden'] .rp-nav:focus-within {
     opacity: 1;
-    transform: translateY(0);
+    /* 恢复指针事件，否则唤出后里面的按钮点不了 */
+    pointer-events: auto;
     /* 显示要立刻，不能有淡入延迟，否则鼠标扫过时看着像没反应 */
-    transition:
-      opacity 0s,
-      transform 0.25s ease;
+    transition: opacity 0s;
   }
 }
