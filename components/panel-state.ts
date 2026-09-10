@@ -31,12 +31,15 @@ export const PANEL_SHOWN = 'shown';
 /**
  * 在首次绘制前把 localStorage 里的选择写回每个面板的 data 属性。
  * 用 try/catch 包住：隐私模式下 localStorage 可能直接抛异常。
+ *
+ * 每条语句必须以分号结尾：拼接出来的是一行代码，中间没有换行，ASI 不会补分号，
+ * 少了它整段脚本会直接 SyntaxError（曾经因此让两个面板的持久化静默失效）。
  */
 export const panelRestoreScript = `try{${Object.values(PANELS)
   .map(
     (panel) =>
       `if(localStorage.getItem(${JSON.stringify(panel.storage)})===${JSON.stringify(
         PANEL_HIDDEN,
-      )})document.documentElement.dataset.${panel.attr}=${JSON.stringify(PANEL_HIDDEN)}`,
+      )})document.documentElement.dataset.${panel.attr}=${JSON.stringify(PANEL_HIDDEN)};`,
   )
   .join('')}}catch(e){}`;
