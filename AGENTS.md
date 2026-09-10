@@ -67,7 +67,7 @@ pnpm preview
 
 外部笔记（例如尚硅谷的课程）通常是「一个大 Markdown 含多章」外加一个图片目录。导入步骤：
 
-1. 目录放 `docs/llm/<course>/`，与 `python-basics/` 平级；在该目录写 `_meta.json` 定顺序与侧边栏标签，并在 `docs/llm/_meta.json` 里登记。
+1. 目录放 `docs/llm/<course>/`，与 `python-basics/` 平级；在该目录写 `_meta.json` 定顺序与侧边栏标签，并在 `docs/llm/_meta.json` 里登记。课程分组统一写 `"collapsed": true` 默认收起，当前页所在的课程由 Rspress 自动展开。
 2. 按章拆分：在**代码围栏之外**匹配 `^# 第N章`——代码块里的 `# 注释` 会被误判成标题。整篇没有章节的保持单页。
 3. 图片统一成 `./images/<basename>`：源里可能是 `images/`、`image/`、`img/` 或 Windows 反斜杠（`image\x.png`）。图片拷到该课程目录下的 `images/`。
 4. 每个文件加 `description` frontmatter，格式沿用 python-basics：`<课程名> · <章节名>。`
