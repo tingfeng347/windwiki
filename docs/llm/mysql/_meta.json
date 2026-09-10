@@ -11,6 +11,11 @@
   },
   {
     "type": "file",
+    "name": "python-connection",
+    "label": "Python 连接 MySQL"
+  },
+  {
+    "type": "file",
     "name": "appendix",
     "label": "棘手问题附录"
   }
