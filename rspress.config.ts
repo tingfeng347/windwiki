@@ -22,11 +22,12 @@ export default defineConfig({
   llms: true,
   // 以下三个路径都要求绝对路径。样式汇总在 styles/index.css。
   globalStyles: path.join(import.meta.dirname, 'styles/index.css'),
-  // 知识树 / 目录的折叠按钮。globalUIComponents 会渲染在 <Layout /> 的兄弟位置，
-  // 不需要自定义主题；同一个模块注册两次，各带一个 panel 参数。
+  // 折叠按钮与导航栏全屏按钮。globalUIComponents 会渲染在 <Layout /> 的兄弟位置，
+  // 不需要自定义主题；面板按钮同一个模块注册两次，各带一个 panel 参数。
   globalUIComponents: [
     [path.join(import.meta.dirname, 'components/panel-toggle.tsx'), { panel: 'sidebar' }],
     [path.join(import.meta.dirname, 'components/panel-toggle.tsx'), { panel: 'outline' }],
+    path.join(import.meta.dirname, 'components/fullscreen-toggle.tsx'),
   ],
   builderConfig: {
     html: {

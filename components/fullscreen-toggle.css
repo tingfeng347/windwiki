@@ -1,0 +1,58 @@
+/*
+ * 全屏按钮。portal 挂在 .rp-nav__right 末尾，跟随导航栏原来的布局，
+ * 不需要自己算位置；样式对齐 .rp-nav__others 里其它控件（社交链接、主题切换）的观感。
+ */
+.windwiki-fullscreen-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--rp-c-text-2);
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+
+.windwiki-fullscreen-toggle:hover {
+  color: var(--rp-c-text-1);
+  background-color: var(--rp-c-bg-mute);
+}
+
+.windwiki-fullscreen-toggle:focus-visible {
+  outline: 2px solid var(--rp-c-brand);
+  outline-offset: 2px;
+}
+
+.windwiki-fullscreen-toggle__icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 图标体现当前状态，由 .windwiki-fullscreen-toggle--on 切换 */
+.windwiki-fullscreen-toggle__icon--exit,
+.windwiki-fullscreen-toggle--on .windwiki-fullscreen-toggle__icon--enter {
+  display: none;
+}
+
+.windwiki-fullscreen-toggle--on .windwiki-fullscreen-toggle__icon--exit {
+  display: inline;
+}
+
+/* 窄屏导航栏空间紧张，交给系统全屏手势 */
+@media (max-width: 768px) {
+  .windwiki-fullscreen-toggle {
+    display: none;
+  }
+}
