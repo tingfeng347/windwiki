@@ -3,6 +3,7 @@ import { defineConfig, normalizeHref } from '@rspress/core';
 import { pluginSitemap } from '@rspress/plugin-sitemap';
 import katex from 'rspress-plugin-katex';
 import mermaid from 'rspress-plugin-mermaid';
+import { navAutoHideScript } from './components/nav-state';
 import { panelRestoreScript } from './components/panel-state';
 
 const siteOrigin = 'https://tingfeng347.github.io';
@@ -30,9 +31,13 @@ export default defineConfig({
   ],
   builderConfig: {
     html: {
-      // 首次绘制前就恢复折叠状态，避免刷新时面板先显示再收起。
       // Rspress 的 head 配置只支持 [tag, attrs]，带不了内联内容，所以走 Rsbuild 的 html.tags。
-      tags: [{ tag: 'script', children: panelRestoreScript }],
+      // 第一个：首次绘制前恢复面板折叠状态，避免刷新时先显示再收起。
+      // 第二个：导航栏自动隐藏的滚动监听，放在这里同样是为了刷新到页面中部时不闪。
+      tags: [
+        { tag: 'script', children: panelRestoreScript },
+        { tag: 'script', children: navAutoHideScript },
+      ],
     },
     output: {
       // 默认 4096：小于该值的图片会被内联成 base64 data URI。正文图片走打包器，

@@ -1,0 +1,41 @@
+/*
+ * 导航栏自动隐藏：滚动后淡出、把它占的高度还给内容，鼠标移到顶部再显示回来。
+ * 状态由 components/nav-state.ts 的内联脚本写在 <html> 的 data-windwiki-nav 上。
+ *
+ * 只在有真实指针的设备上启用：显示依赖 hover，触摸屏没有 hover，一旦隐藏就再也
+ * 点不回来了（移动端的导航栏还承担着打开菜单的职责）。
+ */
+@media (hover: hover) and (min-width: 1024px) {
+  html[data-windwiki-nav='hidden'] {
+    /* 置 0 是为了让知识树、大纲、菜单栏、首页 Hero 的偏移一起收掉，
+       这样「内容利用率」才真的提高，而不是只把导航栏画成透明。 */
+    --rp-nav-height: 0px;
+    /* 导航栏自身的实际高度。Rspress 默认 64px；本站没有配置 banner，banner 会额外
+       占用高度，将来若启用 banner 需要同步改这里。 */
+    --windwiki-nav-height: 64px;
+  }
+
+  html[data-windwiki-nav='hidden'] .rp-nav {
+    /* 自身高度写死，避免被上面置 0 的变量带走 */
+    height: var(--windwiki-nav-height);
+    /* 负外边距抵消它在流内占的高度：sticky 元素仍然占位，不这么做内容不会上移 */
+    margin-bottom: calc(-1 * var(--windwiki-nav-height));
+
+    /* 只淡出、不上移出屏幕——留在原地才能被 hover 命中，从而鼠标移入显示 */
+    opacity: 0;
+    transform: translateY(-8px);
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  html[data-windwiki-nav='hidden'] .rp-nav:hover,
+  html[data-windwiki-nav='hidden'] .rp-nav:focus-within {
+    opacity: 1;
+    transform: translateY(0);
+    /* 显示要立刻，不能有淡入延迟，否则鼠标扫过时看着像没反应 */
+    transition:
+      opacity 0s,
+      transform 0.25s ease;
+  }
+}
