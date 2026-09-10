@@ -1,0 +1,42 @@
+[
+  {
+    "type": "file",
+    "name": "01-linux",
+    "label": "Linux（Ubuntu）"
+  },
+  {
+    "type": "file",
+    "name": "02-git-overview",
+    "label": "第1章 Git概述"
+  },
+  {
+    "type": "file",
+    "name": "03-git-install",
+    "label": "第2章 Git安装"
+  },
+  {
+    "type": "file",
+    "name": "04-git-commands",
+    "label": "第3章 Git常用命令"
+  },
+  {
+    "type": "file",
+    "name": "05-git-branch",
+    "label": "第4章 Git分支操作"
+  },
+  {
+    "type": "file",
+    "name": "06-gitee",
+    "label": "第5章 Gitee（码云）操作"
+  },
+  {
+    "type": "file",
+    "name": "07-pycharm-git",
+    "label": "第6章 PyCharm集成Git（本地库）"
+  },
+  {
+    "type": "file",
+    "name": "08-pycharm-gitee",
+    "label": "第7章 PyCharm集成Gitee（码云）"
+  }
+]
