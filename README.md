@@ -130,17 +130,18 @@ components/
 └── nav-state.ts       # 导航栏自动隐藏的滚动监听脚本（内联注入，配 styles/nav-auto-hide.css）
 
 styles/
-├── index.css          # globalStyles 入口，汇总下面三份
+├── index.css          # globalStyles 入口，汇总下面四份
 ├── home.css           # 首页 Hero 垂直居中
 ├── panel.css          # 去掉知识树竖线、两个面板折叠后的布局
-└── nav-auto-hide.css  # 导航栏滚动后淡出并把高度还给内容（配 components/nav-state.ts）
+├── nav-auto-hide.css  # 导航栏滚动后淡出并把高度还给内容（配 components/nav-state.ts）
+└── code.css           # 代码块里注释的配色（默认主题的对比度不够）
 ```
 
 导航由各级 `_nav.json`（顶部）与 `_meta.json`（知识树）生成，不要改 `rspress.config.ts` 维护大型导航数组。站点为纯中文（`rspress.config.ts` 的 `lang: 'zh'`），没有多语言与语言切换。
 
 使用 Rspress 默认主题，**没有 `theme/` 目录、没有 fork 主题组件**：首页使用默认的 `pageType: home` 布局，只配置 `hero`（站点名、标语、按钮），不配置 `features` 卡片，内容都在 `docs/index.mdx` 的 frontmatter 里。默认主题自带知识树、页面大纲、深浅色、代码复制与前后页导航。
 
-五处对默认主题的改动，都记在这里以免以后当成 bug：
+六处对默认主题的改动，都记在这里以免以后当成 bug：
 
 1. **`styles/index.css`（`rspress.config.ts` 的 `globalStyles`）**——首页 Hero 在视口内垂直居中；去掉知识树嵌套项的竖向引导线；两个面板折叠后的布局。`globalStyles` 注入在主题样式**之前**，同特异性会被主题覆盖，所以覆盖规则统一用重复类名提高一级特异性（例如 `.rp-home-hero.rp-home-hero`）。
 2. **`components/panel-toggle.tsx` 与 `nav-actions.tsx`（`globalUIComponents`）**——两个面板的折叠按钮。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。知识树按钮渲染在 `<Layout />` 的兄弟位置，用 `position: fixed` 贴在知识树右上角；目录按钮放进导航栏，和全屏按钮同属 `nav-actions` 的 portal 容器——**两个按钮必须在同一个容器里、顺序写死**，各自 portal 的话先后只能取决于 React 挂载顺序。
@@ -164,7 +165,13 @@ styles/
 
    > 这段脚本是拼出来的一行代码，**每条语句必须以分号结尾**。少了分号不会有换行可供 ASI 插入，整段脚本会直接 SyntaxError、一个面板都恢复不了，而且只在浏览器控制台报错——构建和 `tsc` 都不会发现。
 
-5. **`builderConfig.output.dataUriLimit`**——设为 `{ image: 0 }`，禁止把图片内联成 base64 data URI。默认阈值是 4096 字节，小于它的图片会被内联；正文图片走打包器，于是几张几十 KB 的小图会变成 base64 塞进 `llms-full.txt`，对喂给模型的 markdown 没有意义。设成 0 之后所有图片都是可解析的 URL。
+5. **`styles/code.css`**——代码块里注释的颜色。默认主题浅色下是 `#b6b4b4`（白底对比度仅 **2.06:1**）、深色下是 `#6a727b`（`#121212` 上 3.84:1），都读不清；多行文档注释（`"""..."""`）整段都是这个颜色，尤其明显。换成各主题下达标的灰：浅色 `#6a727b`（4.88:1）、深色 `#9aa5b1`（7.49:1）。
+
+   > 主题把这两个值写在 `:where(html:not(.rp-dark))` / `:where(html.rp-dark)` 里，`:where()` 特异性为 0，所以 `:root` 与 `html.rp-dark` 可以直接覆盖，不需要 `!important`。
+   >
+   > 仍有低于 4.5:1 的 token（浅色的 `--shiki-token-string` 3.04:1、`--shiki-token-parameter` 2.30:1），属于配色选择而非缺陷，需要时再一起调。
+
+6. **`builderConfig.output.dataUriLimit`**——设为 `{ image: 0 }`，禁止把图片内联成 base64 data URI。默认阈值是 4096 字节，小于它的图片会被内联；正文图片走打包器，于是几张几十 KB 的小图会变成 base64 塞进 `llms-full.txt`，对喂给模型的 markdown 没有意义。设成 0 之后所有图片都是可解析的 URL。
 
    > 该选项只覆盖 `image`；`svg` / `font` / `media` / `assets` 仍是默认的 4096。将来若在正文里引用小 SVG，需要把 `svg` 也设为 0，否则会出现同样的内联。
 

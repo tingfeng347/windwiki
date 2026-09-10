@@ -1,0 +1,18 @@
+/*
+ * 代码块里注释的颜色。
+ *
+ * 默认主题浅色下用 #b6b4b4（白底对比度只有 2.06:1），深色下用 #6a727b（#121212 上
+ * 3.84:1），都读不清 —— 多行文档注释（"""..."""）整段都是这个颜色，尤其明显。
+ * 这里换成各自背景上达到 WCAG AA（4.5:1）的灰。
+ *
+ * 选择器说明：主题把这两个值写在 :where(html:not(.rp-dark)) / :where(html.rp-dark) 里，
+ * :where() 的特异性是 0，所以 :root 和 html.rp-dark 可以直接覆盖，不需要 !important。
+ * 深色下两条都命中，靠 html.rp-dark 更高的特异性取胜。
+ */
+:root {
+  --shiki-token-comment: #6a727b;
+}
+
+html.rp-dark {
+  --shiki-token-comment: #9aa5b1;
+}
