@@ -1,8 +1,8 @@
 [
   {
     "text": "文档",
-    "link": "/agent/",
-    "activeMatch": "^/(agent|llm|computer-vision|slam|point-cloud|research|engineering|tools)/"
+    "link": "/llm/",
+    "activeMatch": "^/llm/"
   },
   {
     "text": "博客",

@@ -14,22 +14,8 @@ export default defineConfig({
   base,
   siteOrigin,
   title: 'WindWiki',
-  description: 'Tingfeng347 的工程知识库：Agent、LLM、计算机视觉、SLAM 与点云。',
+  description: 'Tingfeng347 的工程知识库：大模型学习笔记与工程实践。',
   lang: 'zh',
-  locales: [
-    {
-      lang: 'zh',
-      label: '中文',
-      title: 'WindWiki',
-      description: 'Tingfeng347 的工程知识库：Agent、LLM、计算机视觉、SLAM 与点云。',
-    },
-    {
-      lang: 'en',
-      label: 'English',
-      title: 'WindWiki',
-      description: "Tingfeng347's engineering knowledge base for Agent, LLM, Computer Vision, SLAM and Point Cloud.",
-    },
-  ],
   icon: '/favicon.svg',
   llms: true,
   // KaTeX handles math nodes after the built-in code highlighter.

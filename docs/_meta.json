@@ -1,0 +1,13 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "知识库首页"
+  },
+  {
+    "type": "dir",
+    "name": "llm",
+    "label": "大模型",
+    "collapsed": false
+  }
+]
