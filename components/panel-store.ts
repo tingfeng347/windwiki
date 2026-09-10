@@ -1,12 +1,12 @@
 import {
-  SIDEBAR_HIDDEN,
-  SIDEBAR_SHOWN,
-  SIDEBAR_STATE_ATTR,
-  SIDEBAR_STORAGE_KEY,
-} from './sidebar-state';
+  PANEL_HIDDEN,
+  PANEL_SHOWN,
+  PANELS,
+  type PanelKey,
+} from './panel-state';
 
 /**
- * 折叠状态的客户端读取入口，配 useSyncExternalStore 使用。
+ * 面板折叠状态的客户端读取入口，配 useSyncExternalStore 使用。
  *
  * 状态的唯一真相是 <html> 上的 data 属性（CSS 也依赖它），localStorage 只负责跨刷新记住选择。
  * 不在这里额外存一份变量，避免两者不同步。
@@ -15,8 +15,8 @@ import {
  */
 const listeners = new Set<() => void>();
 
-export function isSidebarHidden(): boolean {
-  return document.documentElement.dataset[SIDEBAR_STATE_ATTR] === SIDEBAR_HIDDEN;
+export function isPanelHidden(panel: PanelKey): boolean {
+  return document.documentElement.dataset[PANELS[panel].attr] === PANEL_HIDDEN;
 }
 
 /**
@@ -24,22 +24,23 @@ export function isSidebarHidden(): boolean {
  * React 用这个值产出服务端 HTML，并在 hydration 后拿客户端快照校正，
  * 所以既不会出现 hydration 不匹配，静态 HTML 里的 aria-pressed 也是确定的。
  */
-export function getServerSidebarHidden(): boolean {
+export function getServerPanelHidden(): boolean {
   return false;
 }
 
-export function subscribeSidebar(listener: () => void): () => void {
+export function subscribePanel(listener: () => void): () => void {
   listeners.add(listener);
   return () => {
     listeners.delete(listener);
   };
 }
 
-export function toggleSidebar(): void {
-  const next = isSidebarHidden() ? SIDEBAR_SHOWN : SIDEBAR_HIDDEN;
-  document.documentElement.dataset[SIDEBAR_STATE_ATTR] = next;
+export function togglePanel(panel: PanelKey): void {
+  const { attr, storage } = PANELS[panel];
+  const next = isPanelHidden(panel) ? PANEL_SHOWN : PANEL_HIDDEN;
+  document.documentElement.dataset[attr] = next;
   try {
-    localStorage.setItem(SIDEBAR_STORAGE_KEY, next);
+    localStorage.setItem(storage, next);
   } catch {
     // 隐私模式下 localStorage 可能不可写，此时只是不记住选择。
   }

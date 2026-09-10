@@ -3,7 +3,7 @@ import { defineConfig, normalizeHref } from '@rspress/core';
 import { pluginSitemap } from '@rspress/plugin-sitemap';
 import katex from 'rspress-plugin-katex';
 import mermaid from 'rspress-plugin-mermaid';
-import { sidebarRestoreScript } from './components/sidebar-state';
+import { panelRestoreScript } from './components/panel-state';
 
 const siteOrigin = 'https://tingfeng347.github.io';
 const base = '/windwiki/';
@@ -22,15 +22,17 @@ export default defineConfig({
   llms: true,
   // 以下三个路径都要求绝对路径。样式汇总在 styles/index.css。
   globalStyles: path.join(import.meta.dirname, 'styles/index.css'),
-  // 侧边栏折叠按钮。globalUIComponents 会渲染在 <Layout /> 的兄弟位置，不需要自定义主题。
+  // 知识树 / 目录的折叠按钮。globalUIComponents 会渲染在 <Layout /> 的兄弟位置，
+  // 不需要自定义主题；同一个模块注册两次，各带一个 panel 参数。
   globalUIComponents: [
-    path.join(import.meta.dirname, 'components/sidebar-toggle.tsx'),
+    [path.join(import.meta.dirname, 'components/panel-toggle.tsx'), { panel: 'sidebar' }],
+    [path.join(import.meta.dirname, 'components/panel-toggle.tsx'), { panel: 'outline' }],
   ],
   builderConfig: {
     html: {
-      // 首次绘制前就恢复折叠状态，避免刷新时侧边栏先显示再收起。
+      // 首次绘制前就恢复折叠状态，避免刷新时面板先显示再收起。
       // Rspress 的 head 配置只支持 [tag, attrs]，带不了内联内容，所以走 Rsbuild 的 html.tags。
-      tags: [{ tag: 'script', children: sidebarRestoreScript }],
+      tags: [{ tag: 'script', children: panelRestoreScript }],
     },
     output: {
       // 默认 4096：小于该值的图片会被内联成 base64 data URI。正文图片走打包器，

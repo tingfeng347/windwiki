@@ -1,6 +1,6 @@
 /*
  * 全局样式入口，通过 rspress.config.ts 的 globalStyles 注入。
- * globalStyles 只接受单个文件，所以在这里汇总各页面/组件的部分样式。
+ * globalStyles 只接受单个文件，所以在这里汇总各部分样式。
  */
 @import './home.css';
-@import './sidebar.css';
+@import './panel.css';

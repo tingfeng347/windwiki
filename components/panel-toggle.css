@@ -1,0 +1,91 @@
+/*
+ * 面板折叠按钮。组件挂在 <Layout /> 的兄弟位置，不在面板内部，
+ * 所以只能用 fixed 定位：展开时贴在面板的顶角，折叠后挪到正文外侧的留白里。
+ *
+ * 只在 ≥1280px 显示（与 styles/panel.css 的折叠断点一致）。更窄时 Rspress 自带
+ * 「菜单 / 目录」工具栏接管了这两个面板，固定在角落的按钮会和它以及正文边缘重叠；
+ * 两者用同一断点也避免窄屏没有按钮可恢复、卡在隐藏状态。
+ */
+.windwiki-panel-toggle {
+  position: fixed;
+  top: calc(var(--rp-nav-height, 64px) + 14px);
+  /* 侧边栏是 --rp-z-index-sidebar(50)，大纲是 40，按钮要压在它们上面 */
+  z-index: 51;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+
+  border: 1px solid var(--rp-c-divider-light);
+  border-radius: 8px;
+  background-color: var(--rp-c-bg);
+  color: var(--rp-c-text-2);
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+.windwiki-panel-toggle:hover {
+  color: var(--rp-c-text-1);
+  border-color: var(--rp-c-brand);
+}
+
+.windwiki-panel-toggle:focus-visible {
+  outline: 2px solid var(--rp-c-brand);
+  outline-offset: 2px;
+}
+
+.windwiki-panel-toggle__icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- 左侧知识树 ---- */
+.windwiki-panel-toggle--sidebar {
+  left: calc(
+    var(--rp-sidebar-margin-left, 0px) + var(--rp-sidebar-width, 320px) - 46px
+  );
+}
+
+html[data-windwiki-sidebar='hidden'] .windwiki-panel-toggle--sidebar {
+  /* 正文左内边距是 --rp-content-padding-x（此处 80px），按钮压不到文字 */
+  left: 16px;
+}
+
+/* ---- 右侧目录 ---- */
+.windwiki-panel-toggle--outline {
+  /* 大纲右边距通常为 0，这个位置正好落在它的右上角 */
+  right: calc(var(--rp-outline-margin-right, 0px) + 16px);
+}
+
+/* 图标按折叠状态切换，避免组件依赖 React state 造成 hydration 不匹配 */
+html[data-windwiki-sidebar='hidden']
+  .windwiki-panel-toggle--sidebar
+  .windwiki-panel-toggle__icon--collapse,
+html:not([data-windwiki-sidebar='hidden'])
+  .windwiki-panel-toggle--sidebar
+  .windwiki-panel-toggle__icon--expand,
+html[data-windwiki-outline='hidden']
+  .windwiki-panel-toggle--outline
+  .windwiki-panel-toggle__icon--collapse,
+html:not([data-windwiki-outline='hidden'])
+  .windwiki-panel-toggle--outline
+  .windwiki-panel-toggle__icon--expand {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  .windwiki-panel-toggle {
+    display: none;
+  }
+}
