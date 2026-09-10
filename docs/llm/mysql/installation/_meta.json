@@ -1,0 +1,22 @@
+[
+  {
+    "type": "file",
+    "name": "01-server-windows",
+    "label": "服务器端安装与使用（Windows）"
+  },
+  {
+    "type": "file",
+    "name": "02-server-linux",
+    "label": "服务器端安装与使用（Linux）"
+  },
+  {
+    "type": "file",
+    "name": "03-client-tools",
+    "label": "客户端工具"
+  },
+  {
+    "type": "file",
+    "name": "04-navicat",
+    "label": "可视化客户端（Navicat）"
+  }
+]

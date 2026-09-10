@@ -1,0 +1,67 @@
+[
+  {
+    "type": "file",
+    "name": "01-overview",
+    "label": "第1章 MySQL数据库概述"
+  },
+  {
+    "type": "file",
+    "name": "02-data-types",
+    "label": "第2章 MySQL支持的数据类型"
+  },
+  {
+    "type": "file",
+    "name": "03-operators",
+    "label": "第3章 运算符"
+  },
+  {
+    "type": "file",
+    "name": "04-builtin-functions",
+    "label": "第4章 系统预定义函数"
+  },
+  {
+    "type": "file",
+    "name": "05-dml",
+    "label": "第5章 DML"
+  },
+  {
+    "type": "file",
+    "name": "06-joins",
+    "label": "第6章 关联查询"
+  },
+  {
+    "type": "file",
+    "name": "07-select",
+    "label": "第7章 select子句"
+  },
+  {
+    "type": "file",
+    "name": "08-subqueries",
+    "label": "第8章 子查询"
+  },
+  {
+    "type": "file",
+    "name": "09-constraints",
+    "label": "第9章 约束"
+  },
+  {
+    "type": "file",
+    "name": "10-alter-table",
+    "label": "第10章 修改表结构和约束"
+  },
+  {
+    "type": "file",
+    "name": "11-transactions",
+    "label": "第11章 事务"
+  },
+  {
+    "type": "file",
+    "name": "12-user-management",
+    "label": "第12章 用户管理"
+  },
+  {
+    "type": "file",
+    "name": "13-mysql8-features",
+    "label": "第13章 MySQL8的新特性（可选拓展）"
+  }
+]

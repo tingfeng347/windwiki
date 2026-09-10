@@ -1,0 +1,17 @@
+[
+  {
+    "type": "dir",
+    "name": "sql-basics",
+    "label": "SQL 基础"
+  },
+  {
+    "type": "dir",
+    "name": "installation",
+    "label": "安装与客户端"
+  },
+  {
+    "type": "file",
+    "name": "appendix",
+    "label": "棘手问题附录"
+  }
+]
