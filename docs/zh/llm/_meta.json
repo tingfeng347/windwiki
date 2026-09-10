@@ -3,5 +3,10 @@
     "type": "file",
     "name": "index",
     "label": "概览"
+  },
+  {
+    "type": "dir",
+    "name": "python-basics",
+    "label": "Python 基础"
   }
 ]

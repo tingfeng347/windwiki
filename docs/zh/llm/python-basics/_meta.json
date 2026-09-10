@@ -1,0 +1,82 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "概览"
+  },
+  {
+    "type": "file",
+    "name": "01-basics",
+    "label": "第 1 章 必备基础知识"
+  },
+  {
+    "type": "file",
+    "name": "02-environment-setup",
+    "label": "第 2 章 搭建Python开发环境"
+  },
+  {
+    "type": "file",
+    "name": "03-syntax",
+    "label": "第 3 章 Python基础语法"
+  },
+  {
+    "type": "file",
+    "name": "04-control-flow",
+    "label": "第 4 章 流程控制语句结构"
+  },
+  {
+    "type": "file",
+    "name": "05-containers",
+    "label": "第 5 章 Python的容器类型"
+  },
+  {
+    "type": "file",
+    "name": "06-functions",
+    "label": "第 6 章 Python函数"
+  },
+  {
+    "type": "file",
+    "name": "07-file-io",
+    "label": "第 7 章 文件/目录操作"
+  },
+  {
+    "type": "file",
+    "name": "08-classes-and-objects",
+    "label": "第 8 章 面向对象之类和对象"
+  },
+  {
+    "type": "file",
+    "name": "09-oop-features",
+    "label": "第 9 章 面向对象三大基本特征"
+  },
+  {
+    "type": "file",
+    "name": "10-errors-and-exceptions",
+    "label": "第 10 章 错误和异常"
+  },
+  {
+    "type": "file",
+    "name": "11-modules-and-packages",
+    "label": "第 11 章 模块和包"
+  },
+  {
+    "type": "file",
+    "name": "11-1-regex",
+    "label": "拓展：正则表达式"
+  },
+  {
+    "type": "file",
+    "name": "12-advanced-syntax",
+    "label": "第 12 章 Python高级语法"
+  },
+  {
+    "type": "file",
+    "name": "13-processes-and-threads",
+    "label": "第 13 章 进程和线程"
+  },
+  {
+    "type": "file",
+    "name": "14-customer-management",
+    "label": "第 14 章 客户管理系统"
+  }
+]
