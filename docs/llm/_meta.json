@@ -33,5 +33,11 @@
     "name": "docker",
     "label": "Docker",
     "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "fastapi",
+    "label": "FastAPI",
+    "collapsed": true
   }
 ]
