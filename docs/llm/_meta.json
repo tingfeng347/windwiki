@@ -7,21 +7,25 @@
   {
     "type": "dir",
     "name": "python-basics",
-    "label": "Python 基础"
+    "label": "Python 基础",
+    "collapsed": true
   },
   {
     "type": "dir",
     "name": "data-structures-and-algorithms",
-    "label": "数据结构与算法"
+    "label": "数据结构与算法",
+    "collapsed": true
   },
   {
     "type": "dir",
     "name": "linux-shell-git",
-    "label": "Linux、Shell 与 Git"
+    "label": "Linux、Shell 与 Git",
+    "collapsed": true
   },
   {
     "type": "dir",
     "name": "mysql",
-    "label": "MySQL"
+    "label": "MySQL",
+    "collapsed": true
   }
 ]
