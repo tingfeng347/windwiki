@@ -27,5 +27,11 @@
     "name": "mysql",
     "label": "MySQL",
     "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "docker",
+    "label": "Docker",
+    "collapsed": true
   }
 ]
