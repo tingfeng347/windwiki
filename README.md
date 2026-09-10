@@ -144,9 +144,11 @@ styles/
 六处对默认主题的改动，都记在这里以免以后当成 bug：
 
 1. **`styles/index.css`（`rspress.config.ts` 的 `globalStyles`）**——首页 Hero 在视口内垂直居中；去掉知识树嵌套项的竖向引导线；两个面板折叠后的布局。`globalStyles` 注入在主题样式**之前**，同特异性会被主题覆盖，所以覆盖规则统一用重复类名提高一级特异性（例如 `.rp-home-hero.rp-home-hero`）。
-2. **`components/panel-toggle.tsx` 与 `nav-actions.tsx`（`globalUIComponents`）**——两个面板的折叠按钮。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。知识树按钮渲染在 `<Layout />` 的兄弟位置，用 `position: fixed` 贴在知识树右上角；目录按钮放进导航栏，和全屏按钮同属 `nav-actions` 的 portal 容器——**两个按钮必须在同一个容器里、顺序写死**，各自 portal 的话先后只能取决于 React 挂载顺序。
+2. **`components/nav-actions.tsx`（`globalUIComponents`）**——导航栏右侧按钮组：全屏、知识树折叠、目录折叠。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。
 
-   **按钮和折叠都只在一个断点生效：≥1280px。** 两者必须同进同退，否则窄屏下没有按钮可恢复、会卡在隐藏状态。选 1280px 是因为 `<1280px` 时 Rspress 在导航栏下方多一条「菜单 / 目录」工具栏，左上角已被它自己的控件占据（实测 1000px 下它占 20–70px），固定在角落的按钮会压住它和正文边缘。
+   三个按钮放在**同一个 portal 容器里、顺序写死**（全屏 → 知识树 → 目录，按面板的物理位置排）。各自 portal 的话先后只能取决于 React 挂载顺序，而且它们的间距要对齐 Rspress 自己的 `.rp-switch-appearance`（24×24），实测四个按钮的边缘间距与中心间距才都是均匀的。
+
+   **按钮和折叠都只在一个断点生效：≥1280px。** 两者必须同进同退，否则窄屏下没有按钮可恢复、会卡在隐藏状态；而 `<1280px` 时 Rspress 在导航栏下方自带「菜单 / 目录」工具栏接管了这两个面板，我们的按钮本来也是多余的。
 
    按钮的图标由 CSS 按 `<html>` 上的 `data-windwiki-sidebar` / `data-windwiki-outline` 切换、不经过 React（服务端读不到折叠状态，让图标依赖它会产生 hydration 不匹配）；`aria-pressed` 走 `useSyncExternalStore`，React 先用服务端快照渲染、hydration 后再用客户端快照校正，所以静态 HTML 和浏览器里都正确。
 

@@ -95,9 +95,13 @@ export default function NavActions() {
   return createPortal(
     <div className="windwiki-nav-actions">
       <FullscreenButton />
-      {/* 目录按钮只在文档页有意义；首页/404 上 Rspress 也没有右侧目录 */}
+      {/* 两个面板按钮只在文档页有意义：首页没有知识树也没有右侧目录 */}
       {usesDocLayout && frontmatter?.sidebar !== false ? (
-        <PanelButton panel="outline" />
+        <>
+          {/* 顺序按面板的物理位置：先左（知识树）后右（目录） */}
+          <PanelButton panel="sidebar" />
+          <PanelButton panel="outline" />
+        </>
       ) : null}
     </div>,
     container,

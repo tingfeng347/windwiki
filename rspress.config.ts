@@ -23,10 +23,9 @@ export default defineConfig({
   llms: true,
   // 以下三个路径都要求绝对路径。样式汇总在 styles/index.css。
   globalStyles: path.join(import.meta.dirname, 'styles/index.css'),
-  // 知识树折叠按钮与导航栏按钮组。globalUIComponents 会渲染在 <Layout /> 的兄弟位置，
-  // 不需要自定义主题；右侧目录的折叠按钮由 nav-actions 放进导航栏，顺序在那里写死。
+  // 导航栏按钮组（全屏 + 两个面板折叠）。globalUIComponents 会渲染在 <Layout /> 的
+  // 兄弟位置，不需要自定义主题；按钮顺序在 nav-actions.tsx 里写死。
   globalUIComponents: [
-    path.join(import.meta.dirname, 'components/panel-toggle.tsx'),
     path.join(import.meta.dirname, 'components/nav-actions.tsx'),
   ],
   builderConfig: {
