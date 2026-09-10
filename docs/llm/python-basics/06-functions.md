@@ -191,7 +191,7 @@ a = 1000
 print(id(a))
 ```
 
-![image-20251216232829266](/images/python-basics/image-20251216232829266.png)
+![image-20251216232829266](./images/image-20251216232829266.png)
 
 
 
@@ -212,7 +212,7 @@ print("s：",s, ",id(s)：", id(s))
 
 
 
-![image-20260203171849056](/images/python-basics/image-20260203171849056.png)
+![image-20260203171849056](./images/image-20260203171849056.png)
 
 （2）可变(mutable)类型：
 
@@ -232,7 +232,7 @@ list_demo = list_demo + [6,7]
 print("list_demo：",list_demo, ",id(list_demo)：", id(list_demo))
 ```
 
-![image-20260203173808080](/images/python-basics/image-20260203173808080.png)
+![image-20260203173808080](./images/image-20260203173808080.png)
 
 
 
@@ -267,7 +267,7 @@ change_str(x)
 print("x=",x, ",id(x)=", id(x))
 ```
 
-![image-20260203233028148](/images/python-basics/image-20260203233028148.png)
+![image-20260203233028148](./images/image-20260203233028148.png)
 
 ##### 可变类型示例
 
@@ -290,7 +290,7 @@ changeList(y)
 print("y：",y, ",id(y)：", id(y))
 ```
 
-![image-20260203233005087](/images/python-basics/image-20260203233005087.png)
+![image-20260203233005087](./images/image-20260203233005087.png)
 
 ##### 两种运算符区别
 
@@ -322,7 +322,7 @@ change_list(copy.deepcopy(listDemo))
 print(f"函数调用后：{listDemo}，listDemo.id = {id(listDemo)}")
 ```
 
-![image-20260225171250420](/images/python-basics/image-20260225171250420.png)
+![image-20260225171250420](./images/image-20260225171250420.png)
 
 ### 6.4.3 函数可使用的参数形式
 
@@ -557,7 +557,7 @@ print("factorial_recursion(5)=",factorial_recursion(5))
 
 ### 6.7.3 递归的执行过程
 
-![image-20251218162047813](/images/python-basics/image-20251218162047813.png)
+![image-20251218162047813](./images/image-20251218162047813.png)
 
 ## 6.7 函数是一种数据类型
 
@@ -790,7 +790,7 @@ help(is_prime)
 
 > PyCharm中将鼠标悬停在函数名上方也可以看到函数说明文档。
 
-![image-20251218105359231](/images/python-basics/image-20251218105359231.png)
+![image-20251218105359231](./images/image-20251218105359231.png)
 
 ## 6.10 函数注释（了解）
 

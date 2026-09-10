@@ -10,9 +10,9 @@ description: 尚硅谷大模型技术之 Python 基础 · 第2章 搭建Python�
 
 Python官网地址：https://www.python.org/
 
-![image-20251204172028247](/images/python-basics/image-20251204172028247.png)
+![image-20251204172028247](./images/image-20251204172028247.png)
 
-![image-20251204172452763](/images/python-basics/image-20251204172452763.png)
+![image-20251204172452763](./images/image-20251204172452763.png)
 
 1. **Installer（标准安装版）**
 
@@ -30,27 +30,27 @@ Python官网地址：https://www.python.org/
 
 - 双击下载好的⽂件，开始安装（强烈建议以管理员身份运⾏）
 
-![image-20251204173618969](/images/python-basics/image-20251204173618969.png)
+![image-20251204173618969](./images/image-20251204173618969.png)
 
 - 选择自定义安装并勾选添加环境变量
 
-![image-20251204173639126](/images/python-basics/image-20251204173639126.png)
+![image-20251204173639126](./images/image-20251204173639126.png)
 
 - 直接next，保持默认选择
 
-![image-20251204173717718](/images/python-basics/image-20251204173717718.png)
+![image-20251204173717718](./images/image-20251204173717718.png)
 
 - 修改安装路径，其他保持默认，点击Install开始安装。
 
-![image-20251204173757081](/images/python-basics/image-20251204173757081.png)
+![image-20251204173757081](./images/image-20251204173757081.png)
 
 - 点击Disable python length limit（禁用系统的路径长度自动限制，以避免因路径过长而导致的错误），点击close，完成安装。
 
-![image-20251204174050865](/images/python-basics/image-20251204174050865.png)
+![image-20251204174050865](./images/image-20251204174050865.png)
 
 - 安装完成后检测。同时按下 Win键 和 R ，输入 cmd ，点击确定，进入命令提示符。
 
-![image-20251204174130582](/images/python-basics/image-20251204174130582.png)
+![image-20251204174130582](./images/image-20251204174130582.png)
 
 - 输入以下命令
 
@@ -58,15 +58,15 @@ Python官网地址：https://www.python.org/
 python --version
 ```
 
-![image-20251204174209883](/images/python-basics/image-20251204174209883.png)
+![image-20251204174209883](./images/image-20251204174209883.png)
 
 ### 2.1.3 卸载Python
 
-![image-20260318140622275](/images/python-basics/image-20260318140622275.png)
+![image-20260318140622275](./images/image-20260318140622275.png)
 
-![image-20260318140717173](/images/python-basics/image-20260318140717173.png)
+![image-20260318140717173](./images/image-20260318140717173.png)
 
-![image-20260318141306634](/images/python-basics/image-20260318141306634.png)
+![image-20260318141306634](./images/image-20260318141306634.png)
 
 
 
@@ -80,7 +80,7 @@ python --version
 
 （3）输入print(“hello”)，按下回车，控制台会打印hello。
 
-![image-20251205192224208](/images/python-basics/image-20251205192224208.png)
+![image-20251205192224208](./images/image-20251205192224208.png)
 
 ### 2.2.2 脚本模式
 
@@ -92,7 +92,7 @@ python --version
 
 （4）在命令提示符中输入python Hello.py执行程序。
 
-![image-20251205192946132](/images/python-basics/image-20251205192946132.png)
+![image-20251205192946132](./images/image-20251205192946132.png)
 
 ## 2.3 安装Pycharm
 
@@ -110,11 +110,11 @@ PyCharm官方地址：https://www.jetbrains.com/pycharm/download
 
 专业版可试用30天，社区版完全免费。
 
-![image-20251204175330813](/images/python-basics/image-20251204175330813.png)
+![image-20251204175330813](./images/image-20251204175330813.png)
 
 > 新版本不叫专业版了，叫做统一版本（Unified Product）。适用30天之后，仍然可以打开，就是只能使用基础功能。之前专业版适用30天之后就打不开了，必须激活才能打开。
 
-![image-20251204175130145](/images/python-basics/image-20251204175130145.png)
+![image-20251204175130145](./images/image-20251204175130145.png)
 
 
 
@@ -124,23 +124,23 @@ PyCharm官方地址：https://www.jetbrains.com/pycharm/download
 
 （2）点击下一步。
 
-![image-20251204175601710](/images/python-basics/image-20251204175601710.png)
+![image-20251204175601710](./images/image-20251204175601710.png)
 
 （3）修改安装目录，点击下一步。
 
-![image-20251204175622400](/images/python-basics/image-20251204175622400.png)
+![image-20251204175622400](./images/image-20251204175622400.png)
 
 （4）酌情勾选安装选项，之后点击下一步。
 
-![image-20251204175904165](/images/python-basics/image-20251204175904165.png)
+![image-20251204175904165](./images/image-20251204175904165.png)
 
 （5）点击安装。
 
-![image-20251204180012611](/images/python-basics/image-20251204180012611.png)
+![image-20251204180012611](./images/image-20251204180012611.png)
 
 （6）完成安装 
 
-![image-20251204180028214](/images/python-basics/image-20251204180028214.png)
+![image-20251204180028214](./images/image-20251204180028214.png)
 
 ### 2.3.4 注册Pycharm
 
@@ -152,35 +152,35 @@ PyCharm官方地址：https://www.jetbrains.com/pycharm/download
 
 ### 2.3.5 卸载Pycharm
 
-![image-20260318142631609](/images/python-basics/image-20260318142631609.png)
+![image-20260318142631609](./images/image-20260318142631609.png)
 
-![image-20260318142646136](/images/python-basics/image-20260318142646136.png)
+![image-20260318142646136](./images/image-20260318142646136.png)
 
 ## 2.4 Pycharm基础设置
 
-![image-20251205193434878](/images/python-basics/image-20251205193434878.png)
+![image-20251205193434878](./images/image-20251205193434878.png)
 
 ### 2.4.1 语言和地区设置（可选）
 
-![image-20251205193714132](/images/python-basics/image-20251205193714132.png)
+![image-20251205193714132](./images/image-20251205193714132.png)
 
 ### 2.4.2 外观主题（可选）
 
-![image-20251205194446307](/images/python-basics/image-20251205194446307.png)
+![image-20251205194446307](./images/image-20251205194446307.png)
 
 ### 2.4.3 文件编码（统一UTF-8）
 
-![image-20251205194220811](/images/python-basics/image-20251205194220811.png)
+![image-20251205194220811](./images/image-20251205194220811.png)
 
 ### 2.4.4 字体设置（可选）
 
-![image-20260128171807876](/images/python-basics/image-20260128171807876.png)
+![image-20260128171807876](./images/image-20260128171807876.png)
 
 
 
 ### 2.4.5 代码自动补全（不区分大小写）
 
-![image-20251205195608912](/images/python-basics/image-20251205195608912.png)
+![image-20251205195608912](./images/image-20251205195608912.png)
 
 
 
@@ -188,11 +188,11 @@ PyCharm官方地址：https://www.jetbrains.com/pycharm/download
 
 - 新建项目
 
-![image-20251205195631935](/images/python-basics/image-20251205195631935.png)
+![image-20251205195631935](./images/image-20251205195631935.png)
 
 - 选择项目路径、填写项目名称、选择解释器类型、确认python版本
 
-![image-20251205200018965](/images/python-basics/image-20251205200018965.png)
+![image-20251205200018965](./images/image-20251205200018965.png)
 
 **解释器类型说明：**
 
@@ -212,21 +212,21 @@ PyCharm官方地址：https://www.jetbrains.com/pycharm/download
 
 - 创建目录（便于管理）
 
-![image-20251205202453043](/images/python-basics/image-20251205202453043.png)
+![image-20251205202453043](./images/image-20251205202453043.png)
 
-![image-20251205202530758](/images/python-basics/image-20251205202530758.png)
+![image-20251205202530758](./images/image-20251205202530758.png)
 
 - 创建Python文件
 
-![image-20251205202604710](/images/python-basics/image-20251205202604710.png)
+![image-20251205202604710](./images/image-20251205202604710.png)
 
 - 命名Python文件
 
-![image-20251205201931506](/images/python-basics/image-20251205201931506.png)
+![image-20251205201931506](./images/image-20251205201931506.png)
 
 - 编写代码并运行
 
-![image-20251205202708558](/images/python-basics/image-20251205202708558.png)
+![image-20251205202708558](./images/image-20251205202708558.png)
 
 
 

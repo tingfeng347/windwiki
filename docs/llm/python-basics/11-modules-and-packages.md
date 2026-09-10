@@ -439,9 +439,9 @@ my_project/  # 项目根目录（工作目录）
 
 #### 1、创建mygraphic包及其模块
 
-![image-20260206114032886](/images/python-basics/image-20260206114032886.png)
+![image-20260206114032886](./images/image-20260206114032886.png)
 
-![image-20260206165905331](/images/python-basics/image-20260206165905331.png)
+![image-20260206165905331](./images/image-20260206165905331.png)
 
 （1）创建模块circle.py
 
@@ -504,7 +504,7 @@ def my_sqrt(a):
 
 #### 3、创建主运行文件
 
-![image-20260206170457115](/images/python-basics/image-20260206170457115.png)
+![image-20260206170457115](./images/image-20260206170457115.png)
 
 
 
@@ -531,7 +531,7 @@ from . import basic_arithmetic # . 代表当前目录，即当前__init__.py文�
 import basic_arithmetic # 如果不加from . ，就相当于直接从sys.path中是找basic_arithmetic模块（会报错）
 ```
 
-![image-20260206171516140](/images/python-basics/image-20260206171516140.png)
+![image-20260206171516140](./images/image-20260206171516140.png)
 
 > 主运行文件p01_package_test.py的代码
 
@@ -599,7 +599,7 @@ from 包名 import *
 
 唯一的解决办法是提供包的显式索引。如果包的 `__init__.py `中定义了` __all__`，运行 from import * 时，它就是被导入的模块名列表。
 
-![image-20260206174020575](/images/python-basics/image-20260206174020575.png)
+![image-20260206174020575](./images/image-20260206174020575.png)
 
 > mygraphic包`__init__.py`中`__all__`定义如下：
 
@@ -1305,11 +1305,11 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ 包名
 pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 ```
 
-![image-20251227003129515](/images/python-basics/image-20251227003129515.png)
+![image-20251227003129515](./images/image-20251227003129515.png)
 
-![image-20251227003207380](/images/python-basics/image-20251227003207380.png)
+![image-20251227003207380](./images/image-20251227003207380.png)
 
-![image-20260303200717100](/images/python-basics/image-20260303200717100.png)
+![image-20260303200717100](./images/image-20260303200717100.png)
 
 ### 11.5.2 PyCharm
 
@@ -1319,25 +1319,25 @@ pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 
 1）点击右下角的解释器设置
 
-![image-20251227003343299](/images/python-basics/image-20251227003343299.png)
+![image-20251227003343299](./images/image-20251227003343299.png)
 
 2）点击+
 
-![image-20251227003433917](/images/python-basics/image-20251227003433917.png)
+![image-20251227003433917](./images/image-20251227003433917.png)
 
 3）搜索包并安装
 
-![image-20251227003730092](/images/python-basics/image-20251227003730092.png)
+![image-20251227003730092](./images/image-20251227003730092.png)
 
-![image-20251227004003669](/images/python-basics/image-20251227004003669.png)
+![image-20251227004003669](./images/image-20251227004003669.png)
 
-![image-20251227004027750](/images/python-basics/image-20251227004027750.png)
+![image-20251227004027750](./images/image-20251227004027750.png)
 
 #### 2、pycharm的终端
 
-![image-20260525195843558](/images/python-basics/image-20260525195843558.png)
+![image-20260525195843558](./images/image-20260525195843558.png)
 
-![image-20260525200000461](/images/python-basics/image-20260525200000461.png)
+![image-20260525200000461](./images/image-20260525200000461.png)
 
 ```python
 import numpy as np
@@ -1373,7 +1373,7 @@ print(f"矩阵m1*m3=\n{m1*m3}")
 pip install setuptools
 ```
 
-![image-20260525200249769](/images/python-basics/image-20260525200249769.png)
+![image-20260525200249769](./images/image-20260525200249769.png)
 
 ### 11.6.2 分别打包多个完全独立的包
 
@@ -1381,7 +1381,7 @@ pip install setuptools
 
 🔴在包外创建一个 setup.py 文件（注意setup.py文件的位置）
 
-![image-20260525200634028](/images/python-basics/image-20260525200634028.png)
+![image-20260525200634028](./images/image-20260525200634028.png)
 
 ```python
 from setuptools import setup
@@ -1416,19 +1416,19 @@ if __name__ == "__main__":
 python setup.py sdist    #sdist = source distribution（源码分发包）
 ```
 
-![image-20260525200806945](/images/python-basics/image-20260525200806945.png)
+![image-20260525200806945](./images/image-20260525200806945.png)
 
 
 
-![image-20260525201007987](/images/python-basics/image-20260525201007987.png)
+![image-20260525201007987](./images/image-20260525201007987.png)
 
-![image-20260525201139934](/images/python-basics/image-20260525201139934.png)
+![image-20260525201139934](./images/image-20260525201139934.png)
 
 ### 11.6.3 总包下含多个子包
 
 #### 1、编写setup.py文件
 
-![image-20260525201519750](/images/python-basics/image-20260525201519750.png)
+![image-20260525201519750](./images/image-20260525201519750.png)
 
 ```python
 from setuptools import setup, find_packages
@@ -1445,13 +1445,13 @@ setup(
 
 在 setup.py 同级目录下进行构建
 
-![image-20260206183558457](/images/python-basics/image-20260206183558457.png)
+![image-20260206183558457](./images/image-20260206183558457.png)
 
 ```python
 python setup.py sdist # sdist构建为压缩包
 ```
 
-![image-20260525201721797](/images/python-basics/image-20260525201721797.png)
+![image-20260525201721797](./images/image-20260525201721797.png)
 
 
 
@@ -1465,21 +1465,21 @@ python setup.py sdist # sdist构建为压缩包
 pip install 安装包存储的路径名以及安装包名称 #要是执行命令的路径就是安装包的存储路径，直接写安装包名称即可
 ```
 
-![image-20260206184549248](/images/python-basics/image-20260206184549248.png)
+![image-20260206184549248](./images/image-20260206184549248.png)
 
 
 
 #### 2、PyCharm图形化安装方式
 
-![image-20251227010549584](/images/python-basics/image-20251227010549584.png)
+![image-20251227010549584](./images/image-20251227010549584.png)
 
-![image-20251227010616451](/images/python-basics/image-20251227010616451.png)
+![image-20251227010616451](./images/image-20251227010616451.png)
 
-![image-20260206184816204](/images/python-basics/image-20260206184816204.png)
+![image-20260206184816204](./images/image-20260206184816204.png)
 
-![image-20260206184900031](/images/python-basics/image-20260206184900031.png)
+![image-20260206184900031](./images/image-20260206184900031.png)
 
-![image-20260206185242897](/images/python-basics/image-20260206185242897.png)
+![image-20260206185242897](./images/image-20260206185242897.png)
 
 #### 3、pycharm终端命令行方式
 
@@ -1489,8 +1489,8 @@ pip install 安装包路径以及安装包名称
 
 
 
-![image-20260525202256260](/images/python-basics/image-20260525202256260.png)
+![image-20260525202256260](./images/image-20260525202256260.png)
 
-![image-20260525202324226](/images/python-basics/image-20260525202324226.png)
+![image-20260525202324226](./images/image-20260525202324226.png)
 
-![image-20260525202357915](/images/python-basics/image-20260525202357915.png)
+![image-20260525202357915](./images/image-20260525202357915.png)

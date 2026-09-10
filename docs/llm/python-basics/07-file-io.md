@@ -131,7 +131,7 @@ def write_two():
 write_two()
 ```
 
-![image-20260204193845931](/images/python-basics/image-20260204193845931.png)
+![image-20260204193845931](./images/image-20260204193845931.png)
 
 #### 2、追加写
 

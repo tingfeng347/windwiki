@@ -52,7 +52,7 @@ print()
 
 
 
-![image-20251227225914956](/images/python-basics/image-20251227225914956.png)
+![image-20251227225914956](./images/image-20251227225914956.png)
 
 ### 12.1.2 浅拷贝
 
@@ -110,7 +110,7 @@ print()
 - 因为list1[0] 是不可变类型元素，所以修改list1[0]之后可以看到 list1[0] 指向了新的引用。
 - 因为list1[3]是可变类型的元素，所以修改不会产生新对象。
 
-![image-20251227231022228](/images/python-basics/image-20251227231022228.png)
+![image-20251227231022228](./images/image-20251227231022228.png)
 
 ### 12.1.3 深拷贝
 
@@ -161,7 +161,7 @@ print()
 - 因为list1[0] 是不可变类型元素，所以修改list1[0]之后可以看到 list1[0] 指向了新的引用。
 - 因为list1[3]和list2[3]是不同的地址，所以无论list1[3]怎么修改都与list2[3]无关。
 
-![image-20251227232047200](/images/python-basics/image-20251227232047200.png)
+![image-20251227232047200](./images/image-20251227232047200.png)
 
 ### 12.1.4 拷贝的特殊情况
 
@@ -374,7 +374,7 @@ nonlocal 语句表明特定变量在外层作用域中，并应在外层作用�
 
 在最内层作用域访问全局作用域或外层作用域的变量时，若不使用 global 或 nonlocal 语句，这些变量将为只读，尝试写入这样的变量将在最内层作用域中创建一个新的局部变量，而使得同名的外部变量保持不变。
 
-![image-20251228142257826](/images/python-basics/image-20251228142257826.png)
+![image-20251228142257826](./images/image-20251228142257826.png)
 
 #### 1、global关键字
 
@@ -400,7 +400,7 @@ change_list()
 print("调用change_list()函数之后，listDemo的值是：",listDemo)  # listDemo= [1,2,3,4]
 ```
 
-![image-20251218155328427](/images/python-basics/image-20251218155328427.png)
+![image-20251218155328427](./images/image-20251218155328427.png)
 
 > 非可变类型
 
@@ -420,7 +420,7 @@ print("调用change_x_one()函数之后，x的值是：",x) # x= global
 print()
 ```
 
-![image-20251218160158610](/images/python-basics/image-20251218160158610.png)
+![image-20251218160158610](./images/image-20251218160158610.png)
 
 ```python
 # ===============使用global关键字才可以修改不可变类型全局变量的值=================
@@ -439,7 +439,7 @@ print("调用change_x_two()函数之后，x的值是：",x) # x= local
 print()
 ```
 
-![image-20251218160049634](/images/python-basics/image-20251218160049634.png)
+![image-20251218160049634](./images/image-20251218160049634.png)
 
 #### 2、nonlocal
 
@@ -1145,7 +1145,7 @@ Python 3.5 + 引入`typing`模块（Python 3.9 + 可直接用内置类型），�
 
 #### 第一步：安装mypy包
 
-![image-20260207233213898](/images/python-basics/image-20260207233213898.png)
+![image-20260207233213898](./images/image-20260207233213898.png)
 
 #### 第二步：添加mypy工具
 
@@ -1156,13 +1156,13 @@ Python 3.5 + 引入`typing`模块（Python 3.9 + 可直接用内置类型），�
 | Arguments         | `-m mypy $FilePath$`或`-m mypy --show-error-codes --strict $FilePath$` |
 | Working directory | `$ProjectFileDir$`                                           |
 
-![image-20260207233320958](/images/python-basics/image-20260207233320958.png)
+![image-20260207233320958](./images/image-20260207233320958.png)
 
 #### 第三步：使用mypy工具
 
-![image-20260207233535561](/images/python-basics/image-20260207233535561.png)
+![image-20260207233535561](./images/image-20260207233535561.png)
 
-![image-20260207233638519](/images/python-basics/image-20260207233638519.png)
+![image-20260207233638519](./images/image-20260207233638519.png)
 
 ### 12.7.1 案例1：字面量类型
 

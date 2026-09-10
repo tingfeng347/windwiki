@@ -20,7 +20,7 @@ export default defineConfig({
   lang: 'zh',
   icon: '/favicon.svg',
   llms: true,
-  // 以下两个路径都要求绝对路径。样式汇总在 styles/index.css。
+  // 以下三个路径都要求绝对路径。样式汇总在 styles/index.css。
   globalStyles: path.join(import.meta.dirname, 'styles/index.css'),
   // 侧边栏折叠按钮。globalUIComponents 会渲染在 <Layout /> 的兄弟位置，不需要自定义主题。
   globalUIComponents: [
@@ -31,6 +31,12 @@ export default defineConfig({
       // 首次绘制前就恢复折叠状态，避免刷新时侧边栏先显示再收起。
       // Rspress 的 head 配置只支持 [tag, attrs]，带不了内联内容，所以走 Rsbuild 的 html.tags。
       tags: [{ tag: 'script', children: sidebarRestoreScript }],
+    },
+    output: {
+      // 默认 4096：小于该值的图片会被内联成 base64 data URI。正文图片走打包器，
+      // 于是几张几十 KB 的小图会变成一坨 base64 混进 llms-full.txt，对喂给模型没意义。
+      // 设为 0 让所有图片都保持可解析的 URL。
+      dataUriLimit: { image: 0 },
     },
   },
   // KaTeX handles math nodes after the built-in code highlighter.

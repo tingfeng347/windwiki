@@ -104,7 +104,7 @@ print()
 
 ## 8.2 类和对象
 
-![image-20251219205222688](/images/python-basics/image-20251219205222688.png)
+![image-20251219205222688](./images/image-20251219205222688.png)
 
 ### 8.2.1 类（Class）和对象（Object）
 
@@ -135,7 +135,7 @@ class 类名:
 
 > 示例：定义一个人的类，包含 `__init__() `方法、`eat() `方法和 `drink() `方法。
 
-![image-20251219205611529](/images/python-basics/image-20251219205611529.png)
+![image-20251219205611529](./images/image-20251219205611529.png)
 
 ```python
 class Person:

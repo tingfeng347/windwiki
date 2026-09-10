@@ -145,7 +145,7 @@ print("集合中的最小值是：", min(words))
 
 ### 5.2.1 序列类型通用的操作
 
-![image-20260302095742787](/images/python-basics/image-20260302095742787.png)
+![image-20260302095742787](./images/image-20260302095742787.png)
 
 - 根据索引方式访问序列的元素：例如sequence[0]
 - 通过切片方式访问序列的元素 [start : end : step] ，按照步长复制[start, end)范围的元素。以step为准。
@@ -232,7 +232,7 @@ for i,num in enumerate(nums):
 - 列表中每个元素都有对应的位置值，称为索引或下标，索引值：从左往右从0开始逐个向后递增，从右往左从-1开始逐个向前递减。
 - 列表中元素可以是不同的类型。
 
-![image-20251213200511927](/images/python-basics/image-20251213200511927.png)
+![image-20251213200511927](./images/image-20251213200511927.png)
 
 #### 1、创建列表
 
@@ -546,7 +546,7 @@ print(letters)  # ('a', 'b', 'c')
 - 字符串使用单引号、双引号或三重引号定义。
 - 字符串中每个元素都有对应的位置值，称为索引或下标，索引值：从左往右从0开始逐个向后递增，从右往左从-1开始逐个向前递减。
 
-![image-20251215221623746](/images/python-basics/image-20251215221623746.png)
+![image-20251215221623746](./images/image-20251215221623746.png)
 
 > 字符串对象不可变，字符串没有append，insert，remove，replace、sort、reverse等操作方法
 
@@ -1012,7 +1012,7 @@ print(f"翻译后: '{result_with_removal}'")
 - 元组中元素可以是不同的类型。
 - 元组的使用方式与列表类似。
 
-![image-20251216000148019](/images/python-basics/image-20251216000148019.png)
+![image-20251216000148019](./images/image-20251216000148019.png)
 
 #### 1、创建元组
 
