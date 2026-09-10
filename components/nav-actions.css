@@ -2,18 +2,23 @@
  * 导航栏右侧的一组按钮。portal 挂在 .rp-nav__right 末尾，跟随导航栏原有的布局，
  * 不需要自己算位置；观感对齐 .rp-nav__others 里的社交链接和主题切换。
  */
+/*
+ * gap 与 .rp-nav__right 的 gap 一致（24px），这样「外观切换 → 全屏 → 目录」三段间距相等。
+ * 按钮尺寸 24×24 对齐 Rspress 自己的 .rp-switch-appearance —— 三个按钮同尺寸、同间距，
+ * 边缘间距和图标中心间距两种口径下都是均匀的。
+ */
 .windwiki-nav-actions {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 24px;
 }
 
 .windwiki-nav-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   padding: 0;
 
   border: 0;

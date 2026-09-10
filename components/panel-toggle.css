@@ -61,10 +61,12 @@ html[data-windwiki-sidebar='hidden'] .windwiki-panel-toggle--sidebar {
 }
 
 /*
- * 目录按钮在导航栏里，去掉边框和背景，与旁边的全屏按钮、主题切换保持一致；
- * 位置由 nav-actions.css 的容器负责。
+ * 目录按钮在导航栏里，去掉边框和背景，尺寸对齐 Rspress 自己的 .rp-switch-appearance（24×24），
+ * 与旁边的主题切换、全屏按钮保持同尺寸；间距由 nav-actions.css 的容器负责。
  */
 .windwiki-panel-toggle--outline {
+  width: 24px;
+  height: 24px;
   border-color: transparent;
   background-color: transparent;
 }
