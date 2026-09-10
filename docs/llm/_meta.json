@@ -29,15 +29,13 @@
     "collapsed": true
   },
   {
-    "type": "dir",
-    "name": "docker",
-    "label": "Docker",
-    "collapsed": true
+    "type": "file",
+    "name": "docker/docker",
+    "label": "Docker"
   },
   {
-    "type": "dir",
-    "name": "fastapi",
-    "label": "FastAPI",
-    "collapsed": true
+    "type": "file",
+    "name": "fastapi/fastapi",
+    "label": "FastAPI"
   }
 ]
