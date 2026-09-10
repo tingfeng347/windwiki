@@ -76,7 +76,7 @@ description: 一句话说明这篇文章解决什么问题。
 
 - 使用中文；技术术语（Python、Transformer 等）可保留英文。
 - 架构图用 Mermaid 围栏代码块（```` ```mermaid ````）；公式用 KaTeX，行内 `$...$`、块级 `$$...$$`。
-- 图片放在 `docs/public/images/`，正文写 `/images/example.png`；**不要**在正文里重复写 `/windwiki/`，由 Rspress 自动补前缀。
+- 图片放在文章同级的 `images/` 下，正文写 `![](./images/example.png)`。相对路径在 VS Code、Typora 等本地预览和站点上都能解析；写成 `/images/example.png` 这类站根绝对路径则本地编辑器看不到（Rspress 会把相对路径打包成带 hash 的资源，并在 SSG-MD 产物里重写成带 `base` 的完整 URL）。同样**不要**在正文里重复写 `/windwiki/`。
 - 站内链接使用相对 `.md` 路径，例如 `[Python 基础](../python-basics/index.md)`。
 - 代码块语言必须用 Shiki 支持的名称（`python`、`bash`、`asm`、`text` 等），未知语言会导致构建失败。
 - 引用必须可追溯，区分事实、推断和实验结论；不写空洞章节或博客式日记。
@@ -116,12 +116,39 @@ docs/
 │   ├── index.md
 │   ├── _meta.json
 │   └── python-basics/ # Python 基础课程笔记
-└── public/images/     # 图片等静态资源
+│       ├── *.md
+│       └── images/    # 该课程的图片，正文用 ./images/xxx.png 引用
+└── public/            # 站点级静态资源（favicon.svg 等）
+
+components/
+├── sidebar-state.ts   # 折叠状态的常量与防闪烁脚本（无 DOM 依赖，config 也引它）
+├── sidebar-store.ts   # 折叠状态的客户端读写（useSyncExternalStore）
+├── sidebar-toggle.tsx # 侧边栏折叠按钮（globalUIComponents 挂载）
+└── sidebar-toggle.css
+
+styles/
+├── index.css          # globalStyles 入口，汇总下面两份
+├── home.css           # 首页 Hero 垂直居中
+└── sidebar.css        # 去掉知识树竖线、折叠后的布局
 ```
 
 导航由各级 `_nav.json`（顶部）与 `_meta.json`（知识树）生成，不要改 `rspress.config.ts` 维护大型导航数组。站点为纯中文（`rspress.config.ts` 的 `lang: 'zh'`），没有多语言与语言切换。
 
-使用 Rspress 默认主题，不做样式覆盖：没有自定义 CSS 或主题组件，首页使用默认的 `pageType: home` 布局，标题、简介、按钮和分类卡片都在 `docs/index.mdx` 的 frontmatter（`hero` / `features`）里配置。默认主题自带知识树、页面大纲、深浅色、代码复制与前后页导航。
+使用 Rspress 默认主题，**没有 `theme/` 目录、没有 fork 主题组件**：首页使用默认的 `pageType: home` 布局，只配置 `hero`（站点名、标语、按钮），不配置 `features` 卡片，内容都在 `docs/index.mdx` 的 frontmatter 里。默认主题自带知识树、页面大纲、深浅色、代码复制与前后页导航。
+
+三处对默认主题的改动，都记在这里以免以后当成 bug：
+
+1. **`styles/index.css`（`rspress.config.ts` 的 `globalStyles`）**——首页 Hero 在视口内垂直居中；去掉知识树嵌套项的竖向引导线；折叠侧边栏后的布局。`globalStyles` 注入在主题样式**之前**，同特异性会被主题覆盖，所以覆盖规则统一用重复类名提高一级特异性（例如 `.rp-home-hero.rp-home-hero`）。
+2. **`components/sidebar-toggle.tsx`（`globalUIComponents`）**——侧边栏折叠按钮。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点，组件渲染在 `<Layout />` 的兄弟位置，因此按钮用 `position: fixed` 定位。
+
+   **按钮和折叠都只在一个断点生效：≥1280px。** 两者必须同进同退，否则窄屏下没有按钮可恢复、会卡在隐藏状态。选 1280px 是因为 `<1280px` 时 Rspress 在导航栏下方多一条「菜单 / 目录」工具栏，左上角已被它自己的控件占据（实测 1000px 下它占 20–70px），固定在左侧的按钮会压住它和正文左边缘（36px）。
+
+   按钮的图标由 CSS 按 `<html>` 上的 `data-windwiki-sidebar` 切换、不经过 React（服务端读不到折叠状态，让图标依赖它会产生 hydration 不匹配）；`aria-pressed` 走 `useSyncExternalStore`，React 先用服务端快照渲染、hydration 后再用客户端快照校正，所以静态 HTML 和浏览器里都正确。
+3. **`builderConfig.html.tags`**——在 `<head>` 注入内联脚本，首次绘制前从 localStorage 恢复折叠状态。Rspress 的 `head` 配置类型是 `[string, Record<string, string>][]`，带不了内联内容，所以走 Rsbuild 的 `html.tags`。
+
+4. **`builderConfig.output.dataUriLimit`**——设为 `{ image: 0 }`，禁止把图片内联成 base64 data URI。默认阈值是 4096 字节，小于它的图片会被内联；正文图片走打包器，于是几张几十 KB 的小图会变成 base64 塞进 `llms-full.txt`，对喂给模型的 markdown 没有意义。设成 0 之后所有图片都是可解析的 URL。
+
+   > 该选项只覆盖 `image`；`svg` / `font` / `media` / `assets` 仍是默认的 4096。将来若在正文里引用小 SVG，需要把 `svg` 也设为 0，否则会出现同样的内联。
 
 Mermaid 使用 fenced `mermaid` 代码块，KaTeX 支持 `$...$`、`$$...$$` 与 fenced `math`。Rspress 的代码高亮先于 KaTeX 执行，因此配置仅跳过 `math` 的未知语言错误，让 KaTeX 处理原始公式节点。
 

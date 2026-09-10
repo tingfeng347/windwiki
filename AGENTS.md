@@ -19,7 +19,9 @@ pnpm preview
 
 # Content Location
 
-正文位于 `docs/`；图片等静态资源放在 `docs/public/images/`。
+正文位于 `docs/`；图片放在文章同级目录的 `images/` 下，用相对路径引用（例如 `docs/llm/python-basics/images/`，正文写 `![](./images/example.png)`）。这样 VS Code、Typora 等本地预览和站点都能显示；Rspress 会把它打包成带 hash 的资源，并在 SSG-MD 产物里重写成带 `base` 的完整 URL。
+
+只有与正文无关的站点级静态资源（`favicon.svg` 等）才放 `docs/public/`。
 
 分类：当前只有一个顶层分类 `llm/`（大模型），其下是 `python-basics/`（Python 基础）。
 
@@ -63,7 +65,7 @@ pnpm preview
 
 1. 修改前检查 Git 状态，阅读相关目录现有内容，保护用户已有文件。
 2. 判断所属分类，使用 kebab-case 文件名写 Markdown；仅在顺序需要调整时修改对应目录的 `_meta.json`。
-3. 文档链接优先引用相对的 `.md` 文件。图片使用 `/images/example.svg`，交给 Rspress 添加 `base`；不要把 `/windwiki/` 重复写入正文链接。
+3. 文档链接优先引用相对的 `.md` 文件。图片用相对当前文章的路径（`![](./images/example.png)`），不要写 `/images/...` 这类站根绝对路径——它在本地编辑器和 Typora 里解析不到。也不要在正文里重复写 `/windwiki/`，由 Rspress 自动补前缀。
 4. 执行 `pnpm build`，修复构建错误、断链与明显 warning。
 5. 修改主题或插件后，检查桌面/移动端、深浅色、搜索、Mermaid 和 KaTeX。保留代码复制、页面大纲和上一页/下一页。
 6. 检查 `doc_build/llms.txt`、`llms-full.txt`、各页 `.md` 与 `sitemap.xml`；URL 必须适配 `/windwiki/`，Markdown 应保留图表源码和公式。
