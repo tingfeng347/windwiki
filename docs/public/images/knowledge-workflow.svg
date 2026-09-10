@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 120" role="img" aria-labelledby="title desc">
+  <title id="title">知识维护流程</title>
+  <desc id="desc">Markdown 经 Git 版本管理，构建为 Wiki。</desc>
+  <rect width="720" height="120" rx="8" fill="#eff6ff"/>
+  <g fill="#fff" stroke="#93c5fd" stroke-width="2">
+    <rect x="24" y="28" width="176" height="64" rx="6"/>
+    <rect x="272" y="28" width="176" height="64" rx="6"/>
+    <rect x="520" y="28" width="176" height="64" rx="6"/>
+  </g>
+  <g fill="#1e3a8a" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">
+    <text x="112" y="68">Markdown</text><text x="360" y="68">Git</text><text x="608" y="68">Wiki</text>
+  </g>
+  <g stroke="#2563eb" stroke-width="3" fill="none">
+    <path d="M214 60h44m-10-8 10 8-10 8M462 60h44m-10-8 10 8-10 8"/>
+  </g>
+</svg>

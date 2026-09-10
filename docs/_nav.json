@@ -1,0 +1,15 @@
+[
+  {
+    "text": "Docs",
+    "link": "/agent/",
+    "activeMatch": "^/(agent|llm|computer-vision|slam|point-cloud|research|engineering|tools)/"
+  },
+  {
+    "text": "Blog",
+    "link": "https://tingfeng347.github.io/"
+  },
+  {
+    "text": "GitHub",
+    "link": "https://github.com/tingfeng347/windwiki"
+  }
+]
