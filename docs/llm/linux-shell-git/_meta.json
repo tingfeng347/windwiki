@@ -8,5 +8,10 @@
     "type": "file",
     "name": "02-git",
     "label": "Git"
+  },
+  {
+    "type": "file",
+    "name": "03-shell",
+    "label": "Shell"
   }
 ]
