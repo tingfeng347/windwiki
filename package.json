@@ -10,16 +10,17 @@
     "check": "rspress build"
   },
   "devDependencies": {
+    "@rspress/core": "^2.0.21",
+    "@rspress/plugin-sitemap": "^2.0.21",
     "@types/node": "^22.8.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
+    "pdfjs-dist": "^6.3.289",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "typescript": "^6.0.3",
-    "@rspress/core": "^2.0.21",
-    "@rspress/plugin-sitemap": "^2.0.21",
+    "rspress-plugin-katex": "^1.0.1",
     "rspress-plugin-mermaid": "^1.0.1",
-    "rspress-plugin-katex": "^1.0.1"
+    "typescript": "^6.0.3"
   },
   "license": "UNLICENSED",
   "packageManager": "pnpm@10.34.5",
