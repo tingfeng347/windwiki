@@ -1,0 +1,328 @@
+/*
+ * PDF 阅读器。正文部分（toolbar / stage）走站点自己的风格变量，右侧目录直接复用
+ * 默认主题的 .rp-toc-item，观感和「页面大纲」完全一致。
+ */
+
+/*
+ * 让工具栏能吸顶。默认主题的 .rp-doc-layout__doc 带 overflow-x: auto（另一轴随之
+ * 变成 auto），于是它成了滚动盒子，里面的 sticky 只会相对它粘住、而实际滚动的是窗口。
+ * 只在有阅读器的页面上把它还原成普通盒子，页面很长的 PDF 才需要一直能看到工具栏。
+ */
+html:has(.windwiki-pdf-viewer) .rp-doc-layout__doc {
+  overflow: visible;
+  /* 顺带让 PDF 用满知识树与目录之间的全部宽度 */
+  max-width: 100%;
+}
+
+/* 这一页只有 PDF，不需要正文那种 80px 的左右留白 */
+html:has(.windwiki-pdf-viewer) .rp-doc-layout__doc-container {
+  padding-inline: 24px;
+}
+
+/*
+ * PDF 的书签标题普遍偏长（「3.2.1 常用大模型服务平台介绍」这种），默认大纲栏
+ * 268px、左右各 20px 留白、每级再缩进 12px，二级标题只剩 178px 文字宽度，几乎必换行。
+ * 只对带阅读器的页面把面板放宽、留白收窄 —— 少掉的一点正文宽度，doc-wide 已经让出来了。
+ * --rp-outline-padding-x 是主题自己也在用的变量（标题内边距、分隔线、选中态左侧竖条），
+ * 改它三处会一起跟着走，不能只改 .rp-outline__toc 的 padding。
+ */
+html:has(.windwiki-pdf-viewer) {
+  --rp-outline-width: 296px;
+  --rp-outline-padding-x: 12px;
+}
+
+.windwiki-pdf-viewer {
+  margin: 24px 0;
+}
+
+.windwiki-pdf-viewer__toolbar {
+  position: sticky;
+  /* 导航栏自动隐藏时 --rp-nav-height 会被置 0，工具栏跟着贴到视口顶部 */
+  top: var(--rp-nav-height, 64px);
+  z-index: 3;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  padding: 6px 10px;
+  margin-bottom: 16px;
+
+  border: 1px solid var(--rp-c-divider-light);
+  border-radius: 8px;
+  background-color: var(--rp-c-bg);
+}
+
+.windwiki-pdf-viewer__group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.windwiki-pdf-viewer__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 4px;
+
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--rp-c-text-2);
+  font-size: 14px;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+
+.windwiki-pdf-viewer__button:hover:not(:disabled) {
+  color: var(--rp-c-text-1);
+  background-color: var(--rp-c-bg-mute);
+}
+
+.windwiki-pdf-viewer__button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.windwiki-pdf-viewer__button--text {
+  padding: 0 8px;
+}
+
+/* 适宽是开关，按下时高亮 */
+.windwiki-pdf-viewer__button[aria-pressed='true'] {
+  color: var(--rp-c-brand);
+  background-color: var(--rp-c-bg-mute);
+}
+
+.windwiki-pdf-viewer__page-input {
+  width: 44px;
+  height: 28px;
+  padding: 0 4px;
+
+  border: 1px solid var(--rp-c-divider-light);
+  border-radius: 6px;
+  background-color: var(--rp-c-bg);
+  color: var(--rp-c-text-1);
+  font-size: 13px;
+  text-align: center;
+}
+
+.windwiki-pdf-viewer__total,
+.windwiki-pdf-viewer__zoom,
+.windwiki-pdf-viewer__search-count {
+  color: var(--rp-c-text-2);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.windwiki-pdf-viewer__zoom {
+  min-width: 40px;
+  text-align: center;
+}
+
+.windwiki-pdf-viewer__search {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.windwiki-pdf-viewer__search-input {
+  width: 150px;
+  height: 28px;
+  padding: 0 8px;
+
+  border: 1px solid var(--rp-c-divider-light);
+  border-radius: 6px;
+  background-color: var(--rp-c-bg);
+  color: var(--rp-c-text-1);
+  font-size: 13px;
+}
+
+.windwiki-pdf-viewer__search-input:focus-visible,
+.windwiki-pdf-viewer__page-input:focus-visible {
+  outline: 2px solid var(--rp-c-brand);
+  outline-offset: 1px;
+}
+
+/* 页面竖向排开，像浏览网页一样一路往下滚 */
+.windwiki-pdf-viewer__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.windwiki-pdf-viewer__message {
+  margin: 24px 0;
+  color: var(--rp-c-text-2);
+  font-size: 14px;
+}
+
+/*
+ * 单页。宽高在渲染前就按首页尺寸算好了，所以滚动条长度一开始就是对的。
+ * scroll-margin-top 让跳页时页面顶端不被吸顶的导航栏和工具栏挡住。
+ */
+.windwiki-pdf-viewer__page {
+  position: relative;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px var(--rp-c-divider-light);
+  scroll-margin-top: calc(var(--rp-nav-height, 64px) + 60px);
+}
+
+.windwiki-pdf-viewer__canvas {
+  display: block;
+  max-width: none;
+}
+
+/*
+ * 暗色模式：画布整体反色、再把色相转 180°，白纸变黑纸、黑字变白字，
+ * 而彩色内容（截图、图表、红色标注）大体还原成原来的颜色 —— 各家阅读器的夜间模式都是这么做的。
+ * 只作用在 canvas 上：文字层、搜索高亮和选中都不受影响，切换主题也不用重新渲染。
+ */
+html.rp-dark .windwiki-pdf-viewer__canvas {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* 页面还没渲染出来时，别在暗色模式下留一块白 */
+html.rp-dark .windwiki-pdf-viewer__page {
+  background-color: var(--rp-c-bg-soft);
+}
+
+/* 搜索命中的词。文字层的字是透明的，半透明底色能同时看到高亮和原文。 */
+.windwiki-pdf-viewer__hit {
+  background-color: rgb(255 200 0 / 0.4);
+  border-radius: 2px;
+}
+
+.windwiki-pdf-viewer__hit--active {
+  background-color: rgb(255 130 0 / 0.55);
+}
+
+/*
+ * 右侧目录。结构复用默认主题的 .rp-toc-item，这里只把 <button> 的默认样式清掉 ——
+ * 用 button 而不是 <a> 是因为点击只切页、不改 URL，站点路由不需要知道这件事。
+ */
+.windwiki-pdf-outline {
+  display: flex;
+  flex-direction: column;
+}
+
+.windwiki-pdf-outline__item {
+  width: 100%;
+  /* 缩进由内联的 padding-left 按层级给 */
+  padding: 0;
+
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.windwiki-pdf-outline__item:hover .rp-toc-item__text {
+  color: var(--rp-c-text-1);
+}
+
+/*
+ * 文字层：从 pdfjs-dist 的 web/pdf_viewer.css 里摘出来的 .textLayer 规则，
+ * 只改了类名。样式必须和渲染它的 pdf.js 版本匹配（span 的定位依赖
+ * --total-scale-factor / --font-height / --scale-x 这些由 js 写入的变量），
+ * 所以升级 pdfjs-dist 时要连同这一段一起更新。
+ */
+.windwiki-pdf-viewer__text {
+  color-scheme: only light;
+
+  position: absolute;
+  text-align: initial;
+  inset: 0;
+  overflow: clip;
+  opacity: 1;
+  line-height: 1;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  z-index: 1;
+
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+
+.windwiki-pdf-viewer__text :is(span, br) {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  user-select: text;
+}
+
+.windwiki-pdf-viewer__text > :not(.markedContent),
+.windwiki-pdf-viewer__text .markedContent span:not(.markedContent) {
+  z-index: 1;
+
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x))
+    scale(var(--min-font-size-inv));
+}
+
+.windwiki-pdf-viewer__text .markedContent {
+  display: contents;
+}
+
+.windwiki-pdf-viewer__text span[role='img'] {
+  user-select: none;
+  cursor: default;
+}
+
+.windwiki-pdf-viewer__text ::selection {
+  background: rgb(0 0 255 / 0.25);
+  background: color-mix(in srgb, AccentColor, transparent 50%);
+  color: transparent;
+}
+
+.windwiki-pdf-viewer__text .endOfContent {
+  display: block;
+  position: absolute;
+  inset: 100% 0 0;
+  z-index: 0;
+  cursor: default;
+  user-select: none;
+}
+
+.windwiki-pdf-viewer__text.selecting .endOfContent {
+  top: 0;
+}
+
+/*
+ * 窄屏：工具栏换行，搜索框吃掉整行；目录面板在 <1280px 是浮层，由 Rspress
+ * 自己的「目录」按钮打开，右侧的大纲里同样会显示这份 PDF 目录。
+ */
+@media (max-width: 768px) {
+  .windwiki-pdf-viewer__search {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .windwiki-pdf-viewer__search-input {
+    flex: 1;
+    width: auto;
+  }
+}

@@ -43,6 +43,20 @@ export default defineConfig({
       // 于是几张几十 KB 的小图会变成一坨 base64 混进 llms-full.txt，对喂给模型没意义。
       // 设为 0 让所有图片都保持可解析的 URL。
       dataUriLimit: { image: 0 },
+      // pdf.js 的 worker（PDF 阅读器用）不走打包：Rsbuild 的 ?url 只挂在 image / media /
+      // font 那几条资源规则上，.mjs 会落进 JS 规则被当模块解析；?worker 又只在浏览器
+      // 环境注册，SSR 那趟构建解析不了。改成原样拷进产物，运行时把 URL 交给 pdf.js
+      // （components/pdf-viewer.tsx 的 PDF_WORKER_PATH）自己起 module worker。
+      // from 用绝对路径，免得受 Rsbuild root（root: 'docs'）影响。
+      copy: [
+        {
+          from: path.join(
+            import.meta.dirname,
+            'node_modules/pdfjs-dist/build/pdf.worker.min.mjs',
+          ),
+          to: 'files/pdf.worker.min.mjs',
+        },
+      ],
     },
   },
   // KaTeX handles math nodes after the built-in code highlighter.
