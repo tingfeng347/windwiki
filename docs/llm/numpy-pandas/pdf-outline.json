@@ -1,0 +1,522 @@
+[
+  {
+    "title": "第 1 章 环境搭建",
+    "page": 1,
+    "children": [
+      {
+        "title": "1.1 Anaconda",
+        "page": 1,
+        "children": [
+          {
+            "title": "1.1.1 什么是Anaconda",
+            "page": 1
+          },
+          {
+            "title": "1.1.2 Anaconda下载",
+            "page": 2
+          },
+          {
+            "title": "1.1.3 Anaconda安装",
+            "page": 3
+          },
+          {
+            "title": "1.1.4 conda常用命令",
+            "page": 10
+          }
+        ]
+      },
+      {
+        "title": "1.2 Jupyter",
+        "page": 11,
+        "children": [
+          {
+            "title": "1.2.1 使用本地Jupyter",
+            "page": 11
+          },
+          {
+            "title": "1.2.2 PyCharm中集成Jupyter",
+            "page": 11
+          },
+          {
+            "title": "1.2.3 Jupyter快捷键",
+            "page": 15
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 2 章 Numpy",
+    "page": 16,
+    "children": [
+      {
+        "title": "2.1 什么是numpy",
+        "page": 16
+      },
+      {
+        "title": "2.2 ndarray的限制",
+        "page": 16
+      },
+      {
+        "title": "2.3 ndarray的属性",
+        "page": 16
+      },
+      {
+        "title": "2.4 ndarray的创建方式",
+        "page": 17,
+        "children": [
+          {
+            "title": "2.4.1 array()与asarray()",
+            "page": 17
+          },
+          {
+            "title": "2.4.2 zeros()、ones()、empty()与zeros_like()、ones_like()、empty_like()",
+            "page": 18
+          },
+          {
+            "title": "2.4.3 full()与full_like()",
+            "page": 19
+          },
+          {
+            "title": "2.4.4 arange()",
+            "page": 19
+          },
+          {
+            "title": "2.4.5 linspace()与logspace()",
+            "page": 19
+          },
+          {
+            "title": "2.4.6 创建随机数数组",
+            "page": 20
+          },
+          {
+            "title": "2.4.7 matrix()",
+            "page": 21
+          }
+        ]
+      },
+      {
+        "title": "2.5 ndarray的数据类型",
+        "page": 21
+      },
+      {
+        "title": "2.6 ndarray切片和索引",
+        "page": 21
+      },
+      {
+        "title": "2.7 numpy常用函数",
+        "page": 22,
+        "children": [
+          {
+            "title": "2.7.1 基本函数",
+            "page": 22
+          },
+          {
+            "title": "2.7.2 统计函数",
+            "page": 23
+          },
+          {
+            "title": "2.7.3 比较函数",
+            "page": 24
+          },
+          {
+            "title": "2.7.4 排序函数",
+            "page": 24
+          },
+          {
+            "title": "2.7.5 去重函数",
+            "page": 25
+          }
+        ]
+      },
+      {
+        "title": "2.8 基本运算",
+        "page": 25
+      },
+      {
+        "title": "2.9 矩阵乘法",
+        "page": 26
+      }
+    ]
+  },
+  {
+    "title": "第 3 章 Pandas",
+    "page": 27,
+    "children": [
+      {
+        "title": "3.1 什么是Pandas",
+        "page": 28
+      },
+      {
+        "title": "3.2 Pandas数据结构-Series",
+        "page": 29,
+        "children": [
+          {
+            "title": "3.2.1 Series 特点：",
+            "page": 29
+          },
+          {
+            "title": "3.2.2 Series的创建",
+            "page": 30
+          },
+          {
+            "title": "3.2.3 Series的常用属性",
+            "page": 31
+          },
+          {
+            "title": "3.2.4 Series的常用方法",
+            "page": 32
+          },
+          {
+            "title": "3.2.5 Series的布尔索引",
+            "page": 37
+          },
+          {
+            "title": "3.2.6 Series的运算",
+            "page": 37
+          }
+        ]
+      },
+      {
+        "title": "3.3 Pandas数据结构-DataFrame",
+        "page": 38,
+        "children": [
+          {
+            "title": "3.3.1 DataFrame的创建",
+            "page": 39
+          },
+          {
+            "title": "3.3.2 DataFrame的常用属性",
+            "page": 39
+          },
+          {
+            "title": "3.3.3 DataFrame的常用方法",
+            "page": 41
+          },
+          {
+            "title": "3.3.4 DataFrame的布尔索引",
+            "page": 44
+          },
+          {
+            "title": "3.3.5 DataFrame的运算",
+            "page": 44
+          },
+          {
+            "title": "3.3.6 DataFrame的更改操作",
+            "page": 45
+          },
+          {
+            "title": "3.3.7 DataFrame数据的导入与导出",
+            "page": 48
+          }
+        ]
+      },
+      {
+        "title": "3.4 Pandas日期数据处理初识",
+        "page": 50,
+        "children": [
+          {
+            "title": "3.4.1 to_datetime()进行日期格式转换",
+            "page": 50
+          },
+          {
+            "title": "3.4.2 时间属性访问器对象Series.dt,获取日期数据的年月日星期",
+            "page": 51
+          },
+          {
+            "title": "3.4.3 to_period()获取统计周期",
+            "page": 51
+          }
+        ]
+      },
+      {
+        "title": "3.5 DataFrame数据分析入门",
+        "page": 52,
+        "children": [
+          {
+            "title": "3.5.1 加载数据集",
+            "page": 52
+          },
+          {
+            "title": "3.5.2 查看部分数据",
+            "page": 53
+          },
+          {
+            "title": "3.5.3 分组聚合计算",
+            "page": 53
+          },
+          {
+            "title": "3.5.4 基本绘图",
+            "page": 54
+          },
+          {
+            "title": "3.5.5 常用统计值",
+            "page": 55
+          },
+          {
+            "title": "3.5.6 常用排序方法",
+            "page": 55
+          },
+          {
+            "title": "3.5.7 案例：简单数据分析练习",
+            "page": 56
+          }
+        ]
+      },
+      {
+        "title": "3.6 Padas的数据组合函数",
+        "page": 58,
+        "children": [
+          {
+            "title": "3.6.1 concat连接",
+            "page": 58
+          },
+          {
+            "title": "3.6.2 merge合并",
+            "page": 60
+          }
+        ]
+      },
+      {
+        "title": "3.7 Padas的缺失值处理函数",
+        "page": 66,
+        "children": [
+          {
+            "title": "3.7.1 pandas中的缺失值",
+            "page": 66
+          },
+          {
+            "title": "3.7.2 加载数据中包含缺失值",
+            "page": 67
+          },
+          {
+            "title": "3.7.3 查看缺失值",
+            "page": 68
+          },
+          {
+            "title": "3.7.4 剔除缺失值",
+            "page": 69
+          },
+          {
+            "title": "3.7.5 填充缺失值",
+            "page": 71
+          }
+        ]
+      },
+      {
+        "title": "3.8 Pandas的apply函数",
+        "page": 73,
+        "children": [
+          {
+            "title": "3.8.1 Series使用apply()",
+            "page": 73
+          },
+          {
+            "title": "3.8.2 DataFrame使用apply()",
+            "page": 73
+          },
+          {
+            "title": "3.8.3 向量化函数",
+            "page": 74
+          }
+        ]
+      },
+      {
+        "title": "3.9 Padas的数据聚合、转换、过滤函数",
+        "page": 74,
+        "children": [
+          {
+            "title": "3.9.1 DataFrameGroupBy对象",
+            "page": 74
+          },
+          {
+            "title": "3.9.2 分组聚合",
+            "page": 78
+          },
+          {
+            "title": "3.9.3 分组转换",
+            "page": 80
+          },
+          {
+            "title": "3.9.4 分组过滤",
+            "page": 81
+          }
+        ]
+      },
+      {
+        "title": "3.10 Pandas透视表",
+        "page": 81,
+        "children": [
+          {
+            "title": "3.10.1 什么是透视表",
+            "page": 81
+          },
+          {
+            "title": "3.10.2 pivot_table()",
+            "page": 81
+          },
+          {
+            "title": "3.10.3 案例：睡眠质量分析透视表",
+            "page": 82
+          }
+        ]
+      },
+      {
+        "title": "3.11 Pandas时间序列",
+        "page": 84,
+        "children": [
+          {
+            "title": "3.11.1 Python中的日期与时间工具",
+            "page": 85
+          },
+          {
+            "title": "3.11.2 pandas中的日期与时间",
+            "page": 85
+          },
+          {
+            "title": "3.11.3 使用时间作为索引",
+            "page": 87
+          },
+          {
+            "title": "3.11.4 生成时间序列",
+            "page": 89
+          },
+          {
+            "title": "3.11.5 重新采样",
+            "page": 91
+          }
+        ]
+      },
+      {
+        "title": "3.12 Matplotlib可视化",
+        "page": 91,
+        "children": [
+          {
+            "title": "3.12.1 Matplotlib简介",
+            "page": 91
+          },
+          {
+            "title": "3.12.2 两种画图接口",
+            "page": 92
+          },
+          {
+            "title": "3.12.3 单变量可视化",
+            "page": 94
+          },
+          {
+            "title": "3.12.4 多变量可视化",
+            "page": 95
+          }
+        ]
+      },
+      {
+        "title": "3.13 Pandas可视化",
+        "page": 98,
+        "children": [
+          {
+            "title": "3.13.1 单变量可视化",
+            "page": 98
+          },
+          {
+            "title": "3.13.2 双变量可视化",
+            "page": 104
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 4 章 综合案例：房地产市场洞察与价值评估",
+    "page": 109,
+    "children": [
+      {
+        "title": "4.1 业务背景",
+        "page": 109
+      },
+      {
+        "title": "4.2 数据源介绍",
+        "page": 110
+      },
+      {
+        "title": "4.3 待统计指标及说明",
+        "page": 112,
+        "children": [
+          {
+            "title": "4.3.1 数值型列的描述性统计指标",
+            "page": 112
+          },
+          {
+            "title": "4.3.2 不同特征与房价的相关性",
+            "page": 112
+          },
+          {
+            "title": "4.3.3 按邮政编码、是否翻新、房龄分组的统计指标",
+            "page": 112
+          },
+          {
+            "title": "4.3.4 时间序列分析指标",
+            "page": 112
+          }
+        ]
+      },
+      {
+        "title": "4.4 代码实现步骤",
+        "page": 113,
+        "children": [
+          {
+            "title": "4.4.1 数据读取",
+            "page": 113
+          },
+          {
+            "title": "4.4.2 数据清洗",
+            "page": 113
+          },
+          {
+            "title": "4.4.3 数据类型转换",
+            "page": 114
+          },
+          {
+            "title": "4.4.4 创建新的特征",
+            "page": 115
+          },
+          {
+            "title": "4.4.5 数据探索性分析-描述性统计",
+            "page": 115
+          },
+          {
+            "title": "4.4.6 数据探索性分析-相关性统计",
+            "page": 115
+          },
+          {
+            "title": "4.4.7 按照邮政编码分组分析",
+            "page": 116
+          },
+          {
+            "title": "4.4.8 按照是否翻新分组分析",
+            "page": 116
+          },
+          {
+            "title": "4.4.9 按照房龄分组分析",
+            "page": 117
+          },
+          {
+            "title": "4.4.10 时间序列分析-每年平均房价",
+            "page": 117
+          },
+          {
+            "title": "4.4.11 时间序列分析-不同翻新情况平均房价",
+            "page": 117
+          },
+          {
+            "title": "4.4.12 可视化",
+            "page": 118
+          },
+          {
+            "title": "4.4.13 完整代码",
+            "page": 120
+          }
+        ]
+      }
+    ]
+  }
+]

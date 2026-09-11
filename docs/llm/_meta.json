@@ -35,6 +35,11 @@
   },
   {
     "type": "file",
+    "name": "numpy-pandas/index",
+    "label": "NumPy 与 Pandas"
+  },
+  {
+    "type": "file",
     "name": "fastapi/fastapi",
     "label": "FastAPI"
   }
