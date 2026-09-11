@@ -1,0 +1,374 @@
+[
+  {
+    "title": "第 1 章 LangChain概述",
+    "page": 1,
+    "children": [
+      {
+        "title": "1.1 什么是 LangChain",
+        "page": 1
+      },
+      {
+        "title": "1.2 LangChain包及核心模块划分",
+        "page": 2,
+        "children": [
+          {
+            "title": "1.2.1 LangChain所包含的包",
+            "page": 3
+          },
+          {
+            "title": "1.2.2 LangChain核心模块划分",
+            "page": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 2 章 环境准备",
+    "page": 4
+  },
+  {
+    "title": "第 3 章 Model I/O与Chains",
+    "page": 4,
+    "children": [
+      {
+        "title": "3.1 Model I/O 介绍",
+        "page": 5
+      },
+      {
+        "title": "3.2 调用在线模型",
+        "page": 5,
+        "children": [
+          {
+            "title": "3.2.1 常用大模型服务平台介绍",
+            "page": 5
+          },
+          {
+            "title": "3.2.2 OpenAI SDK 调用模型",
+            "page": 6
+          },
+          {
+            "title": "3.2.3 Google SDK 调用模型（了解）",
+            "page": 7
+          },
+          {
+            "title": "3.2.4 LangChain API 调用模型",
+            "page": 8,
+            "children": [
+              {
+                "title": "3.2.4.1 构造LLM ChatModel实例",
+                "page": 9
+              },
+              {
+                "title": "3.2.4.2 调用LLM实例",
+                "page": 11
+              },
+              {
+                "title": "3.2.4.3 解析调用结果",
+                "page": 14
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3.3 调用本地模型",
+        "page": 14,
+        "children": [
+          {
+            "title": "3.3.1 Ollama介绍",
+            "page": 14
+          },
+          {
+            "title": "3.3.2 Ollama安装",
+            "page": 14
+          },
+          {
+            "title": "3.3.3 模型下载",
+            "page": 15
+          },
+          {
+            "title": "3.3.4 调用本地模型",
+            "page": 16
+          }
+        ]
+      },
+      {
+        "title": "3.4 模型调用结果解析",
+        "page": 16,
+        "children": [
+          {
+            "title": "3.4.1 获取JSON结果",
+            "page": 17,
+            "children": [
+              {
+                "title": "3.4.1.2 通过Prompt约束",
+                "page": 17
+              },
+              {
+                "title": "3.4.1.3 通过厂商能力",
+                "page": 18
+              }
+            ]
+          },
+          {
+            "title": "3.4.2 获取其他类型的解析结果",
+            "page": 21
+          }
+        ]
+      },
+      {
+        "title": "3.5 提示词模板",
+        "page": 21
+      },
+      {
+        "title": "3.6 Chains",
+        "page": 22,
+        "children": [
+          {
+            "title": "3.6.1 RunnableSequence 可运行序列",
+            "page": 23
+          },
+          {
+            "title": "3.6.2 RunnableParallel 可运行并行",
+            "page": 24
+          },
+          {
+            "title": "3.6.3 其他Runnable结构",
+            "page": 27
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 4 章 Retrieval",
+    "page": 27,
+    "children": [
+      {
+        "title": "4.1 RAG介绍",
+        "page": 27,
+        "children": [
+          {
+            "title": "4.1.1 大模型的局限",
+            "page": 27
+          },
+          {
+            "title": "4.1.2 什么是RAG",
+            "page": 28
+          },
+          {
+            "title": "4.1.3 RAG优缺点",
+            "page": 29
+          },
+          {
+            "title": "4.1.4 RAG流程",
+            "page": 29
+          }
+        ]
+      },
+      {
+        "title": "4.2 文档加载",
+        "page": 30,
+        "children": [
+          {
+            "title": "4.2.1 加载 Markdown",
+            "page": 31
+          },
+          {
+            "title": "4.2.2 加载Docx",
+            "page": 32
+          },
+          {
+            "title": "4.2.3 加载 PDF",
+            "page": 33
+          }
+        ]
+      },
+      {
+        "title": "4.3 文档切分",
+        "page": 36,
+        "children": [
+          {
+            "title": "4.3.1 为什么切分",
+            "page": 36
+          },
+          {
+            "title": "4.3.2 切分策略",
+            "page": 37
+          },
+          {
+            "title": "4.3.3 RecursiveCharacterTextSplitter",
+            "page": 37
+          }
+        ]
+      },
+      {
+        "title": "4.4 文档嵌入",
+        "page": 39,
+        "children": [
+          {
+            "title": "4.4.1 嵌入模型介绍",
+            "page": 39
+          },
+          {
+            "title": "4.4.2 通过langchain完成文档嵌入",
+            "page": 40
+          }
+        ]
+      },
+      {
+        "title": "4.5 向量存储和检索",
+        "page": 41,
+        "children": [
+          {
+            "title": "4.5.1 向量数据库的理解",
+            "page": 41
+          },
+          {
+            "title": "4.5.2 常用的向量数据库",
+            "page": 42
+          },
+          {
+            "title": "4.5.3 Milvus 介绍和部署",
+            "page": 42,
+            "children": [
+              {
+                "title": "4.5.3.1 Milvus架构",
+                "page": 42
+              },
+              {
+                "title": "4.5.3.2 Milvus Collection及数据类型",
+                "page": 43
+              },
+              {
+                "title": "4.5.3.3 Mivus索引",
+                "page": 45
+              },
+              {
+                "title": "4.5.3.4 Milvus部署",
+                "page": 48
+              }
+            ]
+          },
+          {
+            "title": "4.5.4 Milvus创建 Collection",
+            "page": 49
+          },
+          {
+            "title": "4.5.5 Milvus操作实体",
+            "page": 51,
+            "children": [
+              {
+                "title": "4.5.5.1 插入实体",
+                "page": 51
+              },
+              {
+                "title": "4.5.5.2 删除实体",
+                "page": 53
+              }
+            ]
+          },
+          {
+            "title": "4.5.6 Milvus检索",
+            "page": 53,
+            "children": [
+              {
+                "title": "4.5.6.1 向量检索",
+                "page": 53
+              },
+              {
+                "title": "4.5.6.2 标量检索",
+                "page": 56
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4.6 生成",
+        "page": 57
+      }
+    ]
+  },
+  {
+    "title": "第 5 章 Agents",
+    "page": 58,
+    "children": [
+      {
+        "title": "5.1 Agent 介绍",
+        "page": 58
+      },
+      {
+        "title": "5.2 Agent构建",
+        "page": 60
+      },
+      {
+        "title": "5.3 Agent添加本地工具",
+        "page": 60,
+        "children": [
+          {
+            "title": "5.3.1.1 OpenAI SDK调用添加工具schema",
+            "page": 61
+          },
+          {
+            "title": "5.3.1.2 通过LangChain定义工具",
+            "page": 63
+          },
+          {
+            "title": "5.3.1.3 构建agent时添加本地工具",
+            "page": 64
+          }
+        ]
+      },
+      {
+        "title": "5.4 Agent添加MCP工具",
+        "page": 66,
+        "children": [
+          {
+            "title": "5.4.1 MCP介绍",
+            "page": 66
+          },
+          {
+            "title": "5.4.2 MCP架构",
+            "page": 67
+          },
+          {
+            "title": "5.4.3 MCP数据传输协议",
+            "page": 67
+          },
+          {
+            "title": "5.4.4 MCP工作流程",
+            "page": 68
+          },
+          {
+            "title": "5.4.5 MCP SDK",
+            "page": 68,
+            "children": [
+              {
+                "title": "5.4.5.1 Stdio",
+                "page": 68
+              },
+              {
+                "title": "5.4.5.2 StreamableHttp",
+                "page": 70
+              }
+            ]
+          },
+          {
+            "title": "5.4.6 LangChain 使用 MCP",
+            "page": 73
+          }
+        ]
+      },
+      {
+        "title": "5.5 Agent添加记忆",
+        "page": 75
+      },
+      {
+        "title": "5.6 Agent执行添加中间件",
+        "page": 77
+      }
+    ]
+  }
+]

@@ -1,0 +1,148 @@
+[
+  {
+    "title": "第 1 章 LangGraph概述",
+    "page": 1,
+    "children": [
+      {
+        "title": "1.1 什么是LangGraph",
+        "page": 1
+      },
+      {
+        "title": "1.2 与LangChain区别",
+        "page": 2
+      }
+    ]
+  },
+  {
+    "title": "第 2 章 快速入门",
+    "page": 2,
+    "children": [
+      {
+        "title": "2.1 环境安装",
+        "page": 2
+      },
+      {
+        "title": "2.2 简单示例",
+        "page": 2
+      }
+    ]
+  },
+  {
+    "title": "第 3 章 状态",
+    "page": 4,
+    "children": [
+      {
+        "title": "3.1 状态的定义",
+        "page": 4,
+        "children": [
+          {
+            "title": "3.1.1 定义状态类",
+            "page": 4
+          },
+          {
+            "title": "3.1.2 输入输出数据隔离",
+            "page": 5
+          },
+          {
+            "title": "3.1.3 节点间数据隔离",
+            "page": 8
+          },
+          {
+            "title": "3.1.4 Reducer函数",
+            "page": 9
+          }
+        ]
+      },
+      {
+        "title": "3.2 状态的存储",
+        "page": 11,
+        "children": [
+          {
+            "title": "3.2.1 实际场景当中的问题",
+            "page": 11
+          },
+          {
+            "title": "3.2.2 状态的存储",
+            "page": 13
+          },
+          {
+            "title": "3.2.3 从状态中恢复执行",
+            "page": 14
+          }
+        ]
+      },
+      {
+        "title": "3.3 获取历史状态",
+        "page": 17,
+        "children": [
+          {
+            "title": "3.3.1 LangGraph底层运行算法",
+            "page": 17
+          },
+          {
+            "title": "3.3.2 获取图执行的历史状态",
+            "page": 21
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 4 章 节点",
+    "page": 23,
+    "children": [
+      {
+        "title": "4.1 节点的输入输出",
+        "page": 23,
+        "children": [
+          {
+            "title": "4.1.1 节点输入",
+            "page": 23
+          },
+          {
+            "title": "4.1.2 节点输出",
+            "page": 26
+          }
+        ]
+      },
+      {
+        "title": "4.2 特殊节点",
+        "page": 27
+      },
+      {
+        "title": "4.3 节点缓存",
+        "page": 28
+      },
+      {
+        "title": "4.4 节点重试",
+        "page": 29
+      },
+      {
+        "title": "4.5 图内外数据传递",
+        "page": 32
+      },
+      {
+        "title": "4.6 人工审核节点",
+        "page": 36
+      }
+    ]
+  },
+  {
+    "title": "第 5 章 边",
+    "page": 39,
+    "children": [
+      {
+        "title": "5.1 边的本质",
+        "page": 39
+      },
+      {
+        "title": "5.2 条件边",
+        "page": 39
+      },
+      {
+        "title": "5.3 可控循环",
+        "page": 41
+      }
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "type": "file",
+    "name": "langchain/index",
+    "label": "LangChain"
+  },
+  {
+    "type": "file",
+    "name": "langgraph/index",
+    "label": "LangGraph"
+  },
+  {
+    "type": "dir",
+    "name": "deepagents",
+    "label": "DeepAgents"
+  }
+]

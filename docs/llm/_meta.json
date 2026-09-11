@@ -54,5 +54,11 @@
     "name": "nlp-and-llm-principles",
     "label": "NLP与LLM原理",
     "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "langchain-langgraph-deepagents",
+    "label": "LangChain、LangGraph 与 DeepAgents",
+    "collapsed": true
   }
 ]

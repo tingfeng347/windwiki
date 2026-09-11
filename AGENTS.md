@@ -23,7 +23,11 @@ pnpm preview
 
 只有与正文无关的站点级静态资源（`favicon.svg` 等）才放 `docs/public/`。
 
-分类：当前只有一个顶层分类 `llm/`（大模型），其下按顺序是 `python-basics/`（Python 基础）、`data-structures-and-algorithms/`（数据结构与算法）、`linux-shell-git/`（Linux、Shell 与 Git）、`mysql/`（MySQL）、`docker/`（Docker）、`fastapi/`（FastAPI）。顺序在 `docs/llm/_meta.json` 中维护。
+分类：当前只有一个顶层分类 `llm/`（大模型），其下按顺序是 `python-basics/`（Python 基础）、`data-structures-and-algorithms/`（数据结构与算法）、`linux-shell-git/`（Linux、Shell 与 Git）、`mysql/`（MySQL）、`docker/`（Docker）、`numpy-pandas/`（NumPy 与 Pandas）、`fastapi/`（FastAPI）、`machine-learning-and-deep-learning/`（机器学习与深度学习）、`nlp-and-llm-principles/`（NLP与LLM原理）、`langchain-langgraph-deepagents/`（LangChain、LangGraph 与 DeepAgents）。顺序在各级 `_meta.json` 中维护。
+
+最后三个是分组：`machine-learning-and-deep-learning/` 放着 `math-basics/`、`machine-learning/`、`deep-learning/`；`nlp-and-llm-principles/` 放着 `nlp/`、`llm-overview/`、`llm-principles/`；`langchain-langgraph-deepagents/` 放着 `langchain/`、`langgraph/` 与 `deepagents/`（后者自己也是一个目录，装两篇 Markdown）。
+
+`numpy-pandas/`、上述两个分组里除 `llm-overview/` 之外的课，以及 `langchain/`、`langgraph/`，都是「一页读完一份 PDF」的课程：正文不落成 Markdown，PDF 放 `docs/public/files/`，见 README 的「PDF 课程笔记」；`llm-overview/` 与 `deepagents/` 下的两篇是从外部 Markdown 导入的，截图放同级 `images/`，见 README 的「导入外部 Markdown 笔记」。
 
 `docs/_nav.json` 管理顶部导航，各级 `_meta.json` 组织知识树与局部顺序。站点为纯中文（`rspress.config.ts` 的 `lang: 'zh'`）。不要在 `rspress.config.ts` 维护庞大的导航数组。
 
@@ -87,5 +91,5 @@ pnpm preview
 6. 检查 `doc_build/llms.txt`、`llms-full.txt`、各页 `.md` 与 `sitemap.xml`；URL 必须适配 `/windwiki/`，Markdown 应保留图表源码和公式。
 7. `lastUpdated` 使用真实 Git 历史；不要硬编码更新时间。CI checkout 必须保留完整历史。
 8. 不提交 `node_modules/`、`doc_build/` 和缓存；必须保留 `pnpm-lock.yaml`。
-9. 新增依赖前确认 Rspress 默认能力是否足够；涉及配置或插件升级时核对当前官方文档。保持默认主题，**不 fork 主题组件**：少量样式覆盖走 `rspress.config.ts` 的 `globalStyles`（`styles/`），需要全局 UI 时用 `globalUIComponents`（`components/`）。首页用 `pageType: home` 的 frontmatter 配置。修改上游依赖行为时使用 `pnpm patch`，补丁放在 `patches/` 并由 `pnpm-workspace.yaml` 的 `patchedDependencies` 登记。改动主题或插件前先读 `README.md` 里「六处对默认主题的改动」，避免当成 bug 改回去。
+9. 新增依赖前确认 Rspress 默认能力是否足够；涉及配置或插件升级时核对当前官方文档。保持默认主题，**不 fork 主题组件**：少量样式覆盖走 `rspress.config.ts` 的 `globalStyles`（`styles/`），需要全局 UI 时用 `globalUIComponents`（`components/`）。首页用 `pageType: home` 的 frontmatter 配置。修改上游依赖行为时使用 `pnpm patch`，补丁放在 `patches/` 并由 `pnpm-workspace.yaml` 的 `patchedDependencies` 登记。改动主题或插件前先读 `README.md` 里「七处对默认主题的改动」，避免当成 bug 改回去。
 10. 最后报告修改文件与实际验证结果，不把本地构建成功描述为线上部署成功。

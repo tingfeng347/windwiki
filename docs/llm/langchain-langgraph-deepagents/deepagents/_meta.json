@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "01-framework",
+    "label": "DeepAgents 框架"
+  },
+  {
+    "type": "file",
+    "name": "02-multi-agent",
+    "label": "多智能体实战"
+  }
+]

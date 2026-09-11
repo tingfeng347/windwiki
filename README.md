@@ -105,6 +105,106 @@ git push
 
 推送 `main` 后 GitHub Actions 自动重新构建并部署。
 
+## PDF 课程笔记
+
+有的课程（如《NumPy 与 Pandas》）不适合拆成 Markdown——原文的截图和排版就是内容本身。这类笔记直接在线阅读 PDF，不落成 `.md`：正文由 `components/pdf-viewer.tsx`（pdf.js）逐页渲染成 canvas，像普通网页一样一路往下滚；右侧目录取自 PDF 自带的书签，工具栏的搜索框索引全部页面并高亮命中处。站点顶部的搜索（`Ctrl / Cmd + K`）只索引 Markdown，搜不到 PDF 正文。
+
+124 页全渲染会吃掉几个 GB 显存，所以只有滚到视口附近的页才画，滚远了就把 canvas 清掉——实测任何时刻只有 2～3 张 canvas 是活的。「当前读到第几页」按「在可视区里露出最多的那一页」算，而不是「哪一页顶到了某条线」：跳页时 `scroll-margin` 和吸顶导航栏的高度都在变，用线去卡会差一页。
+
+几处性能上的取舍：
+
+- **文档按页取字节**：`getDocument({ disableAutoFetch: true })`，打开第一页只需要几十 KB，不再一上来就下整份 3.7MB（搜索要抽全文时才会读到后面）。服务端得支持 `Range`；线上 Pages 支持，本地的 `rspress preview` 实测**偶尔**忽略 `Range` 直接返回整个文件，所以本地可能还是全量下载——那是预览服务器的行为，不是这里的问题。
+- **渐进渲染**：页进入视口先画一张 0.32 倍分辨率的预览（像素只有最终版的十分之一），几百毫秒内就有内容；等主线程空下来（`requestIdleCallback`）再补全分辨率。快速滚过时不至于看到一片白。
+- **一律离屏渲染再整张贴过来**：改 `canvas.width/height` 会丢掉后备位图，Chrome 在换位图的那一帧可能把还没初始化的纹理画出来——就是跳页时闪的那一下黑屏。「改尺寸 + 贴图」放进同一个任务里，中间没有可被画出来的空窗。缩放时同理，不会先白一下再变清晰。
+- **单页画布像素上限 500 万**：高分屏上按 `devicePixelRatio` 满血渲染，一张 A4 就是上千万像素、几十 MB 显存，超出就按比例降倍率。
+- 文字层的渲染在取消时会以 `AbortException` 拒绝，必须吞掉——否则每次滚走一页都会抛一条 `Uncaught (in promise)`。
+- **暗色模式**：`html.rp-dark` 下给 canvas 加 `invert(1) hue-rotate(180deg)`，白纸变黑纸、黑字变白字，而彩色内容（截图、图表、红色标注）的色相基本还原——各家阅读器的夜间模式都是这个做法。只作用在画布上，文字层、选中和高亮不受影响，切换主题也不需要重新渲染（纯 CSS，不重新跑 pdf.js）。
+
+新增一页 PDF 笔记需要三样东西。
+
+**1. PDF 放进 `docs/public/files/`，文件名不要带 `.pdf` 这类扩展名**
+
+例如 `docs/public/files/numpy-pandas-2.0`。这不是漏写后缀：URL 以 `.pdf` / `.zip` / `.bin` 结尾、响应类型又像文件时，Chrome 会把它当成「不安全下载」，用一个 204 空响应顶掉正文——`pnpm dev` / `pnpm preview` 走 http，本地会直接读不到（`pnpm build` 和线上 https 都正常，所以只看构建日志发现不了）。去掉扩展名后两种协议都能读；pdf.js 只认字节，不看扩展名和 `Content-Type`。
+
+**2. 把 PDF 的书签树导出成 JSON，放在页面同级**
+
+右侧目录是构建期渲染的，数据源就是这个文件。用 pypdf 导出，页码从 1 开始：
+
+```bash
+python - <<'PY'
+import json, pypdf
+r = pypdf.PdfReader('numpy-pandas-2.0.pdf')
+
+def walk(node):
+    out = []
+    for item in node:
+        if isinstance(item, list):           # 书签树里子节点是嵌套的 list
+            if out:
+                out[-1]['children'] = walk(item)
+        else:
+            out.append({'title': str(item.title), 'page': r.get_destination_page_number(item) + 1})
+    return out
+
+print(json.dumps(walk(r.outline), ensure_ascii=False, indent=2))
+PY
+```
+
+**3. 写一个 `.mdx` 页面并把组件挂上去**
+
+```mdx
+import PdfViewer from '../../../components/pdf-viewer';
+import outline from './pdf-outline.json';
+
+# 标题
+
+一句话导语。
+
+<PdfViewer src="/files/numpy-pandas-2.0" outline={outline} />
+```
+
+页面里**不要写 `##` 及更深的标题**：默认主题的大纲面板是按页面标题生成的，多出来的条目会和 PDF 目录挤在同一个 `.rp-outline__toc` 里。
+
+> worker 文件由 `rspress.config.ts` 的 `builderConfig.output.copy` 从 `node_modules/pdfjs-dist/` 拷进产物。不加这条会走打包器的资源后缀，但 `?url` 只挂在 image / media / font 那几条规则上（`.mjs` 会落进 JS 规则被当模块解析），`?worker` 又只在浏览器环境注册、SSR 那趟构建解析不了。升级 pdfjs-dist 后文件名若有变化，构建会因为拷不到源文件而失败。
+
+> 组件路径按嵌套深度写：`docs/llm/numpy-pandas/index.mdx` 是 `../../../components/pdf-viewer`，分组里（`docs/llm/<分组>/<课程>/index.mdx`）要多退一级。
+
+## 导入外部 Markdown 笔记
+
+源笔记本来就是 Markdown 时（例如《大模型概述》，2724 行 + 91 张截图），按「写文章」的规矩落成一篇正文，另外注意两点：
+
+- 图片放文章同级的 `images/`，引用统一写成 `./images/xxx.png`——源里常写成 `images/xxx.png`、`image/` 或 Windows 反斜杠 `images\x.png`，三种都要认。
+- **源里的 `<img src="...">` 要改写成 Markdown 语法**。Rspress 只重写 Markdown 图片的相对路径，HTML 的 `src` 会原样进产物、从页面 URL 解析必然 404，而且构建不报错、只有浏览器里看得见（`DeepAgents 框架`那篇里有 5 处，路径还是反斜杠）。替换后照例用 `.rp-doc img` 的 `naturalWidth === 0` 数量复验。
+- 导入后**逐行比对**源文件与产物：除了刻意的改动（标题、图片路径、HTML 图片改写），行数与内容应完全一致。别只凭「构建成功」判断，那只能说明语法没错。
+
+### 截图太占地方就转 WebP
+
+带截图的笔记很容易上百 MB——`llm-overview` 的 91 张 PNG/JPG 就有 **21.7 MB**。（源目录里另有两个 17.8 MB 的 `image_41.x-emf` / `image_75.x-emf` 在正文里根本没被引用，导的时候直接跳过了，省掉 35 MB。）PNG 截图转 WebP 收益很大，**分辨率不变**能压到约 1/4：
+
+```bash
+python - <<'PY'
+import io, os, re, glob
+from PIL import Image
+
+DIR = 'docs/llm/nlp-and-llm-principles/llm-overview'
+before = after = 0
+for path in glob.glob(f'{DIR}/images/*'):
+    image = Image.open(path).convert('RGB')
+    target = os.path.splitext(path)[0] + '.webp'
+    image.save(target, 'WEBP', quality=80, method=4)
+    before += os.path.getsize(path)
+    after += os.path.getsize(target)
+    os.remove(path)
+
+md = f'{DIR}/index.md'                      # 顺手把正文里的后缀改掉
+text = io.open(md, encoding='utf-8').read()
+io.open(md, 'w', encoding='utf-8', newline='\n').write(
+    re.sub(r'(\./images/[^)"\s]+)\.(png|jpg|jpeg)', r'\1.webp', text))
+print(f'{before / 1048576:.1f} MB -> {after / 1048576:.1f} MB')
+PY
+```
+
+上面这篇实测 **21.7 MB → 5.2 MB**（`quality=80`、不缩尺寸）。`.webp` 在打包器的图片扩展名列表里，和 png 走同一条资源管线。转完照例 `pnpm build`，并在浏览器里确认 `.rp-doc img` 中 `naturalWidth === 0` 的数量为 0。
+
 ## 目录结构
 
 ```text
@@ -115,10 +215,25 @@ docs/
 ├── llm/               # 大模型（唯一分类）
 │   ├── index.md
 │   ├── _meta.json
-│   └── python-basics/ # Python 基础课程笔记
-│       ├── *.md
-│       └── images/    # 该课程的图片，正文用 ./images/xxx.png 引用
-└── public/            # 站点级静态资源（favicon.svg 等）
+│   ├── python-basics/ # Python 基础课程笔记
+│   │   ├── *.md
+│   │   └── images/    # 该课程的图片，正文用 ./images/xxx.png 引用
+│   ├── numpy-pandas/  # 「一页读完一份 PDF」的课程，见下：
+│   │   ├── index.mdx         #   页面本体，只 import 组件和书签数据
+│   │   └── pdf-outline.json  #   PDF 书签树，右侧目录的数据源
+│   ├── machine-learning-and-deep-learning/  # 分组，里面是同种课程
+│   │   ├── math-basics/          # PDF 本体放 docs/public/files/，
+│   │   ├── machine-learning/     # 不带扩展名，见「PDF 课程笔记」
+│   │   └── deep-learning/
+│   ├── nlp-and-llm-principles/   # 分组：NLP 与 LLM 原理
+│   │   ├── nlp/                  # 同为 PDF 课程
+│   │   ├── llm-overview/         # Markdown 正文（+ images/）
+│   │   └── llm-principles/       # 同为 PDF 课程
+│   └── langchain-langgraph-deepagents/      # 分组：LangChain、LangGraph 与 DeepAgents
+│       ├── langchain/            # PDF 课程
+│       ├── langgraph/            # PDF 课程
+│       └── deepagents/           # Markdown 正文两篇（+ images/）
+└── public/            # 站点级静态资源（favicon.svg、files/ 下的 PDF 等）
 
 components/
 ├── panel-state.ts     # 面板折叠状态的常量与防闪烁脚本（无 DOM 依赖，config 也引它）
@@ -127,7 +242,9 @@ components/
 ├── panel-toggle.css
 ├── nav-actions.tsx    # 导航栏右侧按钮组：全屏 + 目录折叠（portal 进 .rp-nav__right）
 ├── nav-actions.css
-└── nav-state.ts       # 导航栏自动隐藏的滚动监听脚本（内联注入，配 styles/nav-auto-hide.css）
+├── nav-state.ts       # 导航栏自动隐藏的滚动监听脚本（内联注入，配 styles/nav-auto-hide.css）
+├── pdf-viewer.tsx     # PDF 阅读器（pdf.js）：右侧目录 + 全文搜索，见「PDF 课程笔记」
+└── pdf-viewer.css
 
 styles/
 ├── index.css          # globalStyles 入口，汇总下面四份
@@ -141,7 +258,7 @@ styles/
 
 使用 Rspress 默认主题，**没有 `theme/` 目录、没有 fork 主题组件**：首页使用默认的 `pageType: home` 布局，只配置 `hero`（站点名、标语、按钮），不配置 `features` 卡片，内容都在 `docs/index.mdx` 的 frontmatter 里。默认主题自带知识树、页面大纲、深浅色、代码复制与前后页导航。
 
-六处对默认主题的改动，都记在这里以免以后当成 bug：
+七处对默认主题的改动，都记在这里以免以后当成 bug：
 
 1. **`styles/index.css`（`rspress.config.ts` 的 `globalStyles`）**——首页 Hero 在视口内垂直居中；去掉知识树嵌套项的竖向引导线；两个面板折叠后的布局。`globalStyles` 注入在主题样式**之前**，同特异性会被主题覆盖，所以覆盖规则统一用重复类名提高一级特异性（例如 `.rp-home-hero.rp-home-hero`）。
 2. **`components/nav-actions.tsx`（`globalUIComponents`）**——导航栏右侧按钮组：全屏、知识树折叠、目录折叠。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。
@@ -176,6 +293,15 @@ styles/
 6. **`builderConfig.output.dataUriLimit`**——设为 `{ image: 0 }`，禁止把图片内联成 base64 data URI。默认阈值是 4096 字节，小于它的图片会被内联；正文图片走打包器，于是几张几十 KB 的小图会变成 base64 塞进 `llms-full.txt`，对喂给模型的 markdown 没有意义。设成 0 之后所有图片都是可解析的 URL。
 
    > 该选项只覆盖 `image`；`svg` / `font` / `media` / `assets` 仍是默认的 4096。将来若在正文里引用小 SVG，需要把 `svg` 也设为 0，否则会出现同样的内联。
+
+7. **`components/pdf-viewer.tsx`（页面里用，不在 `globalUIComponents`）**——PDF 阅读器：正文渲染成 canvas，文字层单独渲染。它把 PDF 书签树 portal 进默认主题的 `.rp-outline__toc`，条目直接复用 `.rp-toc-item` / `.rp-toc-item__text` 两个类名，所以右侧目录和「页面大纲」长得一模一样（含选中时的左侧竖条）。因为默认主题的目录面板是空的（页面上没有 h2~h4），portal 进去不会和 React 打架。
+
+   > 目录是客户端 portal、不在静态 HTML 里：portal 目标只有浏览器才查得到。这与 `nav-actions.tsx` 同样的取舍。搜索高亮依赖页面的文字层，而文字层的样式是从 `pdfjs-dist/web/pdf_viewer.css` 摘出来的 `.textLayer` 规则、只改了类名（见 `components/pdf-viewer.css` 末尾），升级 pdfjs-dist 时要连这段一起更新。
+
+   `pdf-viewer.css` 开头还有几条针对默认主题的覆盖，都用 `html:has(.windwiki-pdf-viewer)` 限定，只在这一页生效：
+
+   - `.rp-doc-layout__doc` 的 `overflow` 改回 `visible`（它默认带 `overflow-x: auto`，另一轴随之变成 auto，于是成了滚动盒子、里面的 `position: sticky` 工具栏粘不住）、`max-width` 放开、`.rp-doc-layout__doc-container` 的左右留白从 80px 收到 24px——后两条是为了让 A4 页面尽可能大。
+   - `--rp-outline-width` 268px → 296px、`--rp-outline-padding-x` 20px → 12px。PDF 的书签标题普遍偏长（「3.2.1 常用大模型服务平台介绍」），原来二级标题只剩 178px 文字宽度，82 条里有 15 条要折成两行；调完只剩 2 条。**要改就改这两个变量，别直接改 `.rp-outline__toc` 的 padding**：选中态的左侧竖条用 `left: calc(-1 * var(--rp-outline-padding-x))` 定位、标题和分隔线也吃这个变量，只动 padding 会让竖条跑到裁切区外面。宽度是吃布局余量换来的，实测 PDF 页面宽度没变（还是 932px）。
 
 Mermaid 使用 fenced `mermaid` 代码块，KaTeX 支持 `$...$`、`$$...$$` 与 fenced `math`。Rspress 的代码高亮先于 KaTeX 执行，因此配置仅跳过 `math` 的未知语言错误，让 KaTeX 处理原始公式节点。
 
