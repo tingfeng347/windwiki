@@ -174,6 +174,7 @@ import outline from './pdf-outline.json';
 
 - 图片放文章同级的 `images/`，引用统一写成 `./images/xxx.png`——源里常写成 `images/xxx.png`、`image/` 或 Windows 反斜杠 `images\x.png`，三种都要认。
 - **源里的 `<img src="...">` 要改写成 Markdown 语法**。Rspress 只重写 Markdown 图片的相对路径，HTML 的 `src` 会原样进产物、从页面 URL 解析必然 404，而且构建不报错、只有浏览器里看得见（`DeepAgents 框架`那篇里有 5 处，路径还是反斜杠）。替换后照例用 `.rp-doc img` 的 `naturalWidth === 0` 数量复验。
+- **源里带真实密钥就换成占位符再提交**（`.env` 示例里的 `sk-...`、`lsv2_pt_...`）：公开仓库会被 GitHub 的 secret scanning 直接拒绝推送，密钥一旦进了历史也很难收回。`DeepAgents 框架`那篇里就有 4 处，导入时已替换。
 - 导入后**逐行比对**源文件与产物：除了刻意的改动（标题、图片路径、HTML 图片改写），行数与内容应完全一致。别只凭「构建成功」判断，那只能说明语法没错。
 
 ### 截图太占地方就转 WebP
