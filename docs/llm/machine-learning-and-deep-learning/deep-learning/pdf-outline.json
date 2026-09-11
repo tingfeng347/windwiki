@@ -1,0 +1,610 @@
+[
+  {
+    "title": "第 1 章 深度学习概述",
+    "page": 1
+  },
+  {
+    "title": "第 2 章 PyTorch介绍",
+    "page": 1,
+    "children": [
+      {
+        "title": "2.1 PyTorch简介",
+        "page": 1
+      },
+      {
+        "title": "2.2 PyTorch安装",
+        "page": 2,
+        "children": [
+          {
+            "title": "2.2.2 CPU版本的安装",
+            "page": 2
+          },
+          {
+            "title": "2.2.3 GPU版本的安装",
+            "page": 2,
+            "children": [
+              {
+                "title": "2.2.3.1 确定你显卡算力",
+                "page": 2
+              },
+              {
+                "title": "2.2.3.2 查看支持的最高CUDA版本",
+                "page": 3
+              },
+              {
+                "title": "2.2.3.3 选择合适的CUDA版本",
+                "page": 3
+              }
+            ]
+          },
+          {
+            "title": "2.2.4 测试是否安装成功",
+            "page": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 3 章 张量（Tensor）基本使用",
+    "page": 4,
+    "children": [
+      {
+        "title": "3.1 张量（Tensor）创建",
+        "page": 4,
+        "children": [
+          {
+            "title": "3.1.1 基于内容创建张量",
+            "page": 4
+          },
+          {
+            "title": "3.1.2 基于形状创建张量",
+            "page": 8
+          },
+          {
+            "title": "3.1.3 张量的数据类型的确定",
+            "page": 9
+          },
+          {
+            "title": "3.1.4 创建指定类型的张量",
+            "page": 11
+          },
+          {
+            "title": "3.1.5 根据数据区间创建张量",
+            "page": 12
+          },
+          {
+            "title": "3.1.6 根据填充创建张量",
+            "page": 15
+          },
+          {
+            "title": "3.1.7 随机创建张量",
+            "page": 18
+          }
+        ]
+      },
+      {
+        "title": "3.2 张量（Tensor）转换",
+        "page": 20,
+        "children": [
+          {
+            "title": "3.2.1 元素类型转换",
+            "page": 20
+          },
+          {
+            "title": "3.2.2 Tensor与numpy的ndarray转换",
+            "page": 21,
+            "children": [
+              {
+                "title": "3.2.2.1 tensor => ndarray",
+                "page": 22
+              },
+              {
+                "title": "3.2.2.2 NumPy ndarray => Tensor",
+                "page": 23
+              }
+            ]
+          },
+          {
+            "title": "3.2.3 张量（Tensor）=> 标量（Scalar）",
+            "page": 23
+          }
+        ]
+      },
+      {
+        "title": "3.3 Tensor数值计算",
+        "page": 24,
+        "children": [
+          {
+            "title": "3.3.1 基本运算",
+            "page": 24
+          },
+          {
+            "title": "3.3.2 元素级运算（张量与张量）",
+            "page": 26
+          },
+          {
+            "title": "3.3.3 矩阵相乘",
+            "page": 28,
+            "children": [
+              {
+                "title": "3.3.3.1 二维矩阵相乘",
+                "page": 28
+              },
+              {
+                "title": "3.3.3.2 高维张量相乘（批量矩阵乘法）",
+                "page": 29
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3.4 Tensor统计运算函数",
+        "page": 30
+      },
+      {
+        "title": "3.5 矩阵索引操作",
+        "page": 34,
+        "children": [
+          {
+            "title": "3.5.1 简单索引",
+            "page": 34
+          },
+          {
+            "title": "3.5.2 范围索引",
+            "page": 35
+          },
+          {
+            "title": "3.5.3 列表索引",
+            "page": 36
+          },
+          {
+            "title": "3.5.4 布尔索引",
+            "page": 37
+          }
+        ]
+      },
+      {
+        "title": "3.6 张量形状操作",
+        "page": 37,
+        "children": [
+          {
+            "title": "3.6.1 维度交换",
+            "page": 38
+          },
+          {
+            "title": "3.6.2 调整形状",
+            "page": 39
+          },
+          {
+            "title": "3.6.3 增删维度",
+            "page": 40
+          }
+        ]
+      },
+      {
+        "title": "3.7 张量拼接",
+        "page": 40
+      }
+    ]
+  },
+  {
+    "title": "第 4 章 神经网络基础",
+    "page": 41,
+    "children": [
+      {
+        "title": "4.1 神经网络基本概念",
+        "page": 41
+      },
+      {
+        "title": "4.2 全连接层代码演示",
+        "page": 42
+      },
+      {
+        "title": "4.3 激活函数",
+        "page": 43,
+        "children": [
+          {
+            "title": "4.3.1 激活函数介绍",
+            "page": 44
+          },
+          {
+            "title": "4.3.2 相关激活函数代码演示",
+            "page": 44,
+            "children": [
+              {
+                "title": "4.3.2.1 sigmoid函数",
+                "page": 44
+              },
+              {
+                "title": "4.3.2.2 tanh函数",
+                "page": 45
+              },
+              {
+                "title": "4.3.2.3 ReLU函数",
+                "page": 46
+              },
+              {
+                "title": "4.3.2.4 softmax函数",
+                "page": 46
+              },
+              {
+                "title": "4.3.2.5 其他激活 函数",
+                "page": 47
+              }
+            ]
+          },
+          {
+            "title": "4.3.3 如何选择激活函数",
+            "page": 48
+          }
+        ]
+      },
+      {
+        "title": "4.4 搭建神经网络",
+        "page": 48,
+        "children": [
+          {
+            "title": "4.4.1 自定义模型",
+            "page": 48
+          },
+          {
+            "title": "4.4.2 查看模型参数和模型结构",
+            "page": 51
+          },
+          {
+            "title": "4.4.3 使用Sequential更方便定义模型",
+            "page": 52
+          },
+          {
+            "title": "4.4.4 模型的保存和加载",
+            "page": 53
+          }
+        ]
+      },
+      {
+        "title": "4.5 应用案例：手写数字识别",
+        "page": 53,
+        "children": [
+          {
+            "title": "4.5.1 封装加载数据的函数",
+            "page": 54
+          },
+          {
+            "title": "4.5.2 搭建神经网络",
+            "page": 55
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 5 章 神经网络的学习（训练）",
+    "page": 57,
+    "children": [
+      {
+        "title": "5.1 损失函数",
+        "page": 57,
+        "children": [
+          {
+            "title": "5.1.1 损失函数介绍",
+            "page": 57
+          },
+          {
+            "title": "5.1.2 损失函数使用示例代码",
+            "page": 58,
+            "children": [
+              {
+                "title": "5.1.2.1 MAE（L1 Loss，平均绝对误差）",
+                "page": 58
+              },
+              {
+                "title": "5.1.2.2 MSE（L2 Loss，均方误差）",
+                "page": 59
+              },
+              {
+                "title": "5.1.2.3 Smooth L1（平滑L1损失）",
+                "page": 59
+              },
+              {
+                "title": "5.1.2.4 二元交叉熵（BCELoss / BCEWithLogitsLoss）",
+                "page": 60
+              },
+              {
+                "title": "5.1.2.5 交叉熵（CrossEntropyLoss）",
+                "page": 61
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "5.2 梯度下降法求解",
+        "page": 62,
+        "children": [
+          {
+            "title": "5.2.1 随机梯度下降法",
+            "page": 62
+          },
+          {
+            "title": "5.2.2 模型训练相关概念",
+            "page": 63
+          },
+          {
+            "title": "5.2.3 随机梯度下降求解步骤",
+            "page": 64
+          }
+        ]
+      },
+      {
+        "title": "5.3 数据集创建和分批",
+        "page": 64,
+        "children": [
+          {
+            "title": "5.3.1 数据集DataSet",
+            "page": 64
+          },
+          {
+            "title": "5.3.2 数据加载器DataLoader",
+            "page": 65
+          }
+        ]
+      },
+      {
+        "title": "5.4 反向传播算法",
+        "page": 66,
+        "children": [
+          {
+            "title": "5.4.1 计算图",
+            "page": 66
+          },
+          {
+            "title": "5.4.2 链式法则",
+            "page": 67
+          },
+          {
+            "title": "5.4.3 加法节点的反向传播",
+            "page": 68
+          },
+          {
+            "title": "5.4.4 乘法节点的反向传播",
+            "page": 68
+          },
+          {
+            "title": "5.4.5 总结",
+            "page": 69
+          }
+        ]
+      },
+      {
+        "title": "5.5 神经网络的反向传播",
+        "page": 69,
+        "children": [
+          {
+            "title": "5.5.1 ReLU的反向传播",
+            "page": 69
+          },
+          {
+            "title": "5.5.2 Sigmoid的反向传播",
+            "page": 70
+          },
+          {
+            "title": "5.5.3 全连接层的反向传播和实现",
+            "page": 70
+          },
+          {
+            "title": "5.5.4 输出层的反向传播和实现",
+            "page": 71
+          }
+        ]
+      },
+      {
+        "title": "5.6  PyTorch的自动微分模块",
+        "page": 72
+      },
+      {
+        "title": "5.7 训练神经网络",
+        "page": 74
+      },
+      {
+        "title": "5.8 应用案例：手写数字识别",
+        "page": 76
+      }
+    ]
+  },
+  {
+    "title": "第 6 章 学习的技巧（优化）",
+    "page": 79,
+    "children": [
+      {
+        "title": "6.1 深度神经网络及其问题",
+        "page": 79
+      },
+      {
+        "title": "6.2 参数更新方法的优化",
+        "page": 80,
+        "children": [
+          {
+            "title": "6.2.1 优化方法介绍",
+            "page": 80
+          },
+          {
+            "title": "6.2.2 相关示例代码",
+            "page": 81,
+            "children": [
+              {
+                "title": "6.2.2.1 动量法",
+                "page": 81
+              },
+              {
+                "title": "6.2.2.2 学习率衰减",
+                "page": 83
+              },
+              {
+                "title": "6.2.2.3 AdaGrad",
+                "page": 91
+              },
+              {
+                "title": "6.2.2.4 RMSProp",
+                "page": 94
+              },
+              {
+                "title": "6.2.2.5 Adam",
+                "page": 96
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "6.3 参数的初始化",
+        "page": 98,
+        "children": [
+          {
+            "title": "6.3.1 常数初始化",
+            "page": 98
+          },
+          {
+            "title": "6.3.2 秩初始化",
+            "page": 99
+          },
+          {
+            "title": "6.3.3 正态分布初始化",
+            "page": 99
+          },
+          {
+            "title": "6.3.4 均匀分布初始化",
+            "page": 99
+          },
+          {
+            "title": "6.3.5 Xavier初始化（Glorot初始化）",
+            "page": 99
+          },
+          {
+            "title": "6.3.6 He初始化（Kaiming初始化）",
+            "page": 100
+          }
+        ]
+      },
+      {
+        "title": "6.4 正则化",
+        "page": 100,
+        "children": [
+          {
+            "title": "6.4.1 Batch Normalization批量标准化",
+            "page": 101
+          },
+          {
+            "title": "6.4.2 权值衰减",
+            "page": 102
+          },
+          {
+            "title": "6.4.3 Dropout",
+            "page": 102
+          }
+        ]
+      },
+      {
+        "title": "6.5 应用案例：房价预测",
+        "page": 103,
+        "children": [
+          {
+            "title": "6.5.1 导入所需的模块",
+            "page": 104
+          },
+          {
+            "title": "6.5.2 特征工程",
+            "page": 105
+          },
+          {
+            "title": "6.5.3 搭建模型",
+            "page": 106
+          },
+          {
+            "title": "6.5.4 损失函数",
+            "page": 107
+          },
+          {
+            "title": "6.5.5 模型训练",
+            "page": 107
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 7 章 卷积神经网络",
+    "page": 110,
+    "children": [
+      {
+        "title": "7.1 卷积神经网络概述",
+        "page": 110,
+        "children": [
+          {
+            "title": "7.1.1 全连接网络的局限性",
+            "page": 110
+          },
+          {
+            "title": "7.1.2 什么是卷积神经网络（CNN)",
+            "page": 111
+          },
+          {
+            "title": "7.1.3 卷积神经网络的构成",
+            "page": 111
+          }
+        ]
+      },
+      {
+        "title": "7.2 卷积层",
+        "page": 113,
+        "children": [
+          {
+            "title": "7.2.1 卷积层介绍",
+            "page": 113
+          },
+          {
+            "title": "7.2.2 卷积层API使用案例",
+            "page": 113
+          }
+        ]
+      },
+      {
+        "title": "7.3 池化层",
+        "page": 115,
+        "children": [
+          {
+            "title": "7.3.1 池化层介绍",
+            "page": 115
+          },
+          {
+            "title": "7.3.2 池化层代码演示",
+            "page": 115
+          }
+        ]
+      },
+      {
+        "title": "7.4 深度卷积神经网络",
+        "page": 116
+      },
+      {
+        "title": "7.5 应用案例：服装分类",
+        "page": 118,
+        "children": [
+          {
+            "title": "7.5.1 加载数据",
+            "page": 119
+          },
+          {
+            "title": "7.5.2 搭建模型",
+            "page": 120
+          },
+          {
+            "title": "7.5.3 模型训练",
+            "page": 122
+          }
+        ]
+      }
+    ]
+  }
+]

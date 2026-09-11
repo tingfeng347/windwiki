@@ -1,0 +1,17 @@
+[
+  {
+    "type": "file",
+    "name": "math-basics/index",
+    "label": "数学基础"
+  },
+  {
+    "type": "file",
+    "name": "machine-learning/index",
+    "label": "机器学习"
+  },
+  {
+    "type": "file",
+    "name": "deep-learning/index",
+    "label": "深度学习"
+  }
+]

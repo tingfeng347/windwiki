@@ -42,5 +42,11 @@
     "type": "file",
     "name": "fastapi/fastapi",
     "label": "FastAPI"
+  },
+  {
+    "type": "dir",
+    "name": "machine-learning-and-deep-learning",
+    "label": "机器学习与深度学习",
+    "collapsed": true
   }
 ]
