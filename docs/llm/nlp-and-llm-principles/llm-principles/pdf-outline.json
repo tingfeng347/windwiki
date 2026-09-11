@@ -1,0 +1,678 @@
+[
+  {
+    "title": "第 1 章 LLM概述",
+    "page": 1
+  },
+  {
+    "title": "第 2 章 LLM发展历程",
+    "page": 1,
+    "children": [
+      {
+        "title": "2.1 概述",
+        "page": 1
+      },
+      {
+        "title": "2.2 GPT-1",
+        "page": 2,
+        "children": [
+          {
+            "title": "2.2.1 概述",
+            "page": 2
+          },
+          {
+            "title": "2.2.2 架构",
+            "page": 2,
+            "children": [
+              {
+                "title": "2.2.2.1 总体结构",
+                "page": 3
+              },
+              {
+                "title": "2.2.2.2 架构创新",
+                "page": 3
+              },
+              {
+                "title": "2.2.2.3 主要参数",
+                "page": 4
+              }
+            ]
+          },
+          {
+            "title": "2.2.3 训练",
+            "page": 4,
+            "children": [
+              {
+                "title": "2.2.3.1 预训练阶段",
+                "page": 4
+              },
+              {
+                "title": "2.2.3.2 微调阶段",
+                "page": 4
+              }
+            ]
+          },
+          {
+            "title": "2.2.4 能力",
+            "page": 4
+          }
+        ]
+      },
+      {
+        "title": "2.3 GPT-2",
+        "page": 4,
+        "children": [
+          {
+            "title": "2.3.1 概述",
+            "page": 4
+          },
+          {
+            "title": "2.3.2 架构",
+            "page": 5,
+            "children": [
+              {
+                "title": "2.3.2.1 总体架构",
+                "page": 5
+              },
+              {
+                "title": "2.3.2.2 架构创新",
+                "page": 6
+              },
+              {
+                "title": "2.3.2.3 主要参数",
+                "page": 6
+              }
+            ]
+          },
+          {
+            "title": "2.3.3 训练",
+            "page": 6
+          },
+          {
+            "title": "2.3.4 能力",
+            "page": 6
+          }
+        ]
+      },
+      {
+        "title": "2.4 GPT-3",
+        "page": 7,
+        "children": [
+          {
+            "title": "2.4.1 概述",
+            "page": 7
+          },
+          {
+            "title": "2.4.2 架构",
+            "page": 7,
+            "children": [
+              {
+                "title": "2.4.2.1 总体结构",
+                "page": 7
+              },
+              {
+                "title": "2.4.2.2 架构创新",
+                "page": 8
+              },
+              {
+                "title": "2.4.2.3 主要参数",
+                "page": 8
+              }
+            ]
+          },
+          {
+            "title": "2.4.3 训练",
+            "page": 8
+          },
+          {
+            "title": "2.4.4 能力",
+            "page": 8
+          }
+        ]
+      },
+      {
+        "title": "2.5 InstructGPT",
+        "page": 9,
+        "children": [
+          {
+            "title": "2.5.1 概述",
+            "page": 9
+          },
+          {
+            "title": "2.5.2 架构",
+            "page": 9,
+            "children": [
+              {
+                "title": "2.5.2.1 总体结构",
+                "page": 9
+              },
+              {
+                "title": "2.5.2.2 架构创新",
+                "page": 9
+              },
+              {
+                "title": "2.5.2.3 主要参数",
+                "page": 9
+              }
+            ]
+          },
+          {
+            "title": "2.5.3 训练",
+            "page": 9,
+            "children": [
+              {
+                "title": "2.5.3.1 监督微调（Supervised Fine-tuning, SFT）",
+                "page": 10
+              },
+              {
+                "title": "2.5.3.2 奖励模型（Reward Model, RM）",
+                "page": 10
+              },
+              {
+                "title": "2.5.3.3 强化学习（Reinforcement Learning from Human Feedback, RLHF）",
+                "page": 11
+              }
+            ]
+          },
+          {
+            "title": "2.5.4 能力",
+            "page": 11
+          }
+        ]
+      },
+      {
+        "title": "2.6 ChatGPT",
+        "page": 12,
+        "children": [
+          {
+            "title": "2.6.1 概述",
+            "page": 12
+          },
+          {
+            "title": "2.6.2 架构",
+            "page": 12
+          },
+          {
+            "title": "2.6.3 训练",
+            "page": 12
+          },
+          {
+            "title": "2.6.4 能力",
+            "page": 13
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 3 章 LLM架构",
+    "page": 13,
+    "children": [
+      {
+        "title": "3.1 LLM基础架构",
+        "page": 13,
+        "children": [
+          {
+            "title": "3.1.1 输入层",
+            "page": 14
+          },
+          {
+            "title": "3.1.2 Transformer Block",
+            "page": 14
+          },
+          {
+            "title": "3.1.3 输出层",
+            "page": 14
+          }
+        ]
+      },
+      {
+        "title": "3.2 LLM架构演进",
+        "page": 14,
+        "children": [
+          {
+            "title": "3.2.1 概述",
+            "page": 14
+          },
+          {
+            "title": "3.2.2 位置编码",
+            "page": 14,
+            "children": [
+              {
+                "title": "3.2.2.1 概述",
+                "page": 15
+              },
+              {
+                "title": "3.2.2.2 正余弦位置编码",
+                "page": 15,
+                "children": [
+                  {
+                    "title": "1） 概述",
+                    "page": 15
+                  },
+                  {
+                    "title": "2） 特点",
+                    "page": 15
+                  },
+                  {
+                    "title": "3） 缺陷",
+                    "page": 16
+                  }
+                ]
+              },
+              {
+                "title": "3.2.2.3 可学习位置编码",
+                "page": 17,
+                "children": [
+                  {
+                    "title": "1） 概述",
+                    "page": 17
+                  },
+                  {
+                    "title": "2） 特点",
+                    "page": 17
+                  },
+                  {
+                    "title": "3） 缺陷",
+                    "page": 17
+                  }
+                ]
+              },
+              {
+                "title": "3.2.2.4 旋转位置编码",
+                "page": 17,
+                "children": [
+                  {
+                    "title": "1） 概述",
+                    "page": 17
+                  },
+                  {
+                    "title": "2） 原理",
+                    "page": 17
+                  },
+                  {
+                    "title": "3） 特点",
+                    "page": 19
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "3.2.3 Attention",
+            "page": 19,
+            "children": [
+              {
+                "title": "3.2.3.1 概述",
+                "page": 19
+              },
+              {
+                "title": "3.2.3.2 MHA（Multi-Head Attention）",
+                "page": 20
+              },
+              {
+                "title": "3.2.3.3 MQA（Multi-Query Attention）",
+                "page": 21
+              },
+              {
+                "title": "3.2.3.4 GQA（Group-Query Attention）",
+                "page": 22
+              }
+            ]
+          },
+          {
+            "title": "3.2.4 Feed Forward Network",
+            "page": 23,
+            "children": [
+              {
+                "title": "3.2.4.1 概述",
+                "page": 24
+              },
+              {
+                "title": "3.2.4.2 激活函数",
+                "page": 24,
+                "children": [
+                  {
+                    "title": "1） ReLU",
+                    "page": 24
+                  },
+                  {
+                    "title": "2） GELU",
+                    "page": 24
+                  },
+                  {
+                    "title": "3） SiLU",
+                    "page": 25
+                  },
+                  {
+                    "title": "4） Swish",
+                    "page": 26
+                  },
+                  {
+                    "title": "5） GLU及其变体",
+                    "page": 26
+                  }
+                ]
+              },
+              {
+                "title": "3.2.4.3 MoE",
+                "page": 27,
+                "children": [
+                  {
+                    "title": "1） 概述",
+                    "page": 27
+                  },
+                  {
+                    "title": "2） 工作流程",
+                    "page": 28
+                  },
+                  {
+                    "title": "3） 能力与优势",
+                    "page": 29
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "3.2.5 残差连接与归一化",
+            "page": 29,
+            "children": [
+              {
+                "title": "3.2.5.1 概述",
+                "page": 30
+              },
+              {
+                "title": "3.2.5.2 RMSNorm",
+                "page": 30
+              },
+              {
+                "title": "3.2.5.3 归一化放置位置",
+                "page": 30,
+                "children": [
+                  {
+                    "title": "1） Post Norm",
+                    "page": 31
+                  },
+                  {
+                    "title": "2） Pre Norm",
+                    "page": 32
+                  },
+                  {
+                    "title": "3） Post Norm in Residual",
+                    "page": 32
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3.3 主流开源LLM架构赏析",
+        "page": 32,
+        "children": [
+          {
+            "title": "3.3.1 概述",
+            "page": 32
+          },
+          {
+            "title": "3.3.2 Qwen3",
+            "page": 32
+          },
+          {
+            "title": "3.3.3 Llama 4",
+            "page": 33
+          },
+          {
+            "title": "3.3.4 GPT-OSS",
+            "page": 34
+          },
+          {
+            "title": "3.3.5 其他",
+            "page": 35
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 4 章 LLM训练机制",
+    "page": 35,
+    "children": [
+      {
+        "title": "4.1 概述",
+        "page": 35
+      },
+      {
+        "title": "4.2 预训练",
+        "page": 36,
+        "children": [
+          {
+            "title": "4.2.1 概述",
+            "page": 36
+          },
+          {
+            "title": "4.2.2 训练机制",
+            "page": 36
+          },
+          {
+            "title": "4.2.3 能力边界",
+            "page": 37
+          }
+        ]
+      },
+      {
+        "title": "4.3 监督微调",
+        "page": 37,
+        "children": [
+          {
+            "title": "4.3.1 概述",
+            "page": 37
+          },
+          {
+            "title": "4.3.2 对话数据的序列化表示",
+            "page": 37
+          },
+          {
+            "title": "4.3.3 训练机制",
+            "page": 38
+          },
+          {
+            "title": "4.3.4 能力边界",
+            "page": 39
+          }
+        ]
+      },
+      {
+        "title": "4.4 偏好对齐",
+        "page": 39,
+        "children": [
+          {
+            "title": "4.4.1 概述",
+            "page": 39
+          },
+          {
+            "title": "4.4.2 基本原理",
+            "page": 39
+          },
+          {
+            "title": "4.4.3 能力边界",
+            "page": 40
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 5 章 LLM推理机制",
+    "page": 40,
+    "children": [
+      {
+        "title": "5.1 概述",
+        "page": 40
+      },
+      {
+        "title": "5.2 生成过程",
+        "page": 40,
+        "children": [
+          {
+            "title": "5.2.1 输入序列的构造",
+            "page": 40
+          },
+          {
+            "title": "5.2.2 Prefill阶段",
+            "page": 41
+          },
+          {
+            "title": "5.2.3 Decode阶段",
+            "page": 42
+          },
+          {
+            "title": "5.2.4 生成终止",
+            "page": 42
+          }
+        ]
+      },
+      {
+        "title": "5.3 Token选择策略",
+        "page": 42,
+        "children": [
+          {
+            "title": "5.3.1 概述",
+            "page": 42
+          },
+          {
+            "title": "5.3.2 确定性生成",
+            "page": 43,
+            "children": [
+              {
+                "title": "5.3.2.1 贪心搜索",
+                "page": 43
+              },
+              {
+                "title": "5.3.2.2 Beam Search",
+                "page": 43
+              }
+            ]
+          },
+          {
+            "title": "5.3.3 随机采样",
+            "page": 43,
+            "children": [
+              {
+                "title": "5.3.3.1 基本原理",
+                "page": 44
+              },
+              {
+                "title": "5.3.3.2 概率分布调节",
+                "page": 44
+              },
+              {
+                "title": "5.3.3.3 候选Token筛选",
+                "page": 44
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "5.4 文本生成实操",
+        "page": 44,
+        "children": [
+          {
+            "title": "5.4.1 generate方法概述",
+            "page": 45
+          },
+          {
+            "title": "5.4.2 generate方法的使用",
+            "page": 45,
+            "children": [
+              {
+                "title": "5.4.2.1 参数",
+                "page": 45,
+                "children": [
+                  {
+                    "title": "1） 模型输入",
+                    "page": 45
+                  },
+                  {
+                    "title": "2） 生成长度",
+                    "page": 45
+                  },
+                  {
+                    "title": "3） Token选择",
+                    "page": 45
+                  },
+                  {
+                    "title": "4） 流式输出",
+                    "page": 46
+                  }
+                ]
+              },
+              {
+                "title": "5.4.2.2 返回值",
+                "page": 46
+              }
+            ]
+          },
+          {
+            "title": "5.4.3 Qwen3-0.6B生成示例",
+            "page": 46,
+            "children": [
+              {
+                "title": "5.4.3.1 模型加载",
+                "page": 46
+              },
+              {
+                "title": "5.4.3.2 对话输入构造",
+                "page": 47
+              },
+              {
+                "title": "5.4.3.3 文本生成与解码",
+                "page": 47
+              },
+              {
+                "title": "5.4.3.4 流式生成",
+                "page": 48,
+                "children": [
+                  {
+                    "title": "1） TextStreamer",
+                    "page": 48
+                  },
+                  {
+                    "title": "2） TextIteratorStreamer",
+                    "page": 49
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 6 章 附录",
+    "page": 50,
+    "children": [
+      {
+        "title": "6.1 RoPE相关公式推导",
+        "page": 50,
+        "children": [
+          {
+            "title": "6.1.1 旋转矩阵基础",
+            "page": 50
+          },
+          {
+            "title": "6.1.2 旋转矩阵的叠加性",
+            "page": 51
+          },
+          {
+            "title": "6.1.3 旋转矩阵的转置",
+            "page": 51
+          }
+        ]
+      }
+    ]
+  }
+]

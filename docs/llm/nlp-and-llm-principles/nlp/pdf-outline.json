@@ -1,0 +1,584 @@
+[
+  {
+    "title": "第 1 章 NLP导论",
+    "page": 1,
+    "children": [
+      {
+        "title": "1.1 定义",
+        "page": 1
+      },
+      {
+        "title": "1.2 常见任务",
+        "page": 1,
+        "children": [
+          {
+            "title": "1.2.1 文本分类",
+            "page": 1
+          },
+          {
+            "title": "1.2.2 序列标注",
+            "page": 1
+          },
+          {
+            "title": "1.2.3 文本生成",
+            "page": 2
+          },
+          {
+            "title": "1.2.4 信息抽取",
+            "page": 2
+          },
+          {
+            "title": "1.2.5 文本转换",
+            "page": 3
+          }
+        ]
+      },
+      {
+        "title": "1.3 技术演进历史",
+        "page": 3,
+        "children": [
+          {
+            "title": "1.3.1 规则系统阶段",
+            "page": 3
+          },
+          {
+            "title": "1.3.2 统计方法阶段",
+            "page": 4
+          },
+          {
+            "title": "1.3.3 机器学习阶段",
+            "page": 5
+          },
+          {
+            "title": "1.3.4 深度学习阶段",
+            "page": 6
+          }
+        ]
+      },
+      {
+        "title": "1.4 环境准备",
+        "page": 8,
+        "children": [
+          {
+            "title": "1.4.1 创建conda环境",
+            "page": 8
+          },
+          {
+            "title": "1.4.2 安装所需依赖",
+            "page": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 2 章 文本表示",
+    "page": 9,
+    "children": [
+      {
+        "title": "2.1 概述",
+        "page": 9
+      },
+      {
+        "title": "2.2 分词",
+        "page": 10,
+        "children": [
+          {
+            "title": "2.2.1 英文分词",
+            "page": 10,
+            "children": [
+              {
+                "title": "2.2.1.1 词级分词",
+                "page": 10
+              },
+              {
+                "title": "2.2.1.2 字符级分词",
+                "page": 11
+              },
+              {
+                "title": "2.2.1.3 子词级分词",
+                "page": 11
+              }
+            ]
+          },
+          {
+            "title": "2.2.2 中文分词",
+            "page": 12,
+            "children": [
+              {
+                "title": "2.2.2.1 字符级分词",
+                "page": 12
+              },
+              {
+                "title": "2.2.2.2 词级分词",
+                "page": 12
+              },
+              {
+                "title": "2.2.2.3 子词级分词",
+                "page": 13
+              }
+            ]
+          },
+          {
+            "title": "2.2.3 分词工具",
+            "page": 13,
+            "children": [
+              {
+                "title": "2.2.3.1 概述",
+                "page": 13
+              },
+              {
+                "title": "2.2.3.2 jieba分词器",
+                "page": 13
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2.3 词表示",
+        "page": 15,
+        "children": [
+          {
+            "title": "2.3.1 概述",
+            "page": 15
+          },
+          {
+            "title": "2.3.2 One-hot编码",
+            "page": 15
+          },
+          {
+            "title": "2.3.3 语义化词向量",
+            "page": 16,
+            "children": [
+              {
+                "title": "2.3.3.1 Word2Vec概述",
+                "page": 16
+              },
+              {
+                "title": "2.3.3.2 Word2Vec原理",
+                "page": 17
+              },
+              {
+                "title": "2.3.3.3 获取Word2Vec词向量",
+                "page": 20
+              },
+              {
+                "title": "2.3.3.4 应用Word2Vec词向量",
+                "page": 23
+              }
+            ]
+          },
+          {
+            "title": "2.3.4 上下文相关词表示（暂时了解）",
+            "page": 24
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 3 章 RNN",
+    "page": 25,
+    "children": [
+      {
+        "title": "3.1 概述",
+        "page": 25
+      },
+      {
+        "title": "3.2 基础结构",
+        "page": 25
+      },
+      {
+        "title": "3.3 多层结构",
+        "page": 27
+      },
+      {
+        "title": "3.4 双向结构",
+        "page": 27
+      },
+      {
+        "title": "3.5 多层+双向结构",
+        "page": 29
+      },
+      {
+        "title": "3.6 API使用",
+        "page": 29,
+        "children": [
+          {
+            "title": "3.6.1 参数说明",
+            "page": 29
+          },
+          {
+            "title": "3.6.2 输入输出",
+            "page": 30
+          }
+        ]
+      },
+      {
+        "title": "3.7 存在问题",
+        "page": 32,
+        "children": [
+          {
+            "title": "3.7.1 概述",
+            "page": 32
+          },
+          {
+            "title": "3.7.2 问题分析",
+            "page": 33
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 4 章 Seq2Seq模型",
+    "page": 35,
+    "children": [
+      {
+        "title": "4.1 概述",
+        "page": 35
+      },
+      {
+        "title": "4.2 模型结构详解",
+        "page": 35,
+        "children": [
+          {
+            "title": "4.2.1 编码器",
+            "page": 35
+          },
+          {
+            "title": "4.2.2 解码器",
+            "page": 36
+          }
+        ]
+      },
+      {
+        "title": "4.3 模型训练和推理机制",
+        "page": 37,
+        "children": [
+          {
+            "title": "4.3.1 模型训练",
+            "page": 37
+          },
+          {
+            "title": "4.3.2 模型推理",
+            "page": 38
+          }
+        ]
+      },
+      {
+        "title": "4.4 存在问题",
+        "page": 39
+      }
+    ]
+  },
+  {
+    "title": "第 5 章 Attention机制",
+    "page": 40,
+    "children": [
+      {
+        "title": "5.1 概述",
+        "page": 40
+      },
+      {
+        "title": "5.2 工作原理",
+        "page": 40,
+        "children": [
+          {
+            "title": "5.2.1 相关性计算",
+            "page": 41
+          },
+          {
+            "title": "5.2.2 注意力权重计算",
+            "page": 41
+          },
+          {
+            "title": "5.2.3 上下文向量计算",
+            "page": 42
+          },
+          {
+            "title": "5.2.4 解码信息融合",
+            "page": 42
+          }
+        ]
+      },
+      {
+        "title": "5.3 注意力评分函数",
+        "page": 43,
+        "children": [
+          {
+            "title": "5.3.1 概述",
+            "page": 43
+          },
+          {
+            "title": "5.3.2 点积评分（Dot）",
+            "page": 43
+          },
+          {
+            "title": "5.3.3 通用点积评分（General）",
+            "page": 44
+          },
+          {
+            "title": "5.3.4 拼接评分（Concat）",
+            "page": 44
+          }
+        ]
+      },
+      {
+        "title": "5.4 存在问题",
+        "page": 44
+      }
+    ]
+  },
+  {
+    "title": "第 6 章 Transformer模型",
+    "page": 45,
+    "children": [
+      {
+        "title": "6.1 概述",
+        "page": 45
+      },
+      {
+        "title": "6.2 模型结构详解",
+        "page": 45,
+        "children": [
+          {
+            "title": "6.2.1 核心思想",
+            "page": 45
+          },
+          {
+            "title": "6.2.2 整体结构",
+            "page": 47
+          },
+          {
+            "title": "6.2.3 编码器",
+            "page": 48,
+            "children": [
+              {
+                "title": "6.2.3.1 概述",
+                "page": 48
+              },
+              {
+                "title": "6.2.3.2 自注意力层",
+                "page": 50
+              },
+              {
+                "title": "6.2.3.3 前馈神经网络层",
+                "page": 56
+              },
+              {
+                "title": "6.2.3.4 残差连接与层归一化",
+                "page": 57
+              },
+              {
+                "title": "6.2.3.5 位置编码",
+                "page": 61
+              },
+              {
+                "title": "6.2.3.6 小结",
+                "page": 64
+              }
+            ]
+          },
+          {
+            "title": "6.2.4 解码器",
+            "page": 65,
+            "children": [
+              {
+                "title": "6.2.4.1 概述",
+                "page": 65
+              },
+              {
+                "title": "6.2.4.2 Masked 自注意力子层",
+                "page": 68
+              },
+              {
+                "title": "6.2.4.3 编码器-解码器注意力子层",
+                "page": 71
+              },
+              {
+                "title": "6.2.4.4 小结",
+                "page": 71
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "6.3 模型训练与推理机制",
+        "page": 72,
+        "children": [
+          {
+            "title": "6.3.1 模型训练",
+            "page": 72
+          },
+          {
+            "title": "6.3.2 模型推理",
+            "page": 72
+          }
+        ]
+      },
+      {
+        "title": "6.4 API使用",
+        "page": 73,
+        "children": [
+          {
+            "title": "6.4.1 概述",
+            "page": 73
+          },
+          {
+            "title": "6.4.2 核心类",
+            "page": 73
+          },
+          {
+            "title": "6.4.3 Transformer构造参数",
+            "page": 74
+          },
+          {
+            "title": "6.4.4 Transformer.forward",
+            "page": 75
+          },
+          {
+            "title": "6.4.5 Transformer.encoder",
+            "page": 78
+          },
+          {
+            "title": "6.4.6 Transformer.decoder",
+            "page": 80
+          }
+        ]
+      },
+      {
+        "title": "6.5 案例实操（中英翻译）",
+        "page": 82,
+        "children": [
+          {
+            "title": "6.5.1 需求说明",
+            "page": 82
+          },
+          {
+            "title": "6.5.2 需求分析",
+            "page": 83
+          },
+          {
+            "title": "6.5.3 需求实现",
+            "page": 84
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 7 章 预训练模型",
+    "page": 99,
+    "children": [
+      {
+        "title": "7.1 预训练模型概述",
+        "page": 99
+      },
+      {
+        "title": "7.2 预训练模型分类",
+        "page": 99
+      },
+      {
+        "title": "7.3 主流预训练模型详解",
+        "page": 100,
+        "children": [
+          {
+            "title": "7.3.1 GPT",
+            "page": 100,
+            "children": [
+              {
+                "title": "7.3.1.1 概述",
+                "page": 101
+              },
+              {
+                "title": "7.3.1.2 模型结构",
+                "page": 101
+              },
+              {
+                "title": "7.3.1.3 预训练",
+                "page": 102
+              },
+              {
+                "title": "7.3.1.4 微调",
+                "page": 103
+              }
+            ]
+          },
+          {
+            "title": "7.3.2 BERT",
+            "page": 104,
+            "children": [
+              {
+                "title": "7.3.2.1 概述",
+                "page": 104
+              },
+              {
+                "title": "7.3.2.2 模型结构",
+                "page": 105
+              },
+              {
+                "title": "7.3.2.3 预训练",
+                "page": 106
+              },
+              {
+                "title": "7.3.2.4 微调",
+                "page": 107
+              }
+            ]
+          },
+          {
+            "title": "7.3.3 T5",
+            "page": 110,
+            "children": [
+              {
+                "title": "7.3.3.1 概述",
+                "page": 110
+              },
+              {
+                "title": "7.3.3.2 模型结构",
+                "page": 111
+              },
+              {
+                "title": "7.3.3.3 预训练",
+                "page": 111
+              },
+              {
+                "title": "7.3.3.4 微调",
+                "page": 111
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "7.4 HuggingFace快速入门",
+        "page": 111
+      },
+      {
+        "title": "7.5 案例实操（AI智评）",
+        "page": 111,
+        "children": [
+          {
+            "title": "7.5.1 需求说明",
+            "page": 111
+          },
+          {
+            "title": "7.5.2 需求分析",
+            "page": 111
+          },
+          {
+            "title": "7.5.3 需求实现",
+            "page": 112
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "第 8 章 附录",
+    "page": 122
+  }
+]

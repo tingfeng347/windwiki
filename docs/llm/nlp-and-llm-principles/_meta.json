@@ -1,0 +1,17 @@
+[
+  {
+    "type": "file",
+    "name": "nlp/index",
+    "label": "NLP"
+  },
+  {
+    "type": "file",
+    "name": "llm-overview/index",
+    "label": "大模型概述"
+  },
+  {
+    "type": "file",
+    "name": "llm-principles/index",
+    "label": "大模型原理"
+  }
+]

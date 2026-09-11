@@ -48,5 +48,11 @@
     "name": "machine-learning-and-deep-learning",
     "label": "机器学习与深度学习",
     "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "nlp-and-llm-principles",
+    "label": "NLP与LLM原理",
+    "collapsed": true
   }
 ]
