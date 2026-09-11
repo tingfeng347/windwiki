@@ -1,30 +1,7 @@
 ---
 description: 尚硅谷大模型技术之FastAPI，从协程、WSGI/ASGI 到 FastAPI 框架与实战。
 ---
-
 # FastAPI
-
-```java
-课前回顾:
-  1.最重要的函数:if判断  
-    if   ifnull  case when
-  2.python操作mysql
-    a.创建连接对象
-    b.获取游标(用于执行sql的对象)
-    c.准备sql
-    d.执行sql语句
-    e.处理结果
-    f.关闭资源
-今日重点:
-  1.会使用FastAPI框架接收客户端发来的请求
-  2.获取请求参数
- 
-今日的内容:
-  以 FastAPI 为 Web 框架核心
-  基于协程的异步编程模式
-  集成 SQLAlchemy 进行数据交互
-  依托 Uvicorn 作为异步服务器运行环境
-```
 
 ## 第一章.协程
 
@@ -66,8 +43,8 @@ description: 尚硅谷大模型技术之FastAPI，从协程、WSGI/ASGI 到 Fast
   async def 方法名():
       方法体
 2.返回值:返回的是一个协程对象,虽然我们没有写return,但是协程函数也会自动返回协程对象
-    
-3.注意:如果想让当前协程挂起,让别的协程执行,需要使用await  
+  
+3.注意:如果想让当前协程挂起,让别的协程执行,需要使用await
 ```
 
 ```java
@@ -86,16 +63,15 @@ if __name__ == '__main__':
 
    #真正执行协程
    asyncio.run(res)
-
 ```
 
 > 1.注意:await是协程的灵魂,它用于暂停当前协程的执行,并等待一个可等待对象(Awaitable,通常是另一个协程或I/O操作)完成。
 >
-> ​    a.遇到await时：当前协程进入“挂起”状态。
+>     a.遇到await时：当前协程进入“挂起”状态。
 >
-> ​    b.事件循环(EventLoop)接管：它会去调度执行其他处于“就绪”状态的协程。
+>     b.事件循环(EventLoop)接管：它会去调度执行其他处于“就绪”状态的协程。
 >
-> ​    c.等待对象完成后：事件循环会把控制权交还给被挂起的协程,使其从await之后继续执行。
+>     c.等待对象完成后：事件循环会把控制权交还给被挂起的协程,使其从await之后继续执行。
 
 #### 1.2.运行协程:事件循环
 
@@ -108,7 +84,7 @@ if __name__ == '__main__':
   d.等待结束后,再回来继续执行
 3.如何运行协程?
   asyncio.run(协程对象)  -> 创建事件循环  + 运行协程  + 结束后关闭
-      
+    
 4.实现
   a.定义两个协程函数,设置每个协程要执行的任务
   b.定义一个主协程函数,将两个协程包装成后台任务,统一调度
@@ -152,8 +128,8 @@ if __name__ == '__main__':
 ## 第三章.WSGI和ASGI
 
 ```java
-1.概述:WSGI和ASGI是python web开发中的两个重要的接口规范,用于定义web服务器与python web应用之间的通信规则,他们的核心区别在于对异步的支持能力    
-    
+1.概述:WSGI和ASGI是python web开发中的两个重要的接口规范,用于定义web服务器与python web应用之间的通信规则,他们的核心区别在于对异步的支持能力  
+  
   a.WSGI:Web Server Gateway Interface(Web 服务器网关接口)
   b.ASGI:Asynchronous Server Gateway Interface(异步服务器网关接口)
 ```
@@ -162,7 +138,7 @@ if __name__ == '__main__':
 
 ```java
 1.WSGI:Python 最早的 Web 服务器与应用接口规范(2003 年提出),仅支持同步操作,主要解决早期 Python Web 框架(如 Flask、Django 旧版本)与服务器的兼容性问题,让同一应用可以运行在不同的 WSGI 服务器上(如 Gunicorn、uWSGI)
-    
+  
 2.ASGI:是 WSGI 的异步升级版(2018 年提出),原生支持异步操作,同时兼容 WSGI。设计目标是解决 WSGI 无法高效处理异步任务(如 WebSocket、长轮询)的问题,为 FastAPI、Starlette 等异步框架提供标准接口
 ```
 
@@ -172,10 +148,10 @@ if __name__ == '__main__':
 1.WSGI:
   客户端发送请求 → WSGI 服务器接收 → 同步调用应用的 application(environ, start_response) 函数 → 应用处理后通过 start_response 返回响应 → 服务器转发响应。
 整个过程是同步阻塞的,一个请求未处理完时,对应的线程 / 进程无法处理其他请求。
-    
-    
+  
+  
 2.ASGI:
-  客户端发送请求 → ASGI 服务器接收 → 将请求封装为事件(如 http.request) → 通过事件循环异步传递给应用 → 应用处理后返回事件(如 http.response) → 服务器转发响应。等待 I/O 操作(如数据库查询)时,事件循环会切换到其他请求,实现非阻塞处理    
+  客户端发送请求 → ASGI 服务器接收 → 将请求封装为事件(如 http.request) → 通过事件循环异步传递给应用 → 应用处理后返回事件(如 http.response) → 服务器转发响应。等待 I/O 操作(如数据库查询)时,事件循环会切换到其他请求,实现非阻塞处理  
 ```
 
 ### 3.WSGI和ASGI怎么选择
@@ -184,7 +160,7 @@ if __name__ == '__main__':
 若使用同步框架(如 Flask、Django 3.0 之前版本),需用WSGI服务器(如 Gunicorn)。
 若使用异步框架(如 FastAPI、Starlette、Django 3.1+ 异步模式),需用ASGI服务器(如Uvicorn)以发挥异步性能。
 对于需要实时通信(如WebSocket聊天、实时数据推送)的场景,必须使用ASGI。
-    
+  
 现在开发,服务器肯定都是异步处理请求的,所以我们选择的服务器是 Uvicorn(基于ASGI标准的服务器)   
 ```
 
@@ -195,7 +171,7 @@ if __name__ == '__main__':
 ```java
 1.概述:FastAPI 是一个现代、快速(高性能)的Web框架,用于构建web应用程序。是建立在Starlette 和Pydantic基础上的。它基于Python 3.7 +的类型提示(type hints)和异步编程(asyncio)能力,使得代码易于编写、阅读和维护。FastAPI 具有自动交互式文档(基于 OpenAPI 规范和 JSON Schema)、数据验证、依赖注入(Dependency Injection)等功能,这些功能使得开发速度更快、更可靠。
 
-2.资料网址:    
+2.资料网址:  
   a.文档： https://fastapi.tiangolo.com 
   b.源码： https://github.com/fastapi/fastapi
 
@@ -251,18 +227,16 @@ async def request_method02(item_id:int,param:str = None):
 
 ```java
 1.打开pycharm上的终端
-    
+  
 2.进入到当前python代码所在的目录
-    
+  
 3.输入命令:uvicorn py文件名:FastAPI实例名称 --reload
   uvicorn demo01_fastapi:app --reload   
-    
+  
 4.浏览器输入访问路径  
 ```
 
 ![image-20260624141221562](./image/image-20260624141221562.png)
-
-
 
 ##### 2.4.2.通过程序启动uvicorn服务
 
@@ -294,15 +268,15 @@ if __name__ == '__main__':
 1.程序说明:程序启动之后FastAPI底层会创建一个字典:
   key:请求路径
   value:对应的方法名
-      
+    
 2.当我们在浏览器上访问,填写路径时,FastAPI会获取路径,将其当做key,去找对应的value,这个value就是方法名,然后调用该方法
-      
+    
 3.如果@app.get("/items/{item_id}")有请求参数了,那么方法的参数名要和这个请求参数名字一样,这样浏览器上的请求参数才能给该方法的参数赋上值
 
-      
-4.如果定义方法的时候前面没有加async,FastAPI在处理请求的时候就按照同步请求处理;加上了async,FastAPI就按照异步请求处理
     
-5.想给客户端响应什么内容,就可以用return返回什么内容     
+4.如果定义方法的时候前面没有加async,FastAPI在处理请求的时候就按照同步请求处理;加上了async,FastAPI就按照异步请求处理
+  
+5.想给客户端响应什么内容,就可以用return返回什么内容   
 ```
 
 ### 3.交互式API文档
@@ -313,7 +287,7 @@ if __name__ == '__main__':
   b.操作请求参数,传递请求参数
 2.打开方式:
   浏览器输入: localhost:8000/docs
-      
+    
 3.发请求,测接口还可以使用其他软件:
   a.postman
   b.apipost
@@ -383,8 +357,8 @@ def delete_user(user_id: int):
 2.注意:
   我们在客户端发送请求时,请求路径上的路径参数一概都是以字符串传递,但是请求发送到服务端之后FastAPI会将字符串自动转成我们自己定的类型
   但是传递过来的路径参数要能正确转型,比如:item_id为int型,那么我们传递的路径参数必须是数字形式,要是传递aa过来肯定报错
-      
-  如果不指定类型,默认都按照字符串处理    
+    
+  如果不指定类型,默认都按照字符串处理  
 ```
 
 ##### 5.2.2.路径参数顺序
@@ -423,7 +397,7 @@ if __name__ == '__main__':
 ```java
 1.问题分析:
   1.request_method1方法中的路径参数没有规定具体的类型,所以服务端的FastAPI直接按照字符串类型处理路径参数,所以我们传递10以及main都直接被request_method1接收了,就没有走request_method2
-      
+    
 2.解决:
   将写死的路径放到上面
 ```
@@ -517,7 +491,7 @@ async def request_method01(param1: str,param2: str):
 ```java
 1.注意:
   以上都是通过浏览器地址栏直接发送请求,地址栏发送请求都是get请求
-      
+    
   如果是post请求,就需要通过请求体传递请求参数
 ```
 
@@ -570,9 +544,9 @@ if __name__ == "__main__":
   将来我们会开发很多功能,比如我们要开发添加学生(add_student)功能,后来还要开发添加老师(add_teacher)功能,这两个功能如果放到同一个模块中就会出现很多问题:
     比如:add_student方法上的请求路径我们写成 -> @app.post("/add")
         add_teacher方法上的请求路径我们也写成了 -> @app.post("/add")
-        
+      
         此时这两个功能的访问路径就冲突了
-        
+      
 2.解决:
   我们将学生相关功能单独放到一个模块中,将老师相关功能单独放到一个模块中,然后将请求路径(路由)拆分放到不同的模块中
 ```
@@ -685,7 +659,7 @@ if __name__ == "__main__":
 2.作用:
   a.对sql语句进行高度封装
   b.操作数据库更容易,更方便
-3.最重要的核心:ORM(Object-Relational Mapping,对象关系映射)      
+3.最重要的核心:ORM(Object-Relational Mapping,对象关系映射)    
 ```
 
 ### 1.ORM介绍
@@ -715,13 +689,13 @@ ORM(Object-Relational Mapping,对象关系映射)是一种编程技术,它将数
 ```java
 1.统一不同的关系型数据库操作差异
   同一套代码可适配多种数据库(MySQL、PostgreSQL 等),无需修改核心逻辑
-    
+  
 2.简化开发流程
   用类、对象、方法替代 SQL 语句,降低数据库操作的学习成本
    
 3.提高代码可读性
   将数据库操作与业务逻辑融合,代码更符合面向对象思维
-    
+  
 4.自动处理类型转换
   无需手动转换数据库字段与Python类型(如MySQL的INT与Python的int)  
 ```
@@ -732,11 +706,12 @@ ORM(Object-Relational Mapping,对象关系映射)是一种编程技术,它将数
 Python生态中有多个成熟的ORM工具,各有侧重,以下是常见产品的对比
 ```
 
-| **ORM工具**  | **特点**                                                     | **适用场景**                                 |
-| ------------ | ------------------------------------------------------------ | -------------------------------------------- |
-| SQLAlchemy   | 功能全面,支持ORM和原生SQL,灵活度极高,文档丰富,生态完善。     | 中大型项目、复杂查询场景、需要跨数据库兼容。 |
-| Django ORM   | 与 Django 框架深度绑定,开箱即用,简化 CRUD 操作,但灵活性较低。 | Django 框架开发的 Web 应用。                 |
-| Tortoise-ORM | 异步 ORM,支持 async/await,与 FastAPI 等异步框架契合度高。    | 异步 Web 应用(如 FastAPI + 异步数据库驱动)。 |
+
+| **ORM工具**  | **特点**                                                       | **适用场景**                                 |
+| -------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
+| SQLAlchemy   | 功能全面,支持ORM和原生SQL,灵活度极高,文档丰富,生态完善。       | 中大型项目、复杂查询场景、需要跨数据库兼容。 |
+| Django ORM   | 与 Django 框架深度绑定,开箱即用,简化 CRUD 操作,但灵活性较低。  | Django 框架开发的 Web 应用。                 |
+| Tortoise-ORM | 异步 ORM,支持 async/await,与 FastAPI 等异步框架契合度高。      | 异步 Web 应用(如 FastAPI + 异步数据库驱动)。 |
 | SQLModel     | 基于 SQLAlchemy 和 Pydantic,简化模型定义,兼顾 ORM 和数据验证。 | FastAPI 项目,追求模型定义简洁性。            |
 
 ```java
@@ -767,16 +742,16 @@ SQLAlchemy的架构分层,从下到上可分为DBAPI 层、SQLAlchemy Core(核�
 
   a.Schema / Types:定义数据库的模式(Schema)和数据类型(Types)
     Schema对应数据库的表、列、约束等结构(比如定义一张表有哪些字段、字段类型是什么)。Types封装了数据库支持的数据类型        (如 Integer、String、DateTime 等),并提供 Python 类型与数据库类型的映射。
-      
+    
   b.SQL Expression Language:用Python代码生成SQL语句的 “表达式语言”
     它允许你用面向对象的方式编写 SQL(比如用 table.c.column == value 表示 WHERE column = value),既保留了 SQL 的     灵活性,又能避免手写 SQL 带来的语法错误和安全问题(如 SQL 注入)
-      
+    
   c.Engine:管理数据库连接的 “引擎”,是与数据库交互的 “入口”
     Engine 负责创建和维护数据库连接,还会集成连接池(Connection Pooling)和方言(Dialect)
   
   d.Connection Pooling:管理数据库连接池,提升数据库操作性能
     连接池会预先创建一批数据库连接并复用,避免频繁创建 / 销毁连接的开销,尤其在高并发场景下能显著提高效率
-      
+    
   e.Dialect:处理 “方言” 差异,适配不同数据库的 SQL 语法和特性
     不同数据库(如 MySQL 和 PostgreSQL)的 SQL 语法、函数可能有差异(比如 MySQL 的 LIMIT 和 PostgreSQL的             LIMIT/OFFSET 用法不同)。Dialect 会对这些差异做 “翻译”,让上层代码能以统一的方式操作不同数据库 
 ```
@@ -1164,8 +1139,9 @@ def find_data():
 
 #### 4.1.常见的关联关系
 
+
 | 关联类型             | 场景示例                 | 数据库实现                    |
-| -------------------- | ------------------------ | ----------------------------- |
+| ---------------------- | -------------------------- | ------------------------------- |
 | 一对多(One-to-Many)  | 一个用户拥有多个商品     | 子表通过外键关联主表          |
 | 多对一(Many-to-One)  | 多个商品属于一个用户     | 同上(一对多的反向视角)        |
 | 一对一(One-to-One)   | 一个用户对应一个个人资料 | 子表外键设为唯一(unique=True) |
@@ -1177,8 +1153,9 @@ def find_data():
 relationship 函数是定义关联关系的核心,常用参数如下
 ```
 
+
 | 参数                      | 作用                                                   | 示例                                   |
-| ------------------------- | ------------------------------------------------------ | -------------------------------------- |
+| --------------------------- | -------------------------------------------------------- | ---------------------------------------- |
 | argument                  | 必选，指定关联的目标模型(类或字符串)                   | relationship("Item")                   |
 | back_populates            | 双向关联时，指定反向关联的字段名(显式定义双向关系)     | back_populates="owner"                 |
 | backref                   | 简化双向关联，自动为目标模型添加反向关联字段(隐式定义) | backref="owner"                        |
