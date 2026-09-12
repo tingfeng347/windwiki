@@ -230,10 +230,11 @@ docs/
 │   │   ├── nlp/                  # 同为 PDF 课程
 │   │   ├── llm-overview/         # Markdown 正文（+ images/）
 │   │   └── llm-principles/       # 同为 PDF 课程
-│   └── langchain-langgraph-deepagents/      # 分组：LangChain、LangGraph 与 DeepAgents
-│       ├── langchain/            # PDF 课程
-│       ├── langgraph/            # PDF 课程
-│       └── deepagents/           # Markdown 正文两篇（+ images/）
+│   ├── langchain-langgraph-deepagents/      # 分组：LangChain、LangGraph 与 DeepAgents
+│   │   ├── langchain/            # PDF 课程
+│   │   ├── langgraph/            # PDF 课程
+│   │   └── deepagents/           # Markdown 正文两篇（+ images/）
+│   └── reinforcement-learning-and-multimodal/  # PDF 课程，421 页
 └── public/            # 站点级静态资源（favicon.svg、files/ 下的 PDF 等）
 
 components/

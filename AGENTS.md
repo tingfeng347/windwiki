@@ -23,11 +23,11 @@ pnpm preview
 
 只有与正文无关的站点级静态资源（`favicon.svg` 等）才放 `docs/public/`。
 
-分类：当前只有一个顶层分类 `llm/`（大模型），其下按顺序是 `python-basics/`（Python 基础）、`data-structures-and-algorithms/`（数据结构与算法）、`linux-shell-git/`（Linux、Shell 与 Git）、`mysql/`（MySQL）、`docker/`（Docker）、`numpy-pandas/`（NumPy 与 Pandas）、`fastapi/`（FastAPI）、`machine-learning-and-deep-learning/`（机器学习与深度学习）、`nlp-and-llm-principles/`（NLP与LLM原理）、`langchain-langgraph-deepagents/`（LangChain、LangGraph 与 DeepAgents）。顺序在各级 `_meta.json` 中维护。
+分类：当前只有一个顶层分类 `llm/`（大模型），其下按顺序是 `python-basics/`（Python 基础）、`data-structures-and-algorithms/`（数据结构与算法）、`linux-shell-git/`（Linux、Shell 与 Git）、`mysql/`（MySQL）、`docker/`（Docker）、`numpy-pandas/`（NumPy 与 Pandas）、`fastapi/`（FastAPI）、`machine-learning-and-deep-learning/`（机器学习与深度学习）、`nlp-and-llm-principles/`（NLP与LLM原理）、`langchain-langgraph-deepagents/`（LangChain、LangGraph 与 DeepAgents）、`reinforcement-learning-and-multimodal/`（强化学习与多模态）。顺序在各级 `_meta.json` 中维护。
 
 最后三个是分组：`machine-learning-and-deep-learning/` 放着 `math-basics/`、`machine-learning/`、`deep-learning/`；`nlp-and-llm-principles/` 放着 `nlp/`、`llm-overview/`、`llm-principles/`；`langchain-langgraph-deepagents/` 放着 `langchain/`、`langgraph/` 与 `deepagents/`（后者自己也是一个目录，装两篇 Markdown）。
 
-`numpy-pandas/`、上述两个分组里除 `llm-overview/` 之外的课，以及 `langchain/`、`langgraph/`，都是「一页读完一份 PDF」的课程：正文不落成 Markdown，PDF 放 `docs/public/files/`，见 README 的「PDF 课程笔记」；`llm-overview/` 与 `deepagents/` 下的两篇是从外部 Markdown 导入的，截图放同级 `images/`，见 README 的「导入外部 Markdown 笔记」。
+`numpy-pandas/`、`reinforcement-learning-and-multimodal/`、上述两个分组里除 `llm-overview/` 之外的课，以及 `langchain/`、`langgraph/`，都是「一页读完一份 PDF」的课程：正文不落成 Markdown，PDF 放 `docs/public/files/`，见 README 的「PDF 课程笔记」；`llm-overview/` 与 `deepagents/` 下的两篇是从外部 Markdown 导入的，截图放同级 `images/`，见 README 的「导入外部 Markdown 笔记」。
 
 `docs/_nav.json` 管理顶部导航，各级 `_meta.json` 组织知识树与局部顺序。站点为纯中文（`rspress.config.ts` 的 `lang: 'zh'`）。不要在 `rspress.config.ts` 维护庞大的导航数组。
 
