@@ -1,11 +1,6 @@
 [
   {
     "type": "file",
-    "name": "index",
-    "label": "概览"
-  },
-  {
-    "type": "file",
     "name": "01-basics",
     "label": "第 1 章 必备基础知识"
   },
