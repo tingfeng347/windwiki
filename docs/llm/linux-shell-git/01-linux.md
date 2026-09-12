@@ -3,9 +3,6 @@ description: 尚硅谷大模型技术之Linux（Ubuntu）基础操作笔记。
 ---
 
 # Linux（Ubuntu）
-*（作者：尚硅谷研究院）*
-
-**版本：V2.0.0**
 
 ## 1.Linux入门
 
