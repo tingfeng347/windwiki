@@ -35,12 +35,12 @@ html:has(.windwiki-pdf-viewer) {
   margin: 24px 0;
 }
 
+/*
+ * 工具条。≥1280px 时整条不生成盒子（display: contents），控件收进贴页面下缘的一条单行底栏，
+ * 平时隐藏、鼠标移到底部才弹出 —— PDF 上方那条高度就彻底还给内容了。
+ * 窄屏（面板会变成浮层）保持原来的顶部单行，免得和浮层打架。
+ */
 .windwiki-pdf-viewer__toolbar {
-  position: sticky;
-  /* 导航栏自动隐藏时 --rp-nav-height 会被置 0，工具栏跟着贴到视口顶部 */
-  top: var(--rp-nav-height, 64px);
-  z-index: 3;
-
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -51,6 +51,102 @@ html:has(.windwiki-pdf-viewer) {
   border: 1px solid var(--rp-c-divider-light);
   border-radius: 8px;
   background-color: var(--rp-c-bg);
+}
+
+/*
+ * 窄屏 / 无 hover 的设备：保持一条看不出重量的横栏（面板就是普通容器）。
+ */
+.windwiki-pdf-viewer__rail,
+.windwiki-pdf-viewer__panel {
+  display: contents;
+}
+
+.windwiki-pdf-viewer__rail-zone {
+  display: none;
+}
+
+/*
+ * ≥1280px：工具条脱离文档流，收成贴页面下缘的一条单行底栏，PDF 上方的高度彻底归零。
+ * 面板默认可见 —— 这一档同时覆盖「宽屏但无 hover」（触摸屏、无头浏览器），那种环境下面板
+ * 必须常驻，否则控件没法用；真正的「移入弹出」写在下面的 hover 查询里。
+ */
+@media (min-width: 1280px) {
+  .windwiki-pdf-viewer__toolbar {
+    display: contents;
+  }
+
+  .windwiki-pdf-viewer__rail {
+    display: block;
+    position: fixed;
+    z-index: 3;
+    bottom: 0;
+    /* --windwiki-pdf-rail-* 由组件量出阅读器边界后写在根元素上 */
+    left: var(--windwiki-pdf-rail-left, 0px);
+    right: var(--windwiki-pdf-rail-right, 0px);
+    /* 只有面板本身吃事件，这条带子不挡正文 */
+    pointer-events: none;
+  }
+
+  .windwiki-pdf-viewer__panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    width: fit-content;
+    margin-inline: auto;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+
+    border-radius: 10px;
+    background-color: var(--rp-c-bg);
+    box-shadow:
+      0 1px 8px rgb(0 0 0 / 0.14),
+      0 0 0 1px var(--rp-c-divider-light);
+    pointer-events: auto;
+  }
+
+  /* 一条单行栏，搜索框收窄一点 */
+  .windwiki-pdf-viewer__panel .windwiki-pdf-viewer__search {
+    margin-left: 0;
+  }
+
+  .windwiki-pdf-viewer__panel .windwiki-pdf-viewer__search-input {
+    width: 130px;
+  }
+}
+
+/*
+ * 有真实指针的设备：底栏平时藏起来，鼠标移到底部那条 44px 高热区（或键盘 Tab 进面板）才
+ * 从下面升上来。
+ */
+@media (min-width: 1280px) and (hover: hover) {
+  .windwiki-pdf-viewer__rail-zone {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    height: 44px;
+    left: var(--windwiki-pdf-rail-left, 0px);
+    right: var(--windwiki-pdf-rail-right, 0px);
+    pointer-events: auto;
+  }
+
+  .windwiki-pdf-viewer__panel {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.18s ease-out,
+      transform 0.18s ease-out;
+  }
+
+  .windwiki-pdf-viewer__rail:hover .windwiki-pdf-viewer__panel,
+  .windwiki-pdf-viewer__panel:focus-within {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .windwiki-pdf-viewer__group {

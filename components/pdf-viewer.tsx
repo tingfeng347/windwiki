@@ -5,7 +5,15 @@ import type {
   PDFPageProxy,
   PageViewport,
 } from 'pdfjs-dist';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { createPortal } from 'react-dom';
 import './pdf-viewer.css';
 
@@ -468,6 +476,7 @@ export default function PdfViewer({ src, outline }: PdfViewerProps) {
     const update = () => {
       frame = 0;
       const viewportBottom = window.innerHeight;
+      // 工具条改成悬浮后它不再占高度（display:contents 量出来是 0），窄屏下仍是顶部那一条
       const viewportTop = toolbarRef.current?.getBoundingClientRect().bottom ?? 0;
       const guess = currentPageRef.current;
       const candidates = new Set(visiblePagesRef.current);
@@ -668,6 +677,37 @@ export default function PdfViewer({ src, outline }: PdfViewerProps) {
     [hits, matchPos, jumpToPage],
   );
 
+  /**
+   * 两条悬浮轨的横向锚点。它们用 position: fixed 悬在页面两侧（这样不占 PDF 上方的高度），
+   * 而 fixed 是相对视口定位的，所以得先量出阅读器自己的左右边界、写进 CSS 变量。
+   * 面板折叠、窗口缩放都会改变边界，用 ResizeObserver 跟着更新。
+   */
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) {
+      return;
+    }
+    const update = () => {
+      const rect = root.getBoundingClientRect();
+      // 用 clientWidth 而不是 innerWidth：后者含纵向滚动条，fixed 的 right 却按不含滚动条的
+      // 布局视口算，差出来正好一条滚动条的宽度（实测 15px）
+      const viewportWidth = document.documentElement.clientWidth;
+      root.style.setProperty('--windwiki-pdf-rail-left', `${Math.round(rect.left)}px`);
+      root.style.setProperty(
+        '--windwiki-pdf-rail-right',
+        `${Math.round(viewportWidth - rect.right)}px`,
+      );
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(root);
+    window.addEventListener('resize', update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
   const flatOutline = useMemo(() => flattenOutline(outline), [outline]);
   const activeOutlineIndex = useMemo(() => {
     let active = -1;
@@ -740,6 +780,10 @@ export default function PdfViewer({ src, outline }: PdfViewerProps) {
     <div className="windwiki-pdf-viewer" ref={rootRef}>
       {outlinePanel}
       <div className="windwiki-pdf-viewer__toolbar" ref={toolbarRef}>
+        {/* 一条底栏：翻页、缩放、搜索全在一行。平时收起，鼠标移到页面下缘才弹出来 */}
+        <div className="windwiki-pdf-viewer__rail windwiki-pdf-viewer__rail--bottom">
+        <span className="windwiki-pdf-viewer__rail-zone" aria-hidden="true" />
+        <div className="windwiki-pdf-viewer__panel">
         <div className="windwiki-pdf-viewer__group">
           <button
             type="button"
@@ -859,6 +903,8 @@ export default function PdfViewer({ src, outline }: PdfViewerProps) {
             ↓
           </button>
         </form>
+        </div>
+        </div>
       </div>
 
       <div className="windwiki-pdf-viewer__stage" ref={stageRef}>
