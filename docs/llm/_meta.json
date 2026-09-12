@@ -77,5 +77,10 @@
     "name": "evaluation-and-optimization",
     "label": "评估与优化",
     "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "vibe-coding/vibe-coding",
+    "label": "Vibe Coding"
   }
 ]
