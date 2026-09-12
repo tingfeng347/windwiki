@@ -71,5 +71,11 @@
     "name": "model-training-and-deployment",
     "label": "模型训练与部署",
     "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "evaluation-and-optimization",
+    "label": "评估与优化",
+    "collapsed": true
   }
 ]
