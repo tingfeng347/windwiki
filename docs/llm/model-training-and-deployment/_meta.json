@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "training/index",
+    "label": "模型训练"
+  },
+  {
+    "type": "dir",
+    "name": "deployment",
+    "label": "模型部署"
+  }
+]

@@ -65,5 +65,11 @@
     "type": "file",
     "name": "reinforcement-learning-and-multimodal/index",
     "label": "强化学习与多模态"
+  },
+  {
+    "type": "dir",
+    "name": "model-training-and-deployment",
+    "label": "模型训练与部署",
+    "collapsed": true
   }
 ]

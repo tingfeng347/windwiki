@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "01-gpu-deployment",
+    "label": "GPU 模型部署"
+  },
+  {
+    "type": "file",
+    "name": "02-application-deployment",
+    "label": "应用服务部署"
+  }
+]
