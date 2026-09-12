@@ -12,6 +12,12 @@ html:has(.windwiki-pdf-viewer) .rp-doc-layout__doc {
   overflow: visible;
   /* 顺带让 PDF 用满知识树与目录之间的全部宽度 */
   max-width: 100%;
+  /*
+   * min-width: 0 不能少：flex 项默认 min-width:auto，放大后 PDF 页面比栏还宽时，
+   * 它会按内容的 min-content 宽度把正文栏撑开，从而把右侧目录挤成 0 宽（实测 217%
+   * 时目录栏宽度就是 0）。归零之后超出的部分由 .stage 自己横向滚动。
+   */
+  min-width: 0;
 }
 
 /* 这一页只有 PDF，不需要正文那种 80px 的左右留白 */
@@ -247,12 +253,17 @@ html:has(.windwiki-pdf-viewer) {
   outline-offset: 1px;
 }
 
-/* 页面竖向排开，像浏览网页一样一路往下滚 */
+/*
+ * 页面竖向排开，像浏览网页一样一路往下滚；放大后单页比栏宽时，在这里横向滚动，
+ * 而不是去挤整个布局。
+ */
 .windwiki-pdf-viewer__stage {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* safe center：页面比栏宽时按「起点」对齐，否则居中会把左边一截裁到滚动区之外、滚不回去 */
+  align-items: safe center;
   gap: 16px;
+  overflow-x: auto;
 }
 
 .windwiki-pdf-viewer__message {
