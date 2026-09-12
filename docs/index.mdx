@@ -8,9 +8,13 @@ hero:
   text: 工程知识库
   tagline: 记录技术学习笔记与工程实践，从 Python 基础开始。
   actions:
+    # 「开始阅读」指向 /llm/ 概览页，而不是直接跳进 Python 基础：Rspress 内建的行为是
+    # 「当前页所在的分组自动展开」，一跳进课程就会把整门课的章节铺开、把其它课程挤出
+    # 可视区（运行时 createInitialSidebar 里写死的，没有开关）。概览页不属于任何分组，
+    # 从它进来知识树是全部收起的，需要时自己点开。
     - theme: brand
       text: 开始阅读
-      link: /llm/python-basics/
+      link: /llm/
     - theme: alt
       text: 浏览目录
       link: /llm/
