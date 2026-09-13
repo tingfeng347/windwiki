@@ -168,6 +168,25 @@ import outline from './pdf-outline.json';
 
 > 组件路径按嵌套深度写：`docs/llm-applications/numpy-pandas/index.mdx` 是 `../../../components/pdf-viewer`，分组里（`docs/llm-applications/<分组>/<课程>/index.mdx`）要多退一级。
 
+## 标记
+
+选中文字或标题后右键「打标记」，导航栏的标记按钮（全屏右边）里会列出**全站**的标记、按页面分组：当前页排最前并标「本页」，分组标题取自站点页面表（`usePages()`），组内新的在上。点一条就跳回那个位置并高亮；别的页面的标记会先切路由、等那一页的数据真的加载好再定位。
+
+标记只存在浏览器本地（`localStorage` 的 `windwiki:markers`，结构是 `Record<routePath, Marker[]>`）——**没有后端，不跨设备**，换浏览器或清站点数据就没了。这是纯静态站的取舍，不是没做完。
+
+> 键必须是**干净的 routePath**（`/llm-applications/python-basics/01-basics`），不能直接用 `location.pathname`：站点没开 `cleanUrls`，地址栏里是 `.../01-basics.html`，而页面表、路由表和 `navigate()` 用的都是干净那份，两边对不上会出现「跳过去了但列表里的标题是路径、跨页定位等不到页面」。`currentRoutePath()`（`marker-store.ts`）用 Rspress 自己的 `pathnameToRouteService` 做这个桥接；`read()` 读旧数据时也走它，所以带 `.html` 的老键会自动收敛。
+
+定位用的是「文字引用」：记下选中的文字，外加前后各 32 字用于消歧；重新定位时在同一个根元素下按文本顺序找回来。Markdown 的根是 `.rp-doc.rspress-doc`，PDF 的根是该页的文字层。两边匹配前都做「去掉所有空白 + 转小写」——PDF 文字层里的空格是 pdf.js 按字形位置生成的、并不可靠，这和 `pdf-viewer.tsx` 的搜索是同一套归一化。Markdown 的标题另有更稳的锚：标题带 `id`（`github-slugger` 生成），优先用它。
+
+四处容易踩的地方：
+
+- **右键只在真的选中了正文时才接管。** `captureSelection` 返回 `null`（没有选区、选区在正文之外、跨页）就什么都不做，让系统菜单照常弹出来；无条件 `preventDefault` 会把整站的右键都吃掉。标题里那个 `#` 锚也排除在外，否则用户想「复制链接地址」时会吃到我们的菜单。菜单里带「复制」也是因为这个：接管之后原生菜单就没了。
+- **高亮走 CSS Custom Highlight API（`::highlight(windwiki-marker)`），不改 DOM。** PDF 的文字层会被 `pdf-viewer.tsx` 反复 `replaceChildren()`（离开可视区时、每次改缩放时），往里插的节点一定留不住。实测这个高亮能压在 canvas 之上——PDF 的文字层是 `color: transparent` 的，字形由 canvas 画。
+- **跳到还没渲染的远景页要先等文字层。** 页容器一开始就全在，内容是懒渲染的。这里照抄 `pdf-viewer.tsx` 的 `revealActiveHit`：rAF 轮询到文字层有子节点为止，上限 3s；等不到就只滚到那一页、不高亮。
+- **跨页跳转要等的是「页面数据就绪」，不是 DOM。** `navigate()` 只换了 URL，正文在 `Suspense` 里懒挂载（PDF 还要等 pdf.js 起来），所以把目标挂起在 state 里、由 `page.routePath`（`usePage()`）等到位了再执行 `revealWithRetry`。用 `page.routePath` 而不是猜 DOM，是因为 `usePage()` 的数据本来就是异步加载的——这个「延迟」正是要等的信号。超过 12s 没到就放弃并提示，免得挂起状态卡住后续所有跳转。
+
+标记存的是文字引用，页面内容改了就可能对不上。这时列表照常显示（`label` 是创建时存下来的），跳转逐级降级：Markdown 先试标题 `id`、再试文字引用，PDF 至少有页码、一定能滚到那一页。
+
 ## 导入外部 Markdown 笔记
 
 源笔记本来就是 Markdown 时（例如《大模型概述》，2724 行 + 91 张截图），按「写文章」的规矩落成一篇正文，另外注意两点：
@@ -249,9 +268,14 @@ components/
 ├── panel-store.ts     # 面板折叠状态的客户端读写（useSyncExternalStore）
 ├── panel-toggle.tsx   # 折叠按钮：默认导出知识树那个，另导出 PanelButton 给导航栏用
 ├── panel-toggle.css
-├── nav-actions.tsx    # 导航栏右侧按钮组：全屏 + 目录折叠（portal 进 .rp-nav__right）
+├── nav-actions.tsx    # 导航栏右侧按钮组：全屏 + 标记 + 目录折叠（portal 进 .rp-nav__right）
 ├── nav-actions.css
 ├── nav-state.ts       # 导航栏自动隐藏的滚动监听脚本（内联注入，配 styles/nav-auto-hide.css）
+├── marker-store.ts    # 标记的本地存储与订阅（useSyncExternalStore），见「标记」
+├── marker-anchor.ts   # 标记的定位：选区 → 锚点、锚点 → 位置并高亮（纯 DOM，不碰 React）
+├── marker-menu.tsx    # 右键菜单：选中文字或标题后「打标记」
+├── marker-button.tsx  # 导航栏标记按钮 + 本页标记列表
+├── marker.css
 ├── pdf-viewer.tsx     # PDF 阅读器（pdf.js）：右侧目录 + 全文搜索，见「PDF 课程笔记」
 └── pdf-viewer.css
 
@@ -267,12 +291,12 @@ styles/
 
 使用 Rspress 默认主题，**没有 `theme/` 目录、没有 fork 主题组件**：首页使用默认的 `pageType: home` 布局，只配置 `hero`（站点名、标语、按钮），不配置 `features` 卡片，内容都在 `docs/index.mdx` 的 frontmatter 里。默认主题自带知识树、页面大纲、深浅色、代码复制与前后页导航。
 
-七处对默认主题的改动，都记在这里以免以后当成 bug：
+对默认主题的改动（目前八处），都记在这里以免以后当成 bug：
 
 1. **`styles/index.css`（`rspress.config.ts` 的 `globalStyles`）**——首页 Hero 在视口内垂直居中；去掉知识树嵌套项的竖向引导线；两个面板折叠后的布局。`globalStyles` 注入在主题样式**之前**，同特异性会被主题覆盖，所以覆盖规则统一用重复类名提高一级特异性（例如 `.rp-home-hero.rp-home-hero`）。
-2. **`components/nav-actions.tsx`（`globalUIComponents`）**——导航栏右侧按钮组：全屏、知识树折叠、目录折叠。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。
+2. **`components/nav-actions.tsx`（`globalUIComponents`）**——导航栏右侧按钮组：全屏、标记、知识树折叠、目录折叠。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。
 
-   三个按钮放在**同一个 portal 容器里、顺序写死**（全屏 → 知识树 → 目录，按面板的物理位置排）。各自 portal 的话先后只能取决于 React 挂载顺序，而且它们的间距要对齐 Rspress 自己的 `.rp-switch-appearance`（24×24），实测四个按钮的边缘间距与中心间距才都是均匀的。
+   四个按钮放在**同一个 portal 容器里、顺序写死**（全屏 → 标记 → 知识树 → 目录，按面板的物理位置排）。各自 portal 的话先后只能取决于 React 挂载顺序，而且它们的间距要对齐 Rspress 自己的 `.rp-switch-appearance`（24×24），实测五个按钮的边缘间距与中心间距才都是均匀的。
 
    **按钮和折叠都只在一个断点生效：≥1280px。** 两者必须同进同退，否则窄屏下没有按钮可恢复、会卡在隐藏状态；而 `<1280px` 时 Rspress 在导航栏下方自带「菜单 / 目录」工具栏接管了这两个面板，我们的按钮本来也是多余的。
 
@@ -311,6 +335,7 @@ styles/
 
    - `.rp-doc-layout__doc` 的 `overflow` 改回 `visible`（它默认带 `overflow-x: auto`，另一轴随之变成 auto，于是成了滚动盒子、里面的 `position: sticky` 工具栏粘不住）、`max-width` 放开、`.rp-doc-layout__doc-container` 的左右留白从 80px 收到 24px——后两条是为了让 A4 页面尽可能大。
    - `--rp-outline-width` 268px → 296px、`--rp-outline-padding-x` 20px → 12px。PDF 的书签标题普遍偏长（「3.2.1 常用大模型服务平台介绍」），原来二级标题只剩 178px 文字宽度，82 条里有 15 条要折成两行；调完只剩 2 条。**要改就改这两个变量，别直接改 `.rp-outline__toc` 的 padding**：选中态的左侧竖条用 `left: calc(-1 * var(--rp-outline-padding-x))` 定位、标题和分隔线也吃这个变量，只动 padding 会让竖条跑到裁切区外面。宽度是吃布局余量换来的，实测 PDF 页面宽度没变（还是 932px）。
+8. **`components/marker-*.tsx`（由 `nav-actions.tsx` 带进 `globalUIComponents`）**——标记（书签），见下面的「标记」一节。
 
 Mermaid 使用 fenced `mermaid` 代码块，KaTeX 支持 `$...$`、`$$...$$` 与 fenced `math`。Rspress 的代码高亮先于 KaTeX 执行，因此配置仅跳过 `math` 的未知语言错误，让 KaTeX 处理原始公式节点。
 

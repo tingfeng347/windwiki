@@ -91,5 +91,5 @@ pnpm preview
 6. 检查 `doc_build/llms.txt`、`llms-full.txt`、各页 `.md` 与 `sitemap.xml`；URL 必须适配 `/windwiki/`，Markdown 应保留图表源码和公式。
 7. `lastUpdated` 使用真实 Git 历史；不要硬编码更新时间。CI checkout 必须保留完整历史。
 8. 不提交 `node_modules/`、`doc_build/` 和缓存；必须保留 `pnpm-lock.yaml`。
-9. 新增依赖前确认 Rspress 默认能力是否足够；涉及配置或插件升级时核对当前官方文档。保持默认主题，**不 fork 主题组件**：少量样式覆盖走 `rspress.config.ts` 的 `globalStyles`（`styles/`），需要全局 UI 时用 `globalUIComponents`（`components/`）。首页用 `pageType: home` 的 frontmatter 配置。修改上游依赖行为时使用 `pnpm patch`，补丁放在 `patches/` 并由 `pnpm-workspace.yaml` 的 `patchedDependencies` 登记。改动主题或插件前先读 `README.md` 里「七处对默认主题的改动」，避免当成 bug 改回去。
+9. 新增依赖前确认 Rspress 默认能力是否足够；涉及配置或插件升级时核对当前官方文档。保持默认主题，**不 fork 主题组件**：少量样式覆盖走 `rspress.config.ts` 的 `globalStyles`（`styles/`），需要全局 UI 时用 `globalUIComponents`（`components/`）。首页用 `pageType: home` 的 frontmatter 配置。修改上游依赖行为时使用 `pnpm patch`，补丁放在 `patches/` 并由 `pnpm-workspace.yaml` 的 `patchedDependencies` 登记。改动主题或插件前先读 `README.md` 里「对默认主题的改动」，避免当成 bug 改回去。
 10. 最后报告修改文件与实际验证结果，不把本地构建成功描述为线上部署成功。
