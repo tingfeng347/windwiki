@@ -62,6 +62,12 @@
     "collapsed": true
   },
   {
+    "type": "dir",
+    "name": "rag",
+    "label": "RAG",
+    "collapsed": true
+  },
+  {
     "type": "file",
     "name": "reinforcement-learning-and-multimodal/index",
     "label": "强化学习与多模态"

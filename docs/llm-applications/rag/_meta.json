@@ -1,0 +1,57 @@
+[
+  {
+    "type": "file",
+    "name": "rag",
+    "label": "总览与学习路线"
+  },
+  {
+    "type": "file",
+    "name": "document-loading-and-chunking",
+    "label": "文档解析与分块"
+  },
+  {
+    "type": "file",
+    "name": "embedding-vector-database-and-index",
+    "label": "嵌入、向量库与索引"
+  },
+  {
+    "type": "file",
+    "name": "query-and-retrieval-optimization",
+    "label": "查询与检索优化"
+  },
+  {
+    "type": "file",
+    "name": "generation-and-evaluation",
+    "label": "生成与评估"
+  },
+  {
+    "type": "file",
+    "name": "graphrag",
+    "label": "GraphRAG"
+  },
+  {
+    "type": "file",
+    "name": "agentic-rag-and-memory",
+    "label": "Agentic RAG 与记忆"
+  },
+  {
+    "type": "file",
+    "name": "end-to-end-projects",
+    "label": "端到端项目"
+  },
+  {
+    "type": "file",
+    "name": "production-practice",
+    "label": "生产实践"
+  },
+  {
+    "type": "file",
+    "name": "sources-and-coverage",
+    "label": "来源与覆盖清单"
+  },
+  {
+    "type": "file",
+    "name": "research-source-notes",
+    "label": "一手资料核对"
+  }
+]
