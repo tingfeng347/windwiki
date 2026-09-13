@@ -42,7 +42,7 @@ pnpm exec tsc --noEmit
 
 **1. 选择分类并新建文件**
 
-当前只有一个分类：`llm-applications/`（LLM Applications），其下是 `python-basics/`。
+当前只有一个分类：`llm-applications/`（大模型应用），其下是 `python-basics/`。
 
 ```text
 docs/llm-applications/python-basics/05-containers.md
@@ -215,7 +215,7 @@ docs/
 ├── index.mdx          # 首页（默认主题 pageType: home）
 ├── _nav.json          # 顶部导航
 ├── _meta.json         # 全局知识树
-├── llm-applications/  # LLM Applications（唯一分类）
+├── llm-applications/  # 大模型应用（唯一分类）
 │   ├── index.md
 │   ├── _meta.json
 │   ├── python-basics/ # Python 基础课程笔记

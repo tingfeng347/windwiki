@@ -23,7 +23,7 @@ pnpm preview
 
 只有与正文无关的站点级静态资源（`favicon.svg` 等）才放 `docs/public/`。
 
-分类：当前只有一个顶层分类 `llm-applications/`（LLM Applications），其下按顺序是 `python-basics/`（Python 基础）、`data-structures-and-algorithms/`（数据结构与算法）、`linux-shell-git/`（Linux、Shell 与 Git）、`mysql/`（MySQL）、`docker/`（Docker）、`numpy-pandas/`（NumPy 与 Pandas）、`fastapi/`（FastAPI）、`machine-learning-and-deep-learning/`（机器学习与深度学习）、`nlp-and-llm-principles/`（NLP与LLM原理）、`langchain-langgraph-deepagents/`（LangChain、LangGraph 与 DeepAgents）、`reinforcement-learning-and-multimodal/`（强化学习与多模态）、`model-training-and-deployment/`（模型训练与部署）、`evaluation-and-optimization/`（评估与优化）、`vibe-coding/`（Vibe Coding）。顺序在各级 `_meta.json` 中维护。
+分类：当前只有一个顶层分类 `llm-applications/`（大模型应用），其下按顺序是 `python-basics/`（Python 基础）、`data-structures-and-algorithms/`（数据结构与算法）、`linux-shell-git/`（Linux、Shell 与 Git）、`mysql/`（MySQL）、`docker/`（Docker）、`numpy-pandas/`（NumPy 与 Pandas）、`fastapi/`（FastAPI）、`machine-learning-and-deep-learning/`（机器学习与深度学习）、`nlp-and-llm-principles/`（NLP与LLM原理）、`langchain-langgraph-deepagents/`（LangChain、LangGraph 与 DeepAgents）、`reinforcement-learning-and-multimodal/`（强化学习与多模态）、`model-training-and-deployment/`（模型训练与部署）、`evaluation-and-optimization/`（评估与优化）、`vibe-coding/`（Vibe Coding）。顺序在各级 `_meta.json` 中维护。
 
 `model-training-and-deployment/` 是分组：放着 `training/`（模型训练，暂为空页）与 `deployment/`（模型部署，两节 Markdown）；`evaluation-and-optimization/` 也是分组，目前只有一篇，后续同类文章都加在这个目录下；`vibe-coding/` 是一整篇（源文件虽然有 `# 第N章`，但内容连贯，没按章拆）。其余分组是：`machine-learning-and-deep-learning/` 放着 `math-basics/`、`machine-learning/`、`deep-learning/`；`nlp-and-llm-principles/` 放着 `nlp/`、`llm-overview/`、`llm-principles/`；`langchain-langgraph-deepagents/` 放着 `langchain/`、`langgraph/` 与 `deepagents/`（后者自己也是一个目录，装两篇 Markdown）。
 
