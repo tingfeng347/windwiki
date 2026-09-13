@@ -1,0 +1,281 @@
+/*
+ * 标记（书签）：导航栏按钮 + 数量徽标 + 右键菜单 + 本页列表面板 + 跳转高亮。
+ *
+ * 按钮本体复用 nav-actions.css 的 .windwiki-nav-action，这里只加徽标和弹出层。
+ */
+
+/* 徽标要相对按钮定位，而 .windwiki-nav-action 是 static */
+.windwiki-marker-toggle {
+  position: relative;
+}
+
+.windwiki-marker-toggle__badge {
+  position: absolute;
+  top: -4px;
+  right: -5px;
+  min-width: 13px;
+  height: 13px;
+  padding: 0 3px;
+
+  border-radius: 7px;
+  background-color: var(--rp-c-brand);
+  color: #fff;
+  font-size: 10px;
+  line-height: 13px;
+  text-align: center;
+}
+
+/*
+ * 右键菜单。z-index 要高于导航栏（--rp-z-index-nav: 60）和它的移动端抽屉（70）。
+ */
+.windwiki-marker-menu {
+  position: fixed;
+  z-index: 80;
+  min-width: 176px;
+  max-width: 280px;
+  padding: 4px;
+
+  border-radius: 8px;
+  background-color: var(--rp-c-bg);
+  box-shadow:
+    0 4px 16px rgb(0 0 0 / 0.16),
+    0 0 0 1px var(--rp-c-divider-light);
+}
+
+.windwiki-marker-menu__preview {
+  margin: 0;
+  padding: 5px 8px 7px;
+
+  border-bottom: 1px solid var(--rp-c-divider-light);
+  color: var(--rp-c-text-3);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.windwiki-marker-menu__item {
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--rp-c-text-1);
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+
+.windwiki-marker-menu__item:hover {
+  background-color: var(--rp-c-bg-mute);
+}
+
+/* 列表面板。位置由组件按按钮量出来，这里只管长什么样 */
+.windwiki-marker-panel {
+  position: fixed;
+  z-index: 80;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  padding: 6px;
+
+  border-radius: 10px;
+  background-color: var(--rp-c-bg);
+  box-shadow:
+    0 4px 20px rgb(0 0 0 / 0.16),
+    0 0 0 1px var(--rp-c-divider-light);
+}
+
+.windwiki-marker-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px 6px;
+}
+
+.windwiki-marker-panel__title {
+  color: var(--rp-c-text-3);
+  font-size: 12px;
+}
+
+.windwiki-marker-panel__count {
+  min-width: 16px;
+  padding: 0 5px;
+
+  border-radius: 8px;
+  background-color: var(--rp-c-bg-mute);
+  color: var(--rp-c-text-3);
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+}
+
+/* 全站列表整体滚动，不是每个分组各滚各的 */
+.windwiki-marker-panel__body {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.windwiki-marker-panel__group + .windwiki-marker-panel__group {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--rp-c-divider-light);
+}
+
+.windwiki-marker-panel__group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 8px 2px;
+}
+
+.windwiki-marker-panel__group-title {
+  /* 页面标题可能很长，让它自己截断而不是把「清空」挤走 */
+  min-width: 0;
+  overflow: hidden;
+
+  color: var(--rp-c-text-2);
+  font-size: 12px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.windwiki-marker-panel__here {
+  flex: none;
+  padding: 0 5px;
+
+  border-radius: 4px;
+  background-color: var(--rp-c-brand-tint, var(--rp-c-bg-mute));
+  color: var(--rp-c-brand);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.windwiki-marker-panel__clear {
+  /* 推到行尾，和标题拉开 */
+  margin-left: auto;
+  padding: 2px 4px;
+  flex: none;
+
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--rp-c-text-3);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.windwiki-marker-panel__clear:hover {
+  color: var(--rp-c-danger, #e5484d);
+}
+
+.windwiki-marker-panel__empty {
+  margin: 0;
+  padding: 6px 8px 10px;
+  color: var(--rp-c-text-3);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.windwiki-marker-panel__list {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.windwiki-marker-panel__row {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+}
+
+.windwiki-marker-panel__jump {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  gap: 8px;
+  /* 长引文要能截断，flex 项默认 min-width:auto 会把它撑开 */
+  min-width: 0;
+  padding: 7px 8px;
+
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--rp-c-text-1);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.windwiki-marker-panel__jump:hover {
+  background-color: var(--rp-c-bg-mute);
+}
+
+.windwiki-marker-panel__where {
+  flex: none;
+  color: var(--rp-c-text-3);
+  font-size: 12px;
+}
+
+.windwiki-marker-panel__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.windwiki-marker-panel__remove {
+  flex: none;
+  width: 26px;
+
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--rp-c-text-3);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.windwiki-marker-panel__remove:hover {
+  color: var(--rp-c-text-1);
+  background-color: var(--rp-c-bg-mute);
+}
+
+.windwiki-marker-menu__item:focus-visible,
+.windwiki-marker-panel__jump:focus-visible,
+.windwiki-marker-panel__remove:focus-visible,
+.windwiki-marker-panel__clear:focus-visible {
+  outline: 2px solid var(--rp-c-brand);
+  outline-offset: -2px;
+}
+
+/*
+ * 跳转后的高亮。用 CSS Custom Highlight API 画，不改 DOM ——
+ * PDF 的文字层会被 pdf-viewer 反复清空重建，往里插节点一定留不住。
+ * 暗色下把底色压淡一点，不然整片糊在反色后的画布上。
+ */
+::highlight(windwiki-marker) {
+  background-color: rgb(255 200 0 / 0.45);
+}
+
+html.rp-dark ::highlight(windwiki-marker) {
+  background-color: rgb(255 190 0 / 0.35);
+}
+
+/* 跳过去之后闪一下，让眼睛能找到落点 */
+@keyframes windwiki-marker-flash {
+  from {
+    box-shadow: 0 0 0 3px var(--rp-c-brand);
+  }
+
+  to {
+    box-shadow: 0 0 0 3px transparent;
+  }
+}
+
+.windwiki-marker-flash {
+  border-radius: 4px;
+  animation: windwiki-marker-flash 1.2s ease-out;
+}

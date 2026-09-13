@@ -3,8 +3,8 @@
  * 不需要自己算位置；观感对齐 .rp-nav__others 里的社交链接和主题切换。
  */
 /*
- * gap 与 .rp-nav__right 的 gap 一致（24px），这样「外观切换 → 全屏 → 目录」三段间距相等。
- * 按钮尺寸 24×24 对齐 Rspress 自己的 .rp-switch-appearance —— 三个按钮同尺寸、同间距，
+ * gap 与 .rp-nav__right 的 gap 一致（24px），这样「外观切换 → 全屏 → 标记 → 目录」几段间距相等。
+ * 按钮尺寸 24×24 对齐 Rspress 自己的 .rp-switch-appearance —— 四个按钮同尺寸、同间距，
  * 边缘间距和图标中心间距两种口径下都是均匀的。
  */
 .windwiki-nav-actions {

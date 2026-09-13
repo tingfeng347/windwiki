@@ -1,14 +1,15 @@
 import { useFrontmatter, usePage } from '@rspress/core/runtime';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { MarkerButton } from './marker-button';
 import { PanelButton } from './panel-toggle';
 import './nav-actions.css';
 
 /**
- * 导航栏右侧的一组按钮：全屏 + 右侧目录折叠。
+ * 导航栏右侧的一组按钮：全屏 + 标记 + 知识树折叠 + 右侧目录折叠。
  *
  * Rspress 的导航项来自 _nav.json、只支持链接，没有插入自定义按钮的插槽，所以用
- * createPortal 把这个容器挂进 .rp-nav__right。两个按钮放在同一个容器里，顺序由
+ * createPortal 把这个容器挂进 .rp-nav__right。几个按钮放在同一个容器里，顺序由
  * 这个文件写死 —— 如果各自 portal 到导航栏，先后只能取决于 React 的挂载顺序。
  *
  * portal 目标只能在浏览器里查到，因此首屏渲染返回 null、挂载后再挂载 portal，
@@ -95,6 +96,8 @@ export default function NavActions() {
   return createPortal(
     <div className="windwiki-nav-actions">
       <FullscreenButton />
+      {/* 标记只对正文页有意义：首页没有可标记的内容 */}
+      {usesDocLayout ? <MarkerButton /> : null}
       {/* 两个面板按钮只在文档页有意义：首页没有知识树也没有右侧目录 */}
       {usesDocLayout && frontmatter?.sidebar !== false ? (
         <>
