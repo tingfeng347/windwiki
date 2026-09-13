@@ -2,7 +2,7 @@
 description: 大模型相关的学习笔记与工程知识。
 ---
 
-# 大模型
+# LLM Applications
 
 整理大模型相关的学习笔记与工程知识。
 

@@ -42,10 +42,10 @@ pnpm exec tsc --noEmit
 
 **1. 选择分类并新建文件**
 
-当前只有一个分类：`llm/`（大模型），其下是 `python-basics/`。
+当前只有一个分类：`llm-applications/`（LLM Applications），其下是 `python-basics/`。
 
 ```text
-docs/llm/python-basics/05-containers.md
+docs/llm-applications/python-basics/05-containers.md
 ```
 
 文件名使用 `lowercase-kebab-case`；避免空格、下划线、中文和大写，否则 URL 会变成难读的百分号编码。
@@ -166,7 +166,7 @@ import outline from './pdf-outline.json';
 
 > worker 文件由 `rspress.config.ts` 的 `builderConfig.output.copy` 从 `node_modules/pdfjs-dist/` 拷进产物。不加这条会走打包器的资源后缀，但 `?url` 只挂在 image / media / font 那几条规则上（`.mjs` 会落进 JS 规则被当模块解析），`?worker` 又只在浏览器环境注册、SSR 那趟构建解析不了。升级 pdfjs-dist 后文件名若有变化，构建会因为拷不到源文件而失败。
 
-> 组件路径按嵌套深度写：`docs/llm/numpy-pandas/index.mdx` 是 `../../../components/pdf-viewer`，分组里（`docs/llm/<分组>/<课程>/index.mdx`）要多退一级。
+> 组件路径按嵌套深度写：`docs/llm-applications/numpy-pandas/index.mdx` 是 `../../../components/pdf-viewer`，分组里（`docs/llm-applications/<分组>/<课程>/index.mdx`）要多退一级。
 
 ## 导入外部 Markdown 笔记
 
@@ -188,7 +188,7 @@ python - <<'PY'
 import io, os, re, glob
 from PIL import Image
 
-DIR = 'docs/llm/nlp-and-llm-principles/llm-overview'
+DIR = 'docs/llm-applications/nlp-and-llm-principles/llm-overview'
 before = after = 0
 for path in glob.glob(f'{DIR}/images/*'):
     image = Image.open(path).convert('RGB')
@@ -215,7 +215,7 @@ docs/
 ├── index.mdx          # 首页（默认主题 pageType: home）
 ├── _nav.json          # 顶部导航
 ├── _meta.json         # 全局知识树
-├── llm/               # 大模型（唯一分类）
+├── llm-applications/  # LLM Applications（唯一分类）
 │   ├── index.md
 │   ├── _meta.json
 │   ├── python-basics/ # Python 基础课程笔记

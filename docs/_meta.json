@@ -6,8 +6,8 @@
   },
   {
     "type": "dir",
-    "name": "llm",
-    "label": "大模型",
+    "name": "llm-applications",
+    "label": "LLM Applications",
     "collapsed": false
   }
 ]

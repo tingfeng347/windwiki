@@ -19,11 +19,11 @@ pnpm preview
 
 # Content Location
 
-正文位于 `docs/`；图片放在文章同级目录的 `images/` 下，用相对路径引用（例如 `docs/llm/python-basics/images/`，正文写 `![](./images/example.png)`）。这样 VS Code、Typora 等本地预览和站点都能显示；Rspress 会把它打包成带 hash 的资源，并在 SSG-MD 产物里重写成带 `base` 的完整 URL。
+正文位于 `docs/`；图片放在文章同级目录的 `images/` 下，用相对路径引用（例如 `docs/llm-applications/python-basics/images/`，正文写 `![](./images/example.png)`）。这样 VS Code、Typora 等本地预览和站点都能显示；Rspress 会把它打包成带 hash 的资源，并在 SSG-MD 产物里重写成带 `base` 的完整 URL。
 
 只有与正文无关的站点级静态资源（`favicon.svg` 等）才放 `docs/public/`。
 
-分类：当前只有一个顶层分类 `llm/`（大模型），其下按顺序是 `python-basics/`（Python 基础）、`data-structures-and-algorithms/`（数据结构与算法）、`linux-shell-git/`（Linux、Shell 与 Git）、`mysql/`（MySQL）、`docker/`（Docker）、`numpy-pandas/`（NumPy 与 Pandas）、`fastapi/`（FastAPI）、`machine-learning-and-deep-learning/`（机器学习与深度学习）、`nlp-and-llm-principles/`（NLP与LLM原理）、`langchain-langgraph-deepagents/`（LangChain、LangGraph 与 DeepAgents）、`reinforcement-learning-and-multimodal/`（强化学习与多模态）、`model-training-and-deployment/`（模型训练与部署）、`evaluation-and-optimization/`（评估与优化）、`vibe-coding/`（Vibe Coding）。顺序在各级 `_meta.json` 中维护。
+分类：当前只有一个顶层分类 `llm-applications/`（LLM Applications），其下按顺序是 `python-basics/`（Python 基础）、`data-structures-and-algorithms/`（数据结构与算法）、`linux-shell-git/`（Linux、Shell 与 Git）、`mysql/`（MySQL）、`docker/`（Docker）、`numpy-pandas/`（NumPy 与 Pandas）、`fastapi/`（FastAPI）、`machine-learning-and-deep-learning/`（机器学习与深度学习）、`nlp-and-llm-principles/`（NLP与LLM原理）、`langchain-langgraph-deepagents/`（LangChain、LangGraph 与 DeepAgents）、`reinforcement-learning-and-multimodal/`（强化学习与多模态）、`model-training-and-deployment/`（模型训练与部署）、`evaluation-and-optimization/`（评估与优化）、`vibe-coding/`（Vibe Coding）。顺序在各级 `_meta.json` 中维护。
 
 `model-training-and-deployment/` 是分组：放着 `training/`（模型训练，暂为空页）与 `deployment/`（模型部署，两节 Markdown）；`evaluation-and-optimization/` 也是分组，目前只有一篇，后续同类文章都加在这个目录下；`vibe-coding/` 是一整篇（源文件虽然有 `# 第N章`，但内容连贯，没按章拆）。其余分组是：`machine-learning-and-deep-learning/` 放着 `math-basics/`、`machine-learning/`、`deep-learning/`；`nlp-and-llm-principles/` 放着 `nlp/`、`llm-overview/`、`llm-principles/`；`langchain-langgraph-deepagents/` 放着 `langchain/`、`langgraph/` 与 `deepagents/`（后者自己也是一个目录，装两篇 Markdown）。
 
@@ -71,7 +71,7 @@ pnpm preview
 
 外部笔记（例如尚硅谷的课程）通常是「一个大 Markdown 含多章」外加一个图片目录。导入步骤：
 
-1. 目录放 `docs/llm/<course>/`，与 `python-basics/` 平级；在该目录写 `_meta.json` 定顺序与侧边栏标签，并在 `docs/llm/_meta.json` 里登记。
+1. 目录放 `docs/llm-applications/<course>/`，与 `python-basics/` 平级；在该目录写 `_meta.json` 定顺序与侧边栏标签，并在 `docs/llm-applications/_meta.json` 里登记。
    - 多页课程用 `{"type": "dir", "name": "<course>", "label": "…", "collapsed": true}`：默认收起，当前页所在的课程由 Rspress 自动展开。
    - **只有一页的课程不要用 dir**，否则侧边栏会长出「Docker → Docker」这种重复的一级组。用 `{"type": "file", "name": "<course>/<文件名>", "label": "…"}` —— `name` 允许带子目录路径，Rspress 会把它渲染成与其它课程平级的单条目。
 2. 按章拆分：在**代码围栏之外**匹配 `^# 第N章`——代码块里的 `# 注释` 会被误判成标题。整篇没有章节的保持单页。

@@ -1,8 +1,8 @@
 [
   {
     "text": "文档",
-    "link": "/llm/",
-    "activeMatch": "^/llm/"
+    "link": "/llm-applications/",
+    "activeMatch": "^/llm-applications/"
   },
   {
     "text": "博客",
