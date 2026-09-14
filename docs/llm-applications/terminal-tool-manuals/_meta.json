@@ -23,5 +23,10 @@
     "type": "file",
     "name": "oh-my-codex",
     "label": "Oh My Codex 使用手册"
+  },
+  {
+    "type": "file",
+    "name": "lazyvim",
+    "label": "LazyVim 使用手册"
   }
 ]

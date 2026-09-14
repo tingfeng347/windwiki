@@ -261,7 +261,7 @@ docs/
 │   ├── evaluation-and-optimization/     # 分组：评估与优化
 │   │   └── knowledge-base-evaluation.md # 目前一篇，后续文章加在这里
 │   ├── vibe-coding/              # Vibe Coding：整篇一个文档（+ images/）
-│   └── terminal-tool-manuals/    # tmux、herdr、Zellij、Yazi、Oh My Codex 手册（+ images/）
+│   └── terminal-tool-manuals/    # tmux、herdr、Zellij、Yazi、Oh My Codex、LazyVim 手册（+ images/）
 └── public/            # 站点级静态资源（favicon.svg、files/ 下的 PDF 等）
 
 components/

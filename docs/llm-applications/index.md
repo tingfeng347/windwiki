@@ -81,3 +81,4 @@ flowchart LR
 | [Zellij](./terminal-tool-manuals/zellij.md) | 会话、标签页、窗格、布局、插件、Web Client 与快捷键 |
 | [Yazi](./terminal-tool-manuals/yazi.md) | 文件操作、搜索、预览、标签页、任务管理、插件与 shell wrapper |
 | [Oh My Codex](./terminal-tool-manuals/oh-my-codex.md) | 工作流技能、多 Agent Team、Mission、HUD、MCP 与跨平台实践 |
+| [LazyVim](./terminal-tool-manuals/lazyvim.md) | Neovim IDE 配置、Vim 基础、快捷键、Snacks、Extras、LSP、插件与跨平台配置 |
