@@ -227,4 +227,3 @@ $$
 - [Hugging Face TRL：GRPO Trainer](https://huggingface.co/docs/trl/main/grpo_trainer)
 - [DPO 原始论文](https://arxiv.org/abs/2305.18290)
 - [QLoRA 原始论文](https://arxiv.org/abs/2305.14314)
-- 三个本地仓库：`all-in-rag`、`hello-agents`、`knowledge-center`（本专题提炼时的本地版本）

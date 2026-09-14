@@ -1,10 +1,10 @@
 ---
-description: 从适配方案选择、数据与评测，到 LoRA、QLoRA、Unsloth、DeepSpeed 和后训练工程的完整学习路线。
+description: 模型训练的适配方案选择、数据与评测，以及 LoRA、QLoRA、Unsloth、DeepSpeed 和后训练工程。
 ---
 
 # 模型训练
 
-模型训练不是“准备一份数据，跑一次 Trainer”这么简单。本专题把三个仓库中互相补充的内容合并成一条工程路线：先判断是否真的需要训练，再建立冻结评测集和数据协议，最后选择 LoRA、QLoRA、全参数微调或分布式训练，并把产物可靠地导出和部署。
+模型训练不是“准备一份数据，跑一次 Trainer”这么简单。完整流程应先判断是否真的需要训练，再建立冻结评测集和数据协议，最后选择 LoRA、QLoRA、全参数微调或分布式训练，并把产物可靠地导出和部署。
 
 ## 先做正确的技术选择
 
@@ -44,27 +44,6 @@ flowchart LR
 ```
 
 训练之前先冻结测试集。训练、选 checkpoint、调 Prompt 和规则时都不能把测试样本“回灌”进训练集；否则得到的是对评测集的记忆，而不是可泛化的能力。
-
-## 本专题怎么读
-
-1. [微调基础与数据工程](./fine-tuning-foundations.md)：SFT、偏好优化、数据格式、评测和嵌入模型训练。
-2. [LoRA 与 QLoRA](./lora-qlora.md)：原理、选参、显存构成，以及 Hugging Face PEFT + TRL 的可运行代码。
-3. [Unsloth 实战](./unsloth-practice.md)：单卡/小显存快速 QLoRA、训练、推理与导出。
-4. [DeepSpeed 实战](./deepspeed-practice.md)：ZeRO-1/2/3、Offload、配置、启动和断点续训。
-5. [分布式训练](./distributed-training.md)：DDP、FSDP、张量并行、流水线并行、混合精度与通信。
-6. [后训练工程实战](./post-training-engineering.md)：从真实 Agent 项目提炼 SFT、Best-of-N、DPO、规则评测和重排经验。
-7. [量化、合并与导出](./quantization-and-export.md)：分清训练量化与推理量化，正确处理 Adapter、合并权重和 GGUF。
-8. [大模型微调](./large-model-fine-tuning-course.mdx)：尚硅谷 V1.1 的 29 页 PDF 原课件，带目录定位。
-
-## 三个仓库分别贡献了什么
-
-| 来源 | 保留的精华 | 在本专题中的位置 |
-| --- | --- | --- |
-| `knowledge-center` | 通信原语、混合精度、梯度检查点、DDP/FSDP、DeepSpeed ZeRO、Offload、checkpoint、量化 | DeepSpeed、分布式训练、量化 |
-| `hello-agents` | LoRA/SFT/GRPO 示例、Accelerate 配置，以及旅行助手的多阶段后训练复盘 | LoRA、后训练工程、分布式启动 |
-| `all-in-rag` | Prompt/RAG/微调的选择边界，Embedding 的对比学习与领域微调 | 本页、微调基础 |
-
-文中的版本易变 API 以 Hugging Face PEFT/TRL、Unsloth、DeepSpeed 和 PyTorch 官方文档重新核对；仓库里的固定版本号和经验参数只作为历史实验参考，不当成通用结论。
 
 ## 一组必须持续记录的指标
 

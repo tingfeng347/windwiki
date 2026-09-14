@@ -52,7 +52,7 @@ Top-k 分数不是概率。不同查询、模型、索引或数据分布下的 0
 
 ![](./images/vector-database-types.webp)
 
-`all-in-rag` 的 FAISS 示例特别说明了一个容易忽略的事实：FAISS 只认识向量及其数值 ID，应用还要维护 `index_id → docstore_id → 原文与元数据` 的映射。生产系统里的难点常常不是最近邻算法，而是版本、删除、权限、映射和一致性。
+FAISS 只认识向量及其数值 ID，应用还要维护 `index_id → docstore_id → 原文与元数据` 的映射。生产系统里的难点常常不是最近邻算法，而是版本、删除、权限、映射和一致性。
 
 ## 4. 数据模型先于索引参数
 
@@ -129,4 +129,3 @@ Top-k 分数不是概率。不同查询、模型、索引或数据分布下的 0
 - `knowledge-center/src/Agent/RAG.md`：Embedding 类型、BM25、Milvus 混合向量、FLAT/IVF/HNSW/DiskANN/GPU、SQ/PQ/OPQ 与精化器。
 - `all-in-rag/docs/chapter3/`：模型选型、多模态 Embedding、FAISS 映射、Milvus Schema/Partition/Alias、ANN 搜索和结构化索引。
 - `hello-agents/docs/chapter8/第八章 记忆与检索.md`：Qdrant Payload、统一 Embedding 服务及 API/本地/TF-IDF 回退设计。
-

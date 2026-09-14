@@ -1,10 +1,10 @@
 ---
-description: 从 hello-agents 旅行助手实验提炼产品协议、冻结评测、SFT 数据审计、多阶段 LoRA、Best-of-N、DPO 与推理重排的完整方法。
+description: 旅行助手后训练中的产品协议、冻结评测、SFT 数据审计、多阶段 LoRA、Best-of-N、DPO 与推理重排。
 ---
 
 # 后训练工程实战
 
-`hello-agents` 的旅行助手实验最有价值的地方，不是某个超参数，而是展示了一个真实产品如何把 Prompt、SFT、DPO、规则和推理时重排连成闭环。
+旅行助手后训练的关键不是某个超参数，而是把 Prompt、SFT、DPO、确定性规则和推理时重排连成闭环。
 
 一句话路线：**Prompt 固定协议，SFT 学会结构，DPO 学合法答案之间的偏好，Rerank 从候选池选出最稳结果。**
 

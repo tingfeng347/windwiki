@@ -1,5 +1,5 @@
 ---
-description: 从 all-in-rag 食谱助手与 hello-agents PDF 学习助手提炼的两套端到端实现，包括数据准备、索引、检索、路由、记忆与界面。
+description: 两套端到端 RAG 实现，包括数据准备、索引、检索、路由、记忆、评估与交互界面。
 ---
 
 # 端到端项目
@@ -166,4 +166,3 @@ rag_app/
 - `all-in-rag/docs/chapter8/`：普通食谱 RAG 的环境、数据准备、索引检索、生成与系统整合。
 - `all-in-rag/docs/chapter9/`：Neo4j + Milvus GraphRAG、图建模、索引和智能查询路由。
 - `hello-agents/docs/chapter8/第八章 记忆与检索.md`：PDF 学习助手、RAGTool、MemoryTool、Gradio 效果与用户隔离。
-

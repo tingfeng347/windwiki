@@ -4,7 +4,7 @@ description: DeepSpeed ZeRO-1/2/3、CPU/NVMe Offload、原生训练循环、Tran
 
 # DeepSpeed 实战
 
-DeepSpeed 是微软开源的分布式训练优化库；DeepSeek 是模型家族，两者不是一回事。本篇对应本地资料中的“deepseeed”使用经验，按语义重点讲 **DeepSpeed**，DeepSeek 小模型示例见 [Unsloth 实战](./unsloth-practice.md)。
+DeepSpeed 是微软开源的分布式训练优化库；DeepSeek 是模型家族，两者不是一回事。DeepSpeed 重点解决大模型训练中的显存冗余、并行通信、状态分片和卸载问题；DeepSeek 小模型的微调示例见 [Unsloth 实战](./unsloth-practice.md)。
 
 ## 它解决什么问题
 

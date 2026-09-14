@@ -1,24 +1,12 @@
 ---
-description: RAG 专题总览与学习路线：理解完整链路，并导航到解析、索引、检索、评估、GraphRAG、Agentic RAG、记忆和项目实践。
+description: RAG 的完整工程链路：文档解析、索引、检索、上下文构建、生成、评估与持续迭代。
 ---
 
 # RAG：从文档入库到可靠回答
 
 RAG（Retrieval-Augmented Generation，检索增强生成）让大模型在回答前先查找外部证据，再基于证据生成答案。它解决的不是“让模型变聪明”，而是“让模型在需要事实时能找到、读懂并引用正确资料”。
 
-这套专题综合了 `knowledge-center`、`all-in-rag` 与 `hello-agents` 的 RAG 内容，按一条完整工程链路重新组织：**离线建库 → 在线检索 → 上下文构建 → 生成 → 评估与迭代**。本页负责建立全局认识；各技术的工具差异、参数、公式、项目实现和生产边界已经拆到后续九个小节，不再用一页摘要代替全部原内容。
-
-## 专题目录
-
-1. [文档解析与分块](./document-loading-and-chunking.md)：复杂 PDF、表格、OCR、解析验收和六类分块。
-2. [嵌入、向量库与索引](./embedding-vector-database-and-index.md)：稀疏/稠密/多模态、FAISS、Milvus、Qdrant、ANN 与量化。
-3. [查询与检索优化](./query-and-retrieval-optimization.md)：改写、分解、HyDE、路由、混合检索、重排、压缩和 CRAG。
-4. [生成与评估](./generation-and-evaluation.md)：上下文、结构化输出、RAG 三角、检索指标、Ragas 和 Phoenix。
-5. [GraphRAG](./graphrag.md)：构图、局部/全局检索、社区摘要和 Neo4j + Milvus。
-6. [Agentic RAG 与记忆](./agentic-rag-and-memory.md)：检索循环、四类记忆、MemoryTool 和生命周期。
-7. [端到端项目](./end-to-end-projects.md)：普通/图食谱助手和带记忆的 PDF 学习助手。
-8. [生产实践](./production-practice.md)：版本、权限、安全、Trace、性能、成本和排障。
-9. [来源与覆盖清单](./sources-and-coverage.md)：逐项核对三个仓库的原主题去向与图片来源。
+一条完整的 RAG 链路包括：**离线建库 → 在线检索 → 上下文构建 → 生成 → 评估与迭代**。任何环节出错都可能让最终答案失真，因此解析质量、召回率、重排、引用和生成效果必须分阶段观测。
 
 ## 1. 先建立正确的心智模型
 
@@ -30,7 +18,7 @@ RAG（Retrieval-Augmented Generation，检索增强生成）让大模型在回�
 
 最朴素的 RAG 只有“切块、向量检索、拼接、生成”四步；高级 RAG 会在检索前做查询改写和路由，在检索后做融合、重排、压缩与校正；模块化 RAG 则根据问题动态组合这些能力。
 
-`knowledge-center` 原文用下图强调了另一条重要主线：切块、Embedding、上下文构建和模型并不是孤立选项，应在同一评估集上联合比较，而不是凭单次问答选择“最佳组合”。
+切块、Embedding、上下文构建和模型并不是孤立选项，应在同一评估集上联合比较，而不是凭单次问答选择“最佳组合”。
 
 ![](./images/knowledge-center-rag-overview.png)
 
@@ -353,8 +341,6 @@ RAG 与 Agent Memory 也要分清：
 最终目标不是搭出模块最多的 RAG，而是建立一条**证据找得到、来源查得清、失败看得见、改动测得出**的可靠链路。
 
 ## 参考资料
-
-本专题图片均直接取自三个源仓库：本地图片按原文件复制，`knowledge-center` 中仅远程引用的图片从其原链接下载到本地；没有重新生成图片。详细归属见[来源与覆盖清单](./sources-and-coverage.md)。`all-in-rag` 内容按其 [CC BY-NC-SA 4.0 许可](https://github.com/datawhalechina/all-in-rag/blob/583a61b09869bc3afc4552289171f6ec188f2c76/README.md)署名使用；继续分发前应同时核对其他上游仓库的许可说明。
 
 - [left0ver/knowledge-center：RAG 工程笔记](https://github.com/left0ver/knowledge-center/blob/847dfb84bc0a48639c7983a9aa5d81d1093c5efa/src/Agent/RAG.md)
 - [Datawhale all-in-rag](https://github.com/datawhalechina/all-in-rag/tree/583a61b09869bc3afc4552289171f6ec188f2c76)
