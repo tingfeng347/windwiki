@@ -255,6 +255,7 @@ docs/
 │   │   ├── langchain/            # PDF 课程
 │   │   ├── langgraph/            # PDF 课程
 │   │   └── deepagents/           # Markdown 正文两篇（+ images/）
+│   ├── ai-engineering/           # AI 工程：五个设计面、Agent 模式与生产实践
 │   ├── reinforcement-learning-and-multimodal/  # PDF 课程，421 页
 │   ├── model-training-and-deployment/   # 分组：模型训练（空）+ 模型部署
 │   │   └── deployment/           # Markdown 两节（+ images/）

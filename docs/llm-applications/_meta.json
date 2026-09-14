@@ -63,6 +63,12 @@
   },
   {
     "type": "dir",
+    "name": "ai-engineering",
+    "label": "AI 工程",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
     "name": "rag",
     "label": "RAG",
     "collapsed": true

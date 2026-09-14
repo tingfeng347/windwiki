@@ -14,7 +14,8 @@ flowchart LR
     B --> C[机器学习与深度学习]
     C --> D[NLP 与 LLM 原理]
     D --> E[LangChain 与 Agent]
-    E --> F[RAG 知识系统]
+    E --> I[AI 工程与 Agent 模式]
+    I --> F[RAG 知识系统]
     F --> G[训练、部署与评估]
     G --> H[Vibe Coding 工程实践]
 ```
@@ -52,6 +53,7 @@ flowchart LR
 | [LangChain](./langchain-langgraph-deepagents/langchain/index.mdx) | 模型、Prompt、Chain、工具、检索与应用组件，PDF 课程 |
 | [LangGraph](./langchain-langgraph-deepagents/langgraph/index.mdx) | State、Node、Edge、持久化、人工介入与 Agent 工作流，PDF 课程 |
 | [DeepAgents](./langchain-langgraph-deepagents/deepagents/01-framework.md) | 从工具调用 Agent 到长任务、多智能体协作与工程实践 |
+| [AI 工程](./ai-engineering/index.md) | Prompt、Context、Loop、Graph、Harness 五个设计面与 Agent 经典模式 |
 | [RAG](./rag/rag.md) | 文档解析、分块、Embedding、向量库、检索优化、GraphRAG、Agentic RAG 与生产实践 |
 
 ## 模型训练、部署与质量保障
@@ -68,7 +70,7 @@ flowchart LR
 
 - 想快速建立大模型全局认识：从[大模型概述](./nlp-and-llm-principles/llm-overview/index.md)开始。
 - 想开发企业知识库或问答系统：进入[RAG](./rag/rag.md)，再学习[评估与优化](./evaluation-and-optimization/knowledge-base-evaluation.md)。
-- 想开发工具调用和多智能体系统：依次学习[LangChain](./langchain-langgraph-deepagents/langchain/index.mdx)、[LangGraph](./langchain-langgraph-deepagents/langgraph/index.mdx)和[DeepAgents](./langchain-langgraph-deepagents/deepagents/01-framework.md)。
+- 想开发工具调用和多智能体系统：依次学习[LangChain](./langchain-langgraph-deepagents/langchain/index.mdx)、[LangGraph](./langchain-langgraph-deepagents/langgraph/index.mdx)、[DeepAgents](./langchain-langgraph-deepagents/deepagents/01-framework.md)和[AI 工程](./ai-engineering/index.md)。
 - 想做领域模型微调：先看[大模型微调](./model-training-and-deployment/training/large-model-fine-tuning-course.mdx)，再进入[模型训练](./model-training-and-deployment/training/index.md)实践 LoRA、QLoRA、Unsloth 和 DeepSpeed。
 - 想把模型服务真正上线：进入[模型部署](./model-training-and-deployment/deployment/01-gpu-deployment.md)，补齐容器、推理服务与监控能力。
 
