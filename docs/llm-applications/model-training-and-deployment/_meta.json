@@ -1,5 +1,10 @@
 [
   {
+    "type": "file",
+    "name": "training/large-model-fine-tuning-course",
+    "label": "大模型微调"
+  },
+  {
     "type": "dir",
     "name": "training",
     "label": "模型训练",

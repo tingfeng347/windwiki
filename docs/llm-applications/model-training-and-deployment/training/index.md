@@ -54,7 +54,7 @@ flowchart LR
 5. [分布式训练](./distributed-training.md)：DDP、FSDP、张量并行、流水线并行、混合精度与通信。
 6. [后训练工程实战](./post-training-engineering.md)：从真实 Agent 项目提炼 SFT、Best-of-N、DPO、规则评测和重排经验。
 7. [量化、合并与导出](./quantization-and-export.md)：分清训练量化与推理量化，正确处理 Adapter、合并权重和 GGUF。
-8. [尚硅谷《大模型微调 V1.1》](./large-model-fine-tuning-course.mdx)：29 页 PDF 原课件，带目录定位。
+8. [大模型微调](./large-model-fine-tuning-course.mdx)：尚硅谷 V1.1 的 29 页 PDF 原课件，带目录定位。
 
 ## 三个仓库分别贡献了什么
 

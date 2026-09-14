@@ -41,11 +41,6 @@
   },
   {
     "type": "file",
-    "name": "large-model-fine-tuning-course",
-    "label": "尚硅谷大模型微调 V1.1"
-  },
-  {
-    "type": "file",
     "name": "sources-and-coverage",
     "label": "来源与覆盖说明"
   },
