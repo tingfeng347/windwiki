@@ -1,8 +1,9 @@
 [
   {
-    "type": "file",
-    "name": "training/index",
-    "label": "模型训练"
+    "type": "dir",
+    "name": "training",
+    "label": "模型训练",
+    "collapsed": true
   },
   {
     "type": "dir",
