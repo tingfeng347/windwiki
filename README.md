@@ -291,7 +291,7 @@ styles/
 
 使用 Rspress 默认主题，**没有 `theme/` 目录、没有 fork 主题组件**：首页使用默认的 `pageType: home` 布局，只配置 `hero`（站点名、标语、按钮），不配置 `features` 卡片，内容都在 `docs/index.mdx` 的 frontmatter 里。默认主题自带知识树、页面大纲、深浅色、代码复制与前后页导航。
 
-对默认主题的改动（目前八处），都记在这里以免以后当成 bug：
+对默认主题的改动（目前九处），都记在这里以免以后当成 bug：
 
 1. **`styles/index.css`（`rspress.config.ts` 的 `globalStyles`）**——首页 Hero 在视口内垂直居中；去掉知识树嵌套项的竖向引导线；两个面板折叠后的布局。`globalStyles` 注入在主题样式**之前**，同特异性会被主题覆盖，所以覆盖规则统一用重复类名提高一级特异性（例如 `.rp-home-hero.rp-home-hero`）。
 2. **`components/nav-actions.tsx`（`globalUIComponents`）**——导航栏右侧按钮组：全屏、标记、知识树折叠、目录折叠。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。
@@ -336,6 +336,7 @@ styles/
    - `.rp-doc-layout__doc` 的 `overflow` 改回 `visible`（它默认带 `overflow-x: auto`，另一轴随之变成 auto，于是成了滚动盒子、里面的 `position: sticky` 工具栏粘不住）、`max-width` 放开、`.rp-doc-layout__doc-container` 的左右留白从 80px 收到 24px——后两条是为了让 A4 页面尽可能大。
    - `--rp-outline-width` 268px → 296px、`--rp-outline-padding-x` 20px → 12px。PDF 的书签标题普遍偏长（「3.2.1 常用大模型服务平台介绍」），原来二级标题只剩 178px 文字宽度，82 条里有 15 条要折成两行；调完只剩 2 条。**要改就改这两个变量，别直接改 `.rp-outline__toc` 的 padding**：选中态的左侧竖条用 `left: calc(-1 * var(--rp-outline-padding-x))` 定位、标题和分隔线也吃这个变量，只动 padding 会让竖条跑到裁切区外面。宽度是吃布局余量换来的，实测 PDF 页面宽度没变（还是 932px）。
 8. **`components/marker-*.tsx`（由 `nav-actions.tsx` 带进 `globalUIComponents`）**——标记（书签），见下面的「标记」一节。
+9. **`components/document-reader.tsx`（`globalUIComponents`）**——普通 Markdown/MDX 正文页的阅读工具条，沿用 PDF 阅读器的底部悬浮交互，提供 60%～200% 缩放、恢复 100%、全文搜索、高亮以及上一处/下一处导航。搜索和标记一样使用 CSS Custom Highlight API，不改写 Rspress 管理的正文 DOM；组件同时按 `doc-wide` 页面类型和 `.windwiki-pdf-viewer` 排除 PDF 课程页，避免出现两套工具条。
 
 Mermaid 使用 fenced `mermaid` 代码块，KaTeX 支持 `$...$`、`$$...$$` 与 fenced `math`。Rspress 的代码高亮先于 KaTeX 执行，因此配置仅跳过 `math` 的未知语言错误，让 KaTeX 处理原始公式节点。
 

@@ -40,7 +40,8 @@ const DOC_ROOT = '.rp-doc.rspress-doc';
 const HEADINGS = 'h1, h2, h3, h4, h5, h6';
 
 /** normalize 的逆操作做不了，所以两边都用它，保证存进去和找出来的是同一个串 */
-const normalize = (value: string) => value.replace(/\s+/g, '').toLowerCase();
+export const normalizeTextIndex = (value: string) =>
+  value.replace(/\s+/g, '').toLowerCase();
 
 const collapse = (value: string) => value.replace(/\s+/g, ' ').trim();
 
@@ -55,7 +56,7 @@ function toElement(node: Node | null): HTMLElement | null {
 
 /* ------------------------------------------------------------------ 建索引 */
 
-interface TextIndex {
+export interface TextIndex {
   /**
    * 根元素下的文本节点，按文档顺序排开。相邻两项首尾相接，
    * 于是「整段文字里的第 N 个字符」可以二分查到属于哪个节点、哪个偏移。
@@ -67,7 +68,7 @@ interface TextIndex {
   norm: string;
 }
 
-function buildIndex(root: Element): TextIndex {
+export function buildTextIndex(root: Element): TextIndex {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const runs: Array<{ node: Text; start: number }> = [];
   const map: number[] = [];
@@ -94,7 +95,7 @@ function buildIndex(root: Element): TextIndex {
 }
 
 /** 整段文字里的第 rawOffset 个字符 → 它属于哪个文本节点、哪个偏移 */
-function locate(
+export function locateTextOffset(
   index: TextIndex,
   rawOffset: number,
 ): { node: Text; offset: number } | null {
@@ -166,20 +167,25 @@ function buildAnchor(
   root: Element,
   range: Range,
 ): MarkerAnchor {
-  const index = buildIndex(root);
+  const index = buildTextIndex(root);
   const startRaw = rawOffsetOf(root, range.startContainer, range.startOffset);
   const endRaw = rawOffsetOf(root, range.endContainer, range.endOffset);
 
   // 由归一化串里切出来，而不是拿 selection.toString() 再归一化：
   // 这样 quote / prefix / suffix 和记下来的位置必然自洽
   let from =
-    startRaw === null ? index.norm.indexOf(normalize(text)) : normIndexOf(index, startRaw);
+    startRaw === null
+      ? index.norm.indexOf(normalizeTextIndex(text))
+      : normIndexOf(index, startRaw);
   if (from < 0 || from > index.norm.length) {
-    from = index.norm.indexOf(normalize(text));
+    from = index.norm.indexOf(normalizeTextIndex(text));
   }
-  let to = endRaw === null ? from + normalize(text).length : normIndexOf(index, endRaw);
+  let to =
+    endRaw === null
+      ? from + normalizeTextIndex(text).length
+      : normIndexOf(index, endRaw);
   if (to <= from) {
-    to = from + normalize(text).length;
+    to = from + normalizeTextIndex(text).length;
   }
 
   const quote = index.norm.slice(from, to);
@@ -269,7 +275,7 @@ export function captureHeading(target: Element): MarkerAnchor | null {
   }
   return {
     kind: 'md',
-    quote: normalize(text),
+    quote: normalizeTextIndex(text),
     prefix: '',
     suffix: '',
     text,
@@ -315,8 +321,8 @@ function flash(element: Element): void {
 
 /** 锚点 → Range。找不到内容时返回 null（页面被改过、PDF 换了版本） */
 function findRange(root: Element, anchor: MarkerAnchor): Range | null {
-  const index = buildIndex(root);
-  const quote = normalize(anchor.quote);
+  const index = buildTextIndex(root);
+  const quote = normalizeTextIndex(anchor.quote);
   if (!quote) {
     return null;
   }
@@ -336,8 +342,11 @@ function findRange(root: Element, anchor: MarkerAnchor): Range | null {
     return null;
   }
 
-  const start = locate(index, index.map[from]);
-  const end = locate(index, index.map[Math.min(from + quote.length - 1, index.map.length - 1)]);
+  const start = locateTextOffset(index, index.map[from]);
+  const end = locateTextOffset(
+    index,
+    index.map[Math.min(from + quote.length - 1, index.map.length - 1)],
+  );
   if (!start || !end) {
     return null;
   }

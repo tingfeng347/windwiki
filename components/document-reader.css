@@ -1,0 +1,176 @@
+/*
+ * Markdown 阅读工具条。交互和 PDF 阅读器一致：桌面端贴在正文栏底部，鼠标移到
+ * 页面下缘时出现；触摸设备与窄屏常驻，避免没有 hover 时无法操作。
+ */
+.rspress-doc.windwiki-doc-reader-active {
+  width: var(--windwiki-doc-width, 100%);
+  max-width: none;
+  zoom: var(--windwiki-doc-zoom, 1);
+}
+
+.windwiki-doc-reader {
+  position: fixed;
+  z-index: 9;
+  left: max(8px, var(--windwiki-doc-rail-left, 0px));
+  right: max(8px, var(--windwiki-doc-rail-right, 0px));
+  bottom: max(8px, env(safe-area-inset-bottom));
+  pointer-events: none;
+}
+
+.windwiki-doc-reader__panel {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+
+  border-radius: 10px;
+  background-color: var(--rp-c-bg);
+  box-shadow:
+    0 1px 8px rgb(0 0 0 / 0.14),
+    0 0 0 1px var(--rp-c-divider-light);
+  pointer-events: auto;
+}
+
+.windwiki-doc-reader__rail-zone {
+  display: none;
+}
+
+.windwiki-doc-reader__group,
+.windwiki-doc-reader__search {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.windwiki-doc-reader__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 4px;
+
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--rp-c-text-2);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+
+.windwiki-doc-reader__button:hover:not(:disabled) {
+  color: var(--rp-c-text-1);
+  background-color: var(--rp-c-bg-mute);
+}
+
+.windwiki-doc-reader__button:focus-visible,
+.windwiki-doc-reader__search-input:focus-visible {
+  outline: 2px solid var(--rp-c-brand);
+  outline-offset: 1px;
+}
+
+.windwiki-doc-reader__button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.windwiki-doc-reader__button--zoom {
+  min-width: 48px;
+  font-size: 13px;
+}
+
+.windwiki-doc-reader__search-input {
+  width: 150px;
+  height: 28px;
+  padding: 0 8px;
+
+  border: 1px solid var(--rp-c-divider-light);
+  border-radius: 6px;
+  background-color: var(--rp-c-bg);
+  color: var(--rp-c-text-1);
+  font-size: 13px;
+}
+
+.windwiki-doc-reader__search-count {
+  min-width: 74px;
+  color: var(--rp-c-text-2);
+  font-size: 13px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+::highlight(windwiki-doc-search-hit) {
+  background-color: rgb(255 200 0 / 0.4);
+}
+
+::highlight(windwiki-doc-search-active) {
+  background-color: rgb(255 130 0 / 0.65);
+}
+
+/* 桌面指针设备：平时收起，底部 44px 热区或键盘焦点会把面板带回来。 */
+@media (min-width: 1280px) and (hover: hover) {
+  .windwiki-doc-reader {
+    bottom: 0;
+  }
+
+  .windwiki-doc-reader__rail-zone {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    height: 44px;
+    left: var(--windwiki-doc-rail-left, 0px);
+    right: var(--windwiki-doc-rail-right, 0px);
+    pointer-events: auto;
+  }
+
+  .windwiki-doc-reader__panel {
+    margin-bottom: 14px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.18s ease-out,
+      transform 0.18s ease-out;
+  }
+
+  .windwiki-doc-reader:hover .windwiki-doc-reader__panel,
+  .windwiki-doc-reader__panel:focus-within {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  html:has(.windwiki-doc-reader) .rp-doc-layout__doc-container {
+    padding-bottom: 84px;
+  }
+
+  .windwiki-doc-reader__panel {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 10px;
+  }
+
+  .windwiki-doc-reader__search {
+    width: 100%;
+  }
+
+  .windwiki-doc-reader__search-input {
+    min-width: 0;
+    flex: 1;
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .windwiki-doc-reader__panel {
+    transition: none;
+  }
+}

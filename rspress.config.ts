@@ -23,10 +23,11 @@ export default defineConfig({
   llms: true,
   // 以下三个路径都要求绝对路径。样式汇总在 styles/index.css。
   globalStyles: path.join(import.meta.dirname, 'styles/index.css'),
-  // 导航栏按钮组（全屏 + 两个面板折叠）。globalUIComponents 会渲染在 <Layout /> 的
-  // 兄弟位置，不需要自定义主题；按钮顺序在 nav-actions.tsx 里写死。
+  // 导航栏按钮组，以及普通 Markdown 页的缩放/全文搜索工具条。
+  // globalUIComponents 会渲染在 <Layout /> 的兄弟位置，不需要自定义主题。
   globalUIComponents: [
     path.join(import.meta.dirname, 'components/nav-actions.tsx'),
+    path.join(import.meta.dirname, 'components/document-reader.tsx'),
   ],
   builderConfig: {
     html: {
