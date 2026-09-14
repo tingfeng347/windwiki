@@ -1,0 +1,27 @@
+[
+  {
+    "type": "file",
+    "name": "tmux",
+    "label": "tmux 使用手册"
+  },
+  {
+    "type": "file",
+    "name": "herdr",
+    "label": "herdr 使用手册"
+  },
+  {
+    "type": "file",
+    "name": "zellij",
+    "label": "Zellij 使用手册"
+  },
+  {
+    "type": "file",
+    "name": "yazi",
+    "label": "Yazi 使用手册"
+  },
+  {
+    "type": "file",
+    "name": "oh-my-codex",
+    "label": "Oh My Codex 使用手册"
+  }
+]

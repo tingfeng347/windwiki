@@ -42,7 +42,7 @@ pnpm exec tsc --noEmit
 
 **1. 选择分类并新建文件**
 
-当前只有一个分类：`llm-applications/`（大模型应用），其下是 `python-basics/`。
+当前只有一个顶层分类：`llm-applications/`（大模型应用）；其下包含开发基础、模型原理、Agent、RAG、训练部署、评估优化与终端工具等分组。
 
 ```text
 docs/llm-applications/python-basics/05-containers.md
@@ -260,7 +260,8 @@ docs/
 │   │   └── deployment/           # Markdown 两节（+ images/）
 │   ├── evaluation-and-optimization/     # 分组：评估与优化
 │   │   └── knowledge-base-evaluation.md # 目前一篇，后续文章加在这里
-│   └── vibe-coding/              # Vibe Coding：整篇一个文档（+ images/）
+│   ├── vibe-coding/              # Vibe Coding：整篇一个文档（+ images/）
+│   └── terminal-tool-manuals/    # tmux、herdr、Zellij、Yazi、Oh My Codex 手册（+ images/）
 └── public/            # 站点级静态资源（favicon.svg、files/ 下的 PDF 等）
 
 components/

@@ -88,5 +88,11 @@
     "type": "file",
     "name": "vibe-coding/vibe-coding",
     "label": "Vibe Coding"
+  },
+  {
+    "type": "dir",
+    "name": "terminal-tool-manuals",
+    "label": "终端工具手册",
+    "collapsed": true
   }
 ]
