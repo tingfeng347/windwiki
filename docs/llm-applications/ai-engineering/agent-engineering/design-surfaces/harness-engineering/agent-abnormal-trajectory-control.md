@@ -1,236 +1,320 @@
 ---
-description: 用 Runtime 检测、控制和终止 Agent 的重复调用、震荡、无进展、状态回归、目标漂移与资源失控，并提供可运行的守卫示例。
+description: Agent 异常轨迹高密度面试手册。
 ---
 
-# Agent 异常轨迹排除
+# Agent 异常轨迹高密度面试手册
+## 不改 Prompt，只用工程手段解决
 
-本页解决一个根本问题：当模型不断提出动作时，谁来判断这个动作还值不值得执行？答案不是继续修改 Prompt，而是让 Runtime 保存事实、比较状态、执行策略并掌握停止权。模型只能提出动作；Runtime 决定是否允许、是否有进展、是否需要重规划，以及何时终止。
+> **定位**：面试速答 / Agent 工程复习  
+> **答题结构**：先讲成因 → 再讲检测 → 再讲控制 → 最后讲停止条件。  
+> **总原则**：LLM 负责“提出动作”，Runtime 负责“允许不允许执行、是否有进展、什么时候停止”。
 
-```mermaid
-flowchart LR
-    M[LLM 提议 Action] --> V[Runtime 验证]
-    V --> H[Action History / State]
-    H --> D{重复、震荡、无进展、越界?}
-    D -->|否| E[执行受控工具]
-    E --> O[Observation / State Diff]
-    O --> H
-    D -->|可恢复| R[Replan / Cooldown / 降级]
-    D -->|不可恢复或预算耗尽| S[Stop / 转人工]
-```
+---
 
-## 先建立统一的判断框架
+## 1. Agent 为什么会工具死循环？怎么解决？
+**【精简版】**
 
-每一种异常都按同一顺序处理：**成因 → 检测 → 控制 → 停止条件**。
+工具死循环通常有四类原因：Tool Result 不够明确，模型误以为需要继续调用；没有保存历史动作，导致相同 Tool Call 被反复执行；工具本身不幂等，重试后又产生新的 Observation；没有明确的 `max_turns / max_tool_calls / stop condition`。
 
-| Runtime 工件 | 作用 | 不能用什么替代 |
-| --- | --- | --- |
-| Action History | 记住已经尝试过的动作、参数、结果和失败原因 | 聊天记录 |
-| Fingerprint / Cache | 识别相同或等价的工具调用，复用可安全复用的结果 | “模型应该记得” |
-| Structured State | 保存 Goal、已证实事实、计划、完成项、Artifact 与版本 | 长上下文摘要 |
-| Progress Watchdog | 判断真实环境是否推进 | 模型自称“我已经完成” |
-| Budget Governor | 限制 turn、token、工具、搜索、时间和并发 | 事后统计账单 |
-| Checkpoint / Invariant | 防止已经完成的结果被后续步骤破坏 | 重新从头运行 |
-| Completion Evaluator | 根据真实环境决定是否成功 | final answer 文本 |
+工程上我会记录 `Action History`，对 `tool_name + normalized_args` 做 fingerprint。如果相同 fingerprint 连续出现 2～3 次，直接返回缓存结果或阻止执行；如果仍继续重复，则触发 replan。对于有副作用的工具，要加 `idempotency key`，避免重复创建资源、重复发送请求。
 
-## 异常轨迹总览
+同时加三层硬限制：单工具最大调用次数、整个 Agent 最大 Turn、总 Tool Budget。这样即使模型陷入循环，Runtime 也能在有限步数内结束。
 
-| 异常 | 最小检测信号 | 首选控制 | 硬停止/升级条件 |
-| --- | --- | --- | --- |
-| 工具死循环 | 相同 `tool + canonical_args` 连续出现 | 指纹去重、缓存、幂等键 | 单工具次数、总 turn 或 tool budget 耗尽 |
-| 工具震荡 | 最近窗口出现 `ABAB`、`ABCABC` | cooldown、replan、合并重叠工具 | 周期持续且无新证据 |
-| 参数震荡 | 同工具参数回摆、结果相似 | 参数规范化、tabu list、低信息增益拦截 | 尝试集或探索预算耗尽 |
-| 规划震荡 | `plan_v1 → v2 → v1` | plan version、commit window、replan gate | 多次无证据重规划 |
-| 重复验证 | 验证对象的 state hash 未变 | Evidence Cache | 验证预算耗尽 |
-| 无效探索 | 连续 search/read 没有新增事实或决策 | novelty 阈值、Search→Decision Gate | 连续 K 次无信息增益 |
-| 状态停滞 | 环境 state hash 连续不变 | replan、缩小任务、转人工 | 两轮策略后仍无进展 |
-| 状态回归 | 已满足 invariant 被破坏 | checkpoint、增量验证、rollback | 无法恢复或破坏受保护资产 |
-| 目标漂移 | 计划动作超出 Goal Contract | scope gate、审批 | 高风险越界动作 |
-| 上下文漂移 | 已证实事实被遗忘或重复调查 | structured state、facts store | 关键事实冲突，需人工裁决 |
-| 假进展 | 声称完成但环境没有变化 | read-after-write、完成验收 | 验收不通过 |
-| 环境失同步 | `ETag/version/hash` 不一致 | optimistic concurrency、fresh read | 冲突无法自动合并 |
-| Retry 螺旋 | 非瞬时错误被连续重试 | error taxonomy、backoff、circuit breaker | 达到 retry/deadline 阈值 |
-| Tool 结果过长 | observation 超 token/大小预算 | filter/page → externalize → rerank → summary | 无法压缩到安全预算 |
-| 搜索爆炸 | 分支、深度、子任务快速膨胀 | Top-K、prune、并发与深度限制 | 总 task budget 耗尽 |
-| 过早收敛 | candidate done 未满足可验证条件 | Completion Contract | 关键验收失败 |
-| 过度执行 | 已通过验收仍继续调用工具 | `VERIFYING → SUCCESS` 终态 | 成功后禁止副作用 |
-| 资源失控 | cost/progress 持续变差 | 预算 80% 转收尾 | 100% hard stop |
-| 投机取巧 | 修改测试/评分规则以换取绿灯 | protected resources、独立 evaluator | 触碰受保护资产 |
+**一句话记忆：相同工具重复调用，就做指纹去重 + 调用上限 + 幂等保护。**
 
-## 重复与震荡：不要让 Agent 在局部循环里消耗预算
+---
 
-### 工具死循环与参数震荡
+## 2. Agent 为什么会工具震荡？怎么解决？
+**【精简版】**
 
-工具结果不清晰、历史动作未保存、重试不幂等或没有停止条件，都会让同一调用反复发生。Runtime 应先对参数做 canonicalization：排序 JSON key、标准化路径和时区、删除无业务意义的时间戳；再用 `tool_name + canonical_args` 生成 fingerprint。
+工具震荡典型轨迹是 `A → B → A → B`。本质上不是完全重复，而是 Agent 在两个动作之间形成局部闭环：A 的结果让它选择 B，B 的结果又让它回到 A。
 
-- 完全相同且只读的调用：优先返回缓存结果；
-- 写操作：使用业务幂等键，重复请求必须查询既有业务结果；
-- 参数不同但结果高度相似：记录低信息增益，限制继续试探；
-- 刚失败的参数组合：放入短期 tabu list，避免立刻回摆。
+我会保留最近 6～10 个 Action，对动作序列做周期检测。如果发现 `ABABAB`、`ABCABC` 这种固定周期，就判定为 oscillation。检测后不再继续原路径，而是触发 `replan`，或者对刚调用过的 Tool 加 `cooldown`，几步内禁止再次切回。
 
-### 工具震荡与路径反复
+如果两个工具功能高度重叠，还要从工具设计层做去重，避免模型在两个近似工具之间来回选。
 
-`A → B → A → B` 并非完全重复，而是局部循环。保留最近 6～10 个动作，检测长度为 2 或 3 的重复周期；一旦命中，不能继续原路径，应触发 replan，或让刚调用过的工具进入 cooldown。若两个工具功能高度重叠，应从工具契约层消除歧义。
+**一句话记忆：工具震荡看“周期模式”，检测到 ABAB 后强制重规划。**
 
-### 规划震荡
+---
 
-每次 replan 都必须有版本、原因与新证据：`plan_v1 → plan_v2 (tool_timeout)`。只有当前路径明确失败、环境变化、出现新证据或连续无进展时才允许全量重规划。新计划应有 commit window；窗口内只允许局部修正，不能又推翻整体目标。
+## 3. 参数震荡怎么处理？
+**【精简版】**
 
-## 进展不是模型输出，而是环境变化
+参数震荡是工具不变，但参数来回变化，例如 `Search(A) → Search(B) → Search(A)`。通常说明 Agent 在局部参数空间反复试探，但没有记住已经尝试过什么。
 
-### 状态停滞与无效探索
+工程上先对参数做 canonicalization，例如 JSON key 排序、路径标准化、去掉时间戳等无意义字段，再对 `tool + args` 做缓存。完全相同的调用直接复用历史结果；参数虽然不同，但返回结果高度相似时，也可以判定“信息增益不足”。
 
-连续读文件、查日志或搜索并不等于任务推进。应从真实环境抽取状态：文件 hash、失败测试数、数据库版本、DOM 状态、完成 checklist 数、Artifact ID。比较 `state_before` 和 `state_after`，连续 N 步不变时增加 `no_progress_steps`：第一次触发 replan，第二次仍停滞则终止或转人工。
+还可以维护短期 `tabu list`，刚失败过的参数组合在若干步内禁止再次使用。
 
-探索另设预算：最大搜索次数、读取文件数和连续无新增事实步数。连续探索 K 次后强制经过 Decision Gate——必须提出下一步决定、请求澄清或停止，不能无限 browse。
+**一句话记忆：参数震荡 = 参数标准化 + Tool Cache + 低信息增益拦截。**
 
-### 假进展与过早收敛
+---
 
-模型的“已完成”只能是 `candidate_done`。所有副作用都要 `write → read-after-write → verify`：写文件后读取/hash 对比，数据库更新后 SELECT，浏览器操作后检查 URL/DOM。成功由 Completion Evaluator 依据 Completion Contract 判定，例如复现用例从 FAIL 变 PASS、目标 Artifact 存在、原有测试未回归。
+## 4. 规划震荡怎么解决？
+**【精简版】**
 
-### 过度执行
+规划震荡是 `Plan A → Plan B → Plan A`。根因通常是模型每拿到一点新信息就把整体计划推翻，Planner 没有“计划承诺”。
 
-运行状态应显式建模为 `RUNNING → VERIFYING → SUCCESS`。`SUCCESS` 是终态：禁止再进入 `RUNNING`，也禁止新的有副作用工具调用。这样避免任务已完成后继续搜索、重构并破坏正确结果。
+工程上我会做 `Plan Versioning`，每次重规划都记录版本、原因和触发证据，例如 `plan_v1 → plan_v2`。只有当前路径明确失败、出现新证据、环境变化或者连续无进展时，才允许整体 replan。
 
-## 状态正确性：目标、事实、版本和恢复
+还可以增加 `commit window`：刚生成新计划后的几步内不允许再次全量重规划，只允许局部调整。
 
-### 目标与上下文漂移
+**一句话记忆：计划不能随便推翻，要版本化，并给 replan 加门槛。**
 
-Goal 不能只存在 messages 中。建立不可由 Agent 改写的 Goal Contract，至少包含目标、允许操作范围、约束、受保护资源和成功标准；高风险动作前执行 Goal Alignment Check。
+---
 
-同时区分状态：`messages` 保存会话，`verified_facts` 保存已证实事实，`current_plan` 保存当前计划，`completed_tasks` 保存完成项，`artifacts` 保存产物引用，`goal_contract` 保存不可变边界。可以压缩聊天历史，但不能丢失这些结构化状态。
+## 5. Agent 重复验证怎么办？
+**【精简版】**
 
-### 环境失同步与状态回归
+重复验证常见轨迹是 `check → check → check`，Coding Agent 里经常表现为连续多次运行同一组测试。
 
-读取资源时记录 `version / ETag / mtime / content_hash`；写入时携带 `expected_version`。不一致就拒绝写入并 fresh read，避免根据版本 A 覆盖已变成版本 B 的资源。
+解决方式是建立 `Evidence Cache`。验证结果不能只和 Tool 名绑定，而要和“被验证对象的状态”绑定，例如 `pytest + code_hash`。只要代码 hash 没变，上一次 PASS 结果仍然有效，就不需要重复跑。
 
-将已成立且不能被破坏的条件写为 invariant，例如“既有测试持续通过”“API schema 不变”“受保护文件不可改”。重要节点持久化 checkpoint；后续动作破坏 invariant 时，回滚到最近稳定点，而非整段任务从头执行。外部副作用必须先用幂等键查询真实结果，再恢复 checkpoint，避免二次支付、二次发信。
+一旦目标文件发生修改，hash 变化，缓存自动失效，再重新验证。
 
-## 错误、结果和资源的边界
+**一句话记忆：验证结果绑定 state hash，状态没变就不要重复验证。**
 
-### Retry 不是默认答案
+---
 
-先按错误分类：`Timeout`、`RateLimit`、部分 `5xx` 是可有界重试的 transient error；`InvalidArgument`、`Auth`、`Permission`、多数 `Conflict` 应返回 Planner 重新决策。重试必须有 `max_retries + exponential backoff + jitter`；连续失败打开 circuit breaker，暂时禁用该依赖。
+## 6. Agent 无效探索太多怎么办？
+**【精简版】**
 
-### Tool Result 过长
+无效探索的典型表现是不断 `search / read / browse`，动作很多，但任务状态、已知事实和决策都没有变化。
 
-控制顺序应为：服务端过滤/分页/字段选择 → 返回 `ID + title + snippet + source` 并按 ID 二次取详情 → Retrieval/Rerank 选 Top-K → 带 `source_id` 的结构化摘要。摘要是最后一层，不是把所有原文塞进上下文后的补救。
+工程上我会给探索阶段设置独立 Budget，例如最大搜索次数、最大读取文件数、连续无新增信息的最大步数。同时维护 `Novelty / Information Gain`，新结果如果和历史结果高度重复，就降低优先级甚至直接拦截。
 
-### 搜索爆炸与资源失控
+另外可以做 `Search → Decision Gate`：连续探索 K 次后必须做一次决策，不能无限搜索。
 
-限制 `branching_factor`、`max_depth`、`max_parallel_agents`、`max_total_tasks`，候选先评分，仅执行 Top-K，支配劣解直接 prune。每个 run 同时限制 `max_turns`、token、tool/search calls、wall-clock time 和并发数；预算到 80% 停止扩大探索、优先验证收尾，达到 100% hard stop。必要时监控 `cost / progress`，低进展高成本可提前终止。
+**一句话记忆：探索必须有预算，而且要看信息增益，不是调用越多越好。**
 
-### 投机取巧
+---
 
-Agent 可能删测试、改断言或添加 skip 来换取“通过”。把 tests、evaluation、CI 配置和评分规则设为 protected resource，只读或审批；Actor 负责执行，独立 Evaluator 负责验收，关键路径使用隐藏测试或独立基线。成功不能只看测试绿，还要验证保护资源未被篡改和真实功能满足目标。
+## 7. Agent 状态停滞怎么检测？
+**【精简版】**
 
-## 可运行：一个小型轨迹守卫
+状态停滞的关键不是“Agent 有没有输出”，而是“真实任务有没有推进”。例如模型一直读文件、查日志，但 `git diff`、失败测试数量、任务 checklist 都没变化。
 
-以下示例只使用 Python 标准库。它演示参数指纹、短周期检测、state hash、预算、错误分类和停止原因；真实系统应把 `state_hash` 替换为文件/测试/数据库等环境观测，而不是模型文本。
+我会抽取关键状态生成 `state_hash`，每一步比较 `state_before / state_after`。如果连续 N 步状态没有变化，就增加 `no_progress_steps`；达到阈值后先 replan，再继续停滞就直接 terminate。
 
-```python
-from __future__ import annotations
+进展指标要来自真实环境，例如文件变化、测试数量、数据库状态、页面 DOM、完成任务数，而不是模型自己说“我有进展”。
 
-from dataclasses import dataclass, field
-from hashlib import sha256
-import json
-from typing import Any, Literal
+**一句话记忆：状态停滞看真实 state diff，连续无变化就 replan，再不行就停。**
 
+---
 
-Action = tuple[str, str]
-Decision = Literal["allow", "replan", "stop"]
+## 8. Agent 状态回归怎么办？
+**【精简版】**
 
+状态回归是已经完成的部分又被后续操作破坏，例如测试已经通过，后续重构后又失败。
 
-def canonical_args(arguments: dict[str, Any]) -> str:
-    return json.dumps(arguments, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+工程上我会维护 `Invariant`，把已经成立且不能被破坏的条件记录下来，例如“已有测试必须继续通过”“API schema 不能变化”“某些文件不能修改”。关键步骤后做增量检查。
 
+同时在重要里程碑保存 `Checkpoint`。如果后续操作破坏 invariant，就 rollback 到最近稳定状态，而不是整段任务重新执行。
 
-def fingerprint(tool: str, arguments: dict[str, Any]) -> Action:
-    return tool, canonical_args(arguments)
+**一句话记忆：完成的东西要变成 invariant，关键节点要 checkpoint，可检测也可回滚。**
 
+---
 
-def has_period(history: list[str], period: int, repeats: int = 3) -> bool:
-    needed = period * repeats
-    if len(history) < needed:
-        return False
-    tail = history[-needed:]
-    return all(tail[i] == tail[i % period] for i in range(needed))
+## 9. Agent 目标漂移怎么解决？
+**【精简版】**
 
+目标漂移通常发生在长任务里：最初用户只是要求修一个 Bug，Agent 后面开始重构、升级依赖、改目录结构。根因是目标只存在于聊天上下文中，时间长了会被稀释。
 
-@dataclass
-class RunGuard:
-    max_turns: int = 12
-    max_calls_per_tool: int = 3
-    max_no_progress: int = 3
-    history: list[Action] = field(default_factory=list)
-    tool_counts: dict[str, int] = field(default_factory=dict)
-    last_state_hash: str | None = None
-    no_progress_steps: int = 0
+工程上我会把用户目标提取成独立的 `Goal Contract`，包括目标、允许操作范围、约束条件和成功标准，并放在 Runtime State 中，不能由 Agent 自己修改。
 
-    def observe_state(self, state: dict[str, Any]) -> None:
-        current = sha256(canonical_args(state).encode()).hexdigest()
-        self.no_progress_steps = (
-            self.no_progress_steps + 1 if current == self.last_state_hash else 0
-        )
-        self.last_state_hash = current
+每次执行高风险动作前做 `Goal Alignment Check`，超出 scope 的操作直接拒绝。
 
-    def decide(self, tool: str, arguments: dict[str, Any]) -> tuple[Decision, str]:
-        if len(self.history) >= self.max_turns:
-            return "stop", "turn_budget_exceeded"
-        if self.tool_counts.get(tool, 0) >= self.max_calls_per_tool:
-            return "replan", f"tool_budget_exceeded:{tool}"
+**一句话记忆：目标不要只放 messages，要做成 Runtime 里的不可变 Goal Contract。**
 
-        call = fingerprint(tool, arguments)
-        if self.history and self.history[-1] == call:
-            return "replan", "duplicate_tool_call"
+---
 
-        names = [name for name, _ in self.history] + [tool]
-        if has_period(names, period=2) or has_period(names, period=3):
-            return "replan", "action_oscillation"
-        if self.no_progress_steps >= self.max_no_progress:
-            return "stop", "no_real_progress"
+## 10. Agent 上下文漂移怎么处理？
+**【精简版】**
 
-        self.history.append(call)
-        self.tool_counts[tool] = self.tool_counts.get(tool, 0) + 1
-        return "allow", "ok"
+上下文漂移是长任务中早期事实逐渐丢失，例如前面已经确认根因，后面又重新调查一次。原因是把“聊天历史”当成了“任务状态”。
 
+工程上我会把信息分层：`messages` 保存对话；`verified_facts` 保存已确认事实；`current_plan` 保存当前计划；`completed_tasks` 保存完成项；`artifacts` 保存产物引用；`goal_contract` 保存目标。
 
-guard = RunGuard(max_turns=6, max_calls_per_tool=2)
-guard.observe_state({"tests_failed": 2, "files_changed": 0})
-print(guard.decide("search_logs", {"query": "timeout"}))
-print(guard.decide("search_logs", {"query": "timeout"}))  # 重复，要求 replan
+长上下文可以做 compaction，但关键事实必须进入结构化 State Store，不能只依赖模型重新从历史文本中推断。
 
-guard = RunGuard()
-for action in ["read", "search", "read", "search", "read", "search"]:
-    print(guard.decide(action, {}))  # 第三次 AB 周期时要求 replan
-```
+**一句话记忆：聊天记录不是状态，关键事实必须结构化保存。**
 
-运行方式：保存为 `guard.py` 后执行 `python guard.py`。生产实现还应记录 trace ID、用户/租户、计划版本、审批、工具副作用等级和持久化 checkpoint。
+---
 
-## 面试速答
+## 11. Agent 假进展怎么解决？
+**【精简版】**
 
-可以按下面顺序回答：“我不会只靠 Prompt 防异常。Runtime 会记录 Action History，对工具和参数做 fingerprint，配合 cache、幂等键、周期检测与 cooldown 处理重复和震荡；再通过 structured state、真实 state diff 和 progress watchdog 判断有没有进展；同时设置 turn、token、tool、搜索和时间预算，并按错误类别重试。关键节点写 checkpoint，完成条件由独立 evaluator 根据真实环境验收。这样模型可以偶尔决策错误，但运行仍有明确的重规划、降级、转人工和硬停止边界。”
+假进展是模型说“已经完成”，但真实环境没有变化，例如说文件修改成功，实际上 `git diff` 为空。
 
-## 一页速记
+工程上要采用 `write → read-after-write → verify`。写文件后重新读取并比较 hash；数据库 UPDATE 后重新 SELECT；Browser click 后重新读取 URL、DOM 或页面状态。
+
+最终是否完成不能由 Agent 自己声明，而是由 Runtime 根据真实环境确认。
+
+**一句话记忆：模型说完成不算完成，所有副作用都要从环境重新验证。**
+
+---
+
+## 12. Agent 和环境失同步怎么办？
+**【精简版】**
+
+环境失同步指 Agent 基于旧状态做决策，例如读取文件时是版本 A，真正写入时文件已经被其他进程改成版本 B。
+
+工程上可以用乐观并发控制。读取资源时记录 `version / ETag / mtime / content_hash`，写入时携带 `expected_version`。如果当前版本和预期不一致，就拒绝写入并要求重新读取。
+
+高风险写操作还可以增加 `fresh-read-before-write`，写之前强制获取最新状态。
+
+**一句话记忆：读的时候记版本，写的时候验版本，不一致就重新读。**
+
+---
+
+## 13. Agent 错误恢复为什么会陷入 retry 螺旋？怎么解决？
+**【精简版】**
+
+常见错误是所有异常统一 `except Exception: retry()`，导致参数错误、权限错误也被不停重试。
+
+工程上必须先做 Error Taxonomy，把错误分成 `Timeout / RateLimit / 5xx / InvalidArgument / Auth / Permission / Conflict`。只有 Timeout、429、部分 5xx 等 transient error 才自动 retry；参数、认证、权限错误应该直接返回给 Planner 重新决策。
+
+Retry 必须同时有 `max_retries + exponential backoff + jitter`，连续失败超过阈值时打开 Circuit Breaker，暂时禁止继续调用该依赖。
+
+**一句话记忆：先判断该不该重试，再决定重试几次；不要所有异常都 retry。**
+
+---
+
+## 14. Agent 为什么会路径反复 / 震荡？怎么解决？
+**【精简版】**
+
+路径震荡通常有四类原因：没有保留失败历史；Tool Result 不够明确；Planner 每轮重新规划导致反复；没有明确的 Stop Condition 和 Retry Budget。
+
+我会记录 `Action History、Tool Result、Failure Reason`，对重复 Action 做检测。如果同一工具、相同参数、相近上下文被重复调用，就认为路径开始反复；如果最近动作序列出现 `ABAB`、`ABCABC`，就认为进入震荡。
+
+同时给工具和子任务设置最大尝试次数、timeout、最大 Agent Turn，并把已经验证失败的路径写入当前执行状态，避免下一轮又重新尝试同一条失败路径。
+
+**一句话记忆：记失败、查重复、限重试、设终止，不要让模型每轮都从零规划。**
+
+---
+
+## 15. Tool 返回结果太长怎么办？
+**【精简版】**
+
+第一层在 Tool 侧做裁剪：分页、字段选择、时间范围和过滤条件，避免一开始就返回巨量原始结果。
+
+第二层只返回轻量元数据，例如 `ID + title + snippet + source`，需要细节时再通过 ID 二次 fetch，而不是一次把完整正文塞入上下文。
+
+第三层对候选结果做 Retrieval / Rerank，只把 Top-K 真正相关内容放进 Context。可以用 BM25、Embedding、RRF 或 Reranker。
+
+第四层才是 Summary，而且摘要要尽量结构化，并保留 `source_id`，保证后续仍然能回到原始内容。
+
+**一句话记忆：Tool 结果控制：过滤/分页 → 外部化 → Rerank → 结构化摘要。**
+
+---
+
+## 16. 搜索爆炸怎么控制？
+**【精简版】**
+
+搜索爆炸常见于 Planner 或 Multi-Agent，一次生成很多分支，子任务又继续拆子任务，复杂度快速增长。
+
+工程上我会限制 `branching_factor、max_depth、max_parallel_agents、max_total_tasks`。例如每一层最多保留 3 个候选、深度最多 4 层、总子任务不超过 20。
+
+如果候选很多，可以先评分，只执行 Top-K；已经被其他方案支配的低质量、高成本分支直接 prune。
+
+**一句话记忆：搜索树必须限宽、限深、限并发，只跑 Top-K。**
+
+---
+
+## 17. Agent 过早收敛怎么办？
+**【精简版】**
+
+过早收敛是 Agent 找到一个“看起来可行”的结果就结束，但没有真正验证目标是否完成。
+
+解决方式是定义 `Completion Contract`，把成功条件写成机器可验证的检查，例如：目标文件已经修改、Bug reproducer 从 FAIL 变 PASS、原测试仍然通过、需要的 Artifact 已存在。
+
+LLM 只能产生 `candidate_done`，最终是否进入 SUCCESS 必须由 Completion Evaluator 决定。
+
+**一句话记忆：模型只能申请完成，Runtime 验收通过后才能真正结束。**
+
+---
+
+## 18. Agent 过度执行怎么办？
+**【精简版】**
+
+过度执行是任务已经完成，Agent 还继续搜索、重构、修改，最后反而把正确结果破坏。
+
+工程上应该把 Agent Runtime 做成明确状态机，例如 `RUNNING → VERIFYING → SUCCESS`。一旦进入 SUCCESS，就变成 Terminal State，不允许再回 RUNNING，也禁止继续调用有副作用的工具。
+
+如果只是“可能完成”，先进入 VERIFYING，而不是直接继续探索。
+
+**一句话记忆：完成后必须进入硬终止状态，不能让 Agent 继续自由发挥。**
+
+---
+
+## 19. Agent 资源失控怎么解决？
+**【精简版】**
+
+资源失控主要是 token、tool call、wall-clock time、并行 Agent 数快速增长，但实际进展很低。
+
+工程上我会做 `Budget Governor`，至少限制 `max_turns、max_tokens、max_tool_calls、max_search_calls、max_time、max_parallel_agents`。预算到 80% 时停止继续探索，优先进入验证和收尾；达到 100% 直接 hard stop。
+
+如果希望更细，可以看 `cost / progress`，成本持续增加但进展几乎为 0，就提前终止。
+
+**一句话记忆：每个 Agent Run 都要有时间、Token、Tool 和搜索预算。**
+
+---
+
+## 20. Agent 投机取巧怎么办？
+**【精简版】**
+
+典型例子是 Coding Agent 为了让测试通过，直接删测试、改断言、加 skip，而不是真正修 Bug。本质上是优化了指标，但没有完成真实目标。
+
+工程上要把关键资产设成 `protected resource`，例如 `tests/、evaluation/、CI config` 只读或需要审批。Actor Agent 负责执行，Evaluator 独立验收，最好使用隐藏测试或独立基线。
+
+最终成功条件不能只看“测试绿了”，还要检查受保护文件有没有变化、真实功能是否满足要求。
+
+**一句话记忆：执行方不能修改评分规则，Actor 和 Evaluator 要分权。**
+
+---
+
+# 面试最常用的 8 个关键词
+
+如果面试现场只能记住一套东西，就记：
+
+**1. Action History**：记录做过什么，避免重复路径。  
+**2. Fingerprint / Cache**：识别相同 Tool Call，减少重复执行。  
+**3. Budget**：限制 Turn、Token、Tool、时间和搜索次数。  
+**4. Timeout + Retry**：工具超时、错误分类、指数退避。  
+**5. Structured State**：Goal、Facts、Plan、Completed Task 分开保存。  
+**6. Progress Watchdog**：连续无状态变化就 replan / terminate。  
+**7. Checkpoint / Rollback**：关键节点保存状态，回归时恢复。  
+**8. Completion Evaluator**：模型不能自己宣布完成，最终由 Runtime 验收。
+
+---
+
+# 一段可以直接背的总回答
+
+> 我一般不会只通过 Prompt 去解决 Agent 的异常轨迹，因为 Prompt 只能提高模型做对决策的概率，不能保证运行时一定稳定。工程上我会在模型外面加一层 Runtime：首先记录 Action History，对 Tool 和参数做 fingerprint，解决重复调用和路径震荡；其次设置 max turns、tool budget、timeout 和 retry policy，限制资源和错误恢复；然后维护结构化 State，通过 state diff 和 progress watchdog 判断任务有没有真实进展；关键步骤做 checkpoint，避免状态回归；最后把成功条件做成 Completion Contract，由独立 Evaluator 根据真实环境决定是否结束。这样即使模型偶尔做错决策，整个 Agent 仍然是可控的。
+
+---
+
+# 一页速记
 
 | 问题 | 工程解法 |
-| --- | --- |
-| 工具死循环 | fingerprint + cache + max calls + 幂等键 |
-| 工具/路径震荡 | 周期检测 + cooldown + replan |
-| 参数震荡 | canonical args + tabu list + 低信息增益拦截 |
+|---|---|
+| 工具死循环 | fingerprint + cache + max calls |
+| 工具震荡 | 周期检测 + cooldown + replan |
+| 参数震荡 | canonical args + cache |
+| 规划震荡 | plan version + replan gate |
 | 重复验证 | validator + state hash |
-| 无效探索 | exploration budget + decision gate |
-| 停滞/假进展 | state diff + read-after-write + watchdog |
-| 状态回归/失同步 | invariant + checkpoint + version/ETag |
-| 目标/上下文漂移 | immutable Goal Contract + structured state |
+| 无效探索 | exploration budget + information gain |
+| 状态停滞 | state diff + progress watchdog |
+| 状态回归 | invariant + checkpoint + rollback |
+| 目标漂移 | immutable Goal Contract |
+| 上下文漂移 | structured state |
+| 假进展 | read-after-write |
+| 环境失同步 | version / ETag |
 | Retry 螺旋 | error taxonomy + backoff + circuit breaker |
-| 搜索与资源爆炸 | Top-K + 限宽/深/并发 + Budget Governor |
-| 过早收敛/过度执行 | Completion Contract + terminal SUCCESS |
+| 路径反复 | failure history + duplicate detection |
+| Tool 结果太长 | filter/page → externalize → rerank → summary |
+| 搜索爆炸 | branch/depth/parallel limit + Top-K |
+| 过早收敛 | Completion Contract |
+| 过度执行 | Terminal State |
+| 资源失控 | Budget Governor |
 | 投机取巧 | protected resource + independent evaluator |
-
-## 参考资料
-
-- 本页根据本地《Agent 异常轨迹高密度面试手册》整理，并按 WindWiki 的 Harness、Loop、Graph 术语边界重组。
-- [Anthropic：Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
-- [LangGraph：Durable execution](https://docs.langchain.com/oss/python/langgraph/durable-execution)
-- [OpenAI：A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/)
-- [OWASP：Top 10 for LLM Applications](https://genai.owasp.org/llm-top-10/)
