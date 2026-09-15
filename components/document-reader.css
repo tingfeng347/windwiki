@@ -3,21 +3,37 @@
  * 页面下缘时出现；触摸设备与窄屏常驻，避免没有 hover 时无法操作。
  */
 .rspress-doc.windwiki-doc-reader-active {
-  width: var(--windwiki-doc-width, 100%);
+  width: 100%;
   max-width: none;
   zoom: var(--windwiki-doc-zoom, 1);
 }
 
 .windwiki-doc-reader {
   position: fixed;
-  z-index: 9;
+  /*
+   * PDF 阅读器在正文树内，z-index: 3 就够；Markdown 工具条却是 Layout 的同级
+   * 全局 UI。它必须高于默认主题的导航/抽屉交互层，否则会出现工具条可见、事件却
+   * 命中文档层的情况。80 也与站内标记工具的交互层保持一致。
+   */
+  z-index: 80;
   left: max(8px, var(--windwiki-doc-rail-left, 0px));
   right: max(8px, var(--windwiki-doc-rail-right, 0px));
   bottom: max(8px, env(safe-area-inset-bottom));
-  pointer-events: none;
+  /*
+   * 不依赖子元素从 pointer-events:none 中“穿透”出来。根盒的高度只包含底栏，
+   * 允许它接收事件可以让按钮、搜索框和键盘焦点在各种浏览器中稳定工作。
+   */
+  pointer-events: auto;
+  isolation: isolate;
 }
 
 .windwiki-doc-reader__panel {
+  /*
+   * 桌面端的 rail-zone 是 position:fixed。未定位的面板会在绘制顺序里被它压住，
+   * 看起来像按钮却实际点到热区；把面板建立成更高的定位层，控件才是命中目标。
+   */
+  position: relative;
+  z-index: 1;
   width: fit-content;
   max-width: 100%;
   margin-inline: auto;
@@ -36,6 +52,7 @@
 
 .windwiki-doc-reader__rail-zone {
   display: none;
+  z-index: 0;
 }
 
 .windwiki-doc-reader__group,
@@ -81,9 +98,22 @@
   cursor: default;
 }
 
-.windwiki-doc-reader__button--zoom {
-  min-width: 48px;
+.windwiki-doc-reader__zoom {
+  min-width: 40px;
+  color: var(--rp-c-text-2);
   font-size: 13px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.windwiki-doc-reader__button--text {
+  padding: 0 8px;
+}
+
+/* 和 PDF 的“适宽”开关一致：当前处于适宽模式时显示品牌色。 */
+.windwiki-doc-reader__button[aria-pressed='true'] {
+  color: var(--rp-c-brand);
+  background-color: var(--rp-c-bg-mute);
 }
 
 .windwiki-doc-reader__search-input {

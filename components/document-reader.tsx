@@ -122,6 +122,9 @@ export default function DocumentReader() {
   const routePath = page?.routePath;
   const pageType = page?.pageType;
   const [doc, setDoc] = useState<HTMLElement | null>(null);
+  // Markdown 没有 PDF 的页尺寸；这里把 100% 定义为“适合正文栏的宽度”。
+  // 一旦手动缩放，就保留真实放大宽度并交给正文栏横向滚动，语义与 PDF 的适宽一致。
+  const [fitWidth, setFitWidth] = useState(true);
   const [zoom, setZoom] = useState(1);
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
@@ -149,6 +152,7 @@ export default function DocumentReader() {
   useEffect(() => {
     resetSearch();
     setQuery('');
+    setFitWidth(true);
     setZoom(1);
     setDoc(null);
 
@@ -184,20 +188,19 @@ export default function DocumentReader() {
     };
   }, [resetSearch, routePath, usesDocLayout]);
 
-  // CSS zoom 改变排版尺寸；反向调整逻辑宽度后，正文仍然只占原来的可用栏宽。
+  // 手动缩放时不再反向收窄正文宽度：那会把宽图/宽表锁在左侧并留下空白。
+  // 保留真实放大后的宽度，由默认正文栏提供横向滚动，和 PDF 放大后的行为一致。
   useLayoutEffect(() => {
     if (!doc) {
       return;
     }
     doc.classList.add('windwiki-doc-reader-active');
-    doc.style.setProperty('--windwiki-doc-zoom', String(zoom));
-    doc.style.setProperty('--windwiki-doc-width', `${100 / zoom}%`);
+    doc.style.setProperty('--windwiki-doc-zoom', String(fitWidth ? 1 : zoom));
     return () => {
       doc.classList.remove('windwiki-doc-reader-active');
       doc.style.removeProperty('--windwiki-doc-zoom');
-      doc.style.removeProperty('--windwiki-doc-width');
     };
-  }, [doc, zoom]);
+  }, [doc, fitWidth, zoom]);
 
   // 固定底栏与正文列左右对齐；折叠知识树/大纲、缩放窗口时都会重新测量。
   useLayoutEffect(() => {
@@ -293,11 +296,16 @@ export default function DocumentReader() {
   }
 
   const count = rangesRef.current.length;
-  const percentage = Math.round(zoom * 100);
+  const effectiveZoom = fitWidth ? 1 : zoom;
+  const percentage = Math.round(effectiveZoom * 100);
 
   return (
     <div
       className="windwiki-doc-reader"
+      // 它是 Layout 的同级全局组件。阻止事件冒泡到默认主题的文档层，避免主题侧
+      // 的点击/快捷键处理抢走输入框、按钮和 Enter 搜索。
+      onPointerDown={(event) => event.stopPropagation()}
+      onKeyDown={(event) => event.stopPropagation()}
       style={{
         '--windwiki-doc-rail-left': `${rail.left}px`,
         '--windwiki-doc-rail-right': `${rail.right}px`,
@@ -311,38 +319,46 @@ export default function DocumentReader() {
             className="windwiki-doc-reader__button"
             aria-label="缩小 Markdown 正文"
             title="缩小"
-            disabled={zoom <= MIN_ZOOM}
-            onClick={() =>
+            disabled={!fitWidth && zoom <= MIN_ZOOM}
+            onClick={() => {
+              setFitWidth(false);
               setZoom((value) =>
-                Math.max(MIN_ZOOM, Number((value - ZOOM_STEP).toFixed(1))),
-              )
-            }
+                Math.max(MIN_ZOOM, Number(((fitWidth ? 1 : value) - ZOOM_STEP).toFixed(1))),
+              );
+            }}
           >
             −
           </button>
-          <button
-            type="button"
-            className="windwiki-doc-reader__button windwiki-doc-reader__button--zoom"
-            aria-label="恢复 Markdown 正文为 100%"
-            title="恢复为 100%"
-            disabled={zoom === 1}
-            onClick={() => setZoom(1)}
-          >
+          <span className="windwiki-doc-reader__zoom" aria-live="polite">
             {percentage}%
-          </button>
+          </span>
           <button
             type="button"
             className="windwiki-doc-reader__button"
             aria-label="放大 Markdown 正文"
             title="放大"
-            disabled={zoom >= MAX_ZOOM}
-            onClick={() =>
+            disabled={!fitWidth && zoom >= MAX_ZOOM}
+            onClick={() => {
+              setFitWidth(false);
               setZoom((value) =>
-                Math.min(MAX_ZOOM, Number((value + ZOOM_STEP).toFixed(1))),
-              )
-            }
+                Math.min(MAX_ZOOM, Number(((fitWidth ? 1 : value) + ZOOM_STEP).toFixed(1))),
+              );
+            }}
           >
             +
+          </button>
+          <button
+            type="button"
+            className="windwiki-doc-reader__button windwiki-doc-reader__button--text"
+            aria-label="适应 Markdown 正文宽度"
+            aria-pressed={fitWidth}
+            title="适宽"
+            onClick={() => {
+              setFitWidth(true);
+              setZoom(1);
+            }}
+          >
+            适宽
           </button>
         </div>
 
