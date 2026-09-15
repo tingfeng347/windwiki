@@ -50,18 +50,18 @@ Tool Use 是横切能力。单次函数调用也可以使用工具；ReAct 强�
 
 | 原始分类 | 对应笔记 |
 | --- | --- |
-| AI / Agent / Agentic Engineering | [AI 工程概览](./index.md) |
-| L1 Prompt Engineering | [提示词工程](./prompt-engineering.md) |
-| L2 Context Engineering | [上下文工程](./context-engineering.md) |
-| Memory、RAG、外部知识 | [Memory、RAG 与外部知识](./memory-and-rag.md) |
-| Tool Use、MCP、工具契约 | [Tool Use 与工具工程](./tool-engineering.md) |
-| L3 Loop Engineering | [循环工程](./loop-engineering.md) |
-| L4 Graph Engineering | [图工程](./graph-engineering.md) |
-| L5 Harness Engineering | [主控工程](./harness-engineering.md) |
-| ReAct、Planning、Reflection | [单 Agent 经典范式](./single-agent-patterns.md) |
-| Router、Supervisor | [Router 与 Supervisor](./routing-and-supervisor.md) |
-| Swarm、Debate | [Swarm、Debate 与多 Agent 协作](./swarm-debate-and-collaboration.md) |
-| Eval、Observability、Safety、Cost | [生产实践与选型](./production-practice.md) |
+| AI / Agent / Agentic Engineering | [AI 工程概览](../index.md) |
+| Agent Engineering 层级 | [Agent 工程概览](./index.md) |
+| L1 Prompt Engineering | [提示词工程](./design-surfaces/prompt-engineering.md) |
+| L2 Context Engineering | [上下文工程](./design-surfaces/context-engineering/index.md) |
+| Memory、RAG、外部知识 | [Memory、RAG 与外部知识](./design-surfaces/context-engineering/memory-and-rag.md) |
+| Tool Use、MCP、工具契约 | [Tool Use 与工具工程](./design-surfaces/context-engineering/tool-engineering.md) |
+| L3 Loop Engineering | [循环工程](./design-surfaces/loop-engineering.md) |
+| L4 Graph Engineering | [图工程](./design-surfaces/graph-engineering.md) |
+| L5 Harness Engineering | [主控工程](./design-surfaces/harness-engineering/index.md) |
+| Reflection、ReAct、Planning | [单 Agent 设计模式](./design-patterns/single-agent/index.md) |
+| Supervisor、Swarm、Debate | [多 Agent 设计模式](./design-patterns/multi-agent/index.md) |
+| Eval、Observability、Safety、Cost | [生产实践与选型](./design-surfaces/harness-engineering/production-practice.md) |
 
 ## 经典论文
 
@@ -91,7 +91,7 @@ Tool Use 是横切能力。单次函数调用也可以使用工具；ReAct 强�
 
 ## Hello-Agents 图片
 
-单 Agent 范式页中的 `4-1.png`～`4-4.png` 来自 Datawhale [Hello-Agents 第四章](https://github.com/datawhalechina/hello-agents/blob/main/docs/chapter4/%E7%AC%AC%E5%9B%9B%E7%AB%A0%20%E6%99%BA%E8%83%BD%E4%BD%93%E7%BB%8F%E5%85%B8%E8%8C%83%E5%BC%8F%E6%9E%84%E5%BB%BA.md)，本地来源快照提交为 `4f7682c`。原项目采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)；转载请继续署名、仅用于非商业目的，并按相同方式共享。该章没有 GIF。
+单 Agent 模式目录中的 `4-1.png`～`4-4.png` 来自 Datawhale [Hello-Agents 第四章](https://github.com/datawhalechina/hello-agents/blob/main/docs/chapter4/%E7%AC%AC%E5%9B%9B%E7%AB%A0%20%E6%99%BA%E8%83%BD%E4%BD%93%E7%BB%8F%E5%85%B8%E8%8C%83%E5%BC%8F%E6%9E%84%E5%BB%BA.md)，本地来源快照提交为 `4f7682c`。原项目采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)；转载请继续署名、仅用于非商业目的，并按相同方式共享。该章没有 GIF。
 
 ## API 快照
 

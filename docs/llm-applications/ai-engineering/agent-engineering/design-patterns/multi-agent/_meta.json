@@ -1,0 +1,22 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "多 Agent 模式总览"
+  },
+  {
+    "type": "file",
+    "name": "supervisor",
+    "label": "Supervisor"
+  },
+  {
+    "type": "file",
+    "name": "swarm",
+    "label": "Swarm 与 Handoff"
+  },
+  {
+    "type": "file",
+    "name": "debate",
+    "label": "Debate"
+  }
+]

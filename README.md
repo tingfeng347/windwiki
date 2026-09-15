@@ -255,13 +255,13 @@ docs/
 │   │   ├── langchain/            # PDF 课程
 │   │   ├── langgraph/            # PDF 课程
 │   │   └── deepagents/           # Markdown 正文两篇（+ images/）
-│   ├── ai-engineering/           # AI 工程：五个设计面、Agent 模式与生产实践
 │   ├── reinforcement-learning-and-multimodal/  # PDF 课程，421 页
 │   ├── model-training-and-deployment/   # 分组：模型训练（空）+ 模型部署
 │   │   └── deployment/           # Markdown 两节（+ images/）
 │   ├── evaluation-and-optimization/     # 分组：评估与优化
 │   │   └── knowledge-base-evaluation.md # 目前一篇，后续文章加在这里
 │   ├── vibe-coding/              # Vibe Coding：整篇一个文档（+ images/）
+│   ├── ai-engineering/           # AI 工程：Agent Engineering → 设计面 / 设计模式
 │   └── terminal-tool-manuals/    # tmux、herdr、Zellij、Yazi、Oh My Codex、LazyVim 手册（+ images/）
 └── public/            # 站点级静态资源（favicon.svg、files/ 下的 PDF 等）
 

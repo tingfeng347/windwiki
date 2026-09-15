@@ -5,63 +5,9 @@
     "label": "AI 工程概览"
   },
   {
-    "type": "file",
-    "name": "prompt-engineering",
-    "label": "提示词工程"
-  },
-  {
-    "type": "file",
-    "name": "context-engineering",
-    "label": "上下文工程"
-  },
-  {
-    "type": "file",
-    "name": "memory-and-rag",
-    "label": "Memory、RAG 与外部知识"
-  },
-  {
-    "type": "file",
-    "name": "tool-engineering",
-    "label": "Tool Use 与工具工程"
-  },
-  {
-    "type": "file",
-    "name": "loop-engineering",
-    "label": "循环工程"
-  },
-  {
-    "type": "file",
-    "name": "graph-engineering",
-    "label": "图工程"
-  },
-  {
-    "type": "file",
-    "name": "harness-engineering",
-    "label": "主控工程"
-  },
-  {
-    "type": "file",
-    "name": "single-agent-patterns",
-    "label": "单 Agent 经典范式"
-  },
-  {
-    "type": "file",
-    "name": "routing-and-supervisor",
-    "label": "Router 与 Supervisor"
-  },
-  {
-    "type": "file",
-    "name": "swarm-debate-and-collaboration",
-    "label": "Swarm、Debate 与协作"
-  },
-  {
-    "type": "file",
-    "name": "production-practice",
-    "label": "生产实践与选型"
-  },
-  {
-    "type": "file",
-    "name": "sources-and-coverage",
-    "label": "术语边界与资料索引"
+    "type": "dir",
+    "name": "agent-engineering",
+    "label": "Agent Engineering",
+    "collapsed": true
   }
 ]

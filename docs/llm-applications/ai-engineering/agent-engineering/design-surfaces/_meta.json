@@ -1,0 +1,34 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "设计面总览"
+  },
+  {
+    "type": "file",
+    "name": "prompt-engineering",
+    "label": "L1 Prompt Engineering"
+  },
+  {
+    "type": "dir",
+    "name": "context-engineering",
+    "label": "L2 Context Engineering",
+    "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "loop-engineering",
+    "label": "L3 Loop Engineering"
+  },
+  {
+    "type": "file",
+    "name": "graph-engineering",
+    "label": "L4 Graph Engineering"
+  },
+  {
+    "type": "dir",
+    "name": "harness-engineering",
+    "label": "L5 Harness Engineering",
+    "collapsed": true
+  }
+]

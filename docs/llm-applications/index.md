@@ -14,10 +14,10 @@ flowchart LR
     B --> C[机器学习与深度学习]
     C --> D[NLP 与 LLM 原理]
     D --> E[LangChain 与 Agent]
-    E --> I[AI 工程与 Agent 模式]
-    I --> F[RAG 知识系统]
+    E --> F[RAG 知识系统]
     F --> G[训练、部署与评估]
     G --> H[Vibe Coding 工程实践]
+    H --> I[AI 工程与 Agent 模式]
 ```
 
 基础薄弱时按图从左向右学习；已有开发经验时，可以直接从“大模型概述”、RAG 或模型训练进入。
@@ -53,7 +53,6 @@ flowchart LR
 | [LangChain](./langchain-langgraph-deepagents/langchain/index.mdx) | 模型、Prompt、Chain、工具、检索与应用组件，PDF 课程 |
 | [LangGraph](./langchain-langgraph-deepagents/langgraph/index.mdx) | State、Node、Edge、持久化、人工介入与 Agent 工作流，PDF 课程 |
 | [DeepAgents](./langchain-langgraph-deepagents/deepagents/01-framework.md) | 从工具调用 Agent 到长任务、多智能体协作与工程实践 |
-| [AI 工程](./ai-engineering/index.md) | Prompt、Context、Loop、Graph、Harness 五个设计面与 Agent 经典模式 |
 | [RAG](./rag/rag.md) | 文档解析、分块、Embedding、向量库、检索优化、GraphRAG、Agentic RAG 与生产实践 |
 
 ## 模型训练、部署与质量保障
@@ -65,6 +64,7 @@ flowchart LR
 | [模型部署](./model-training-and-deployment/deployment/01-gpu-deployment.md) | GPU 规划、vLLM、Embedding/Reranker 服务与应用部署 |
 | [评估与优化](./evaluation-and-optimization/knowledge-base-evaluation.md) | RAGAS、离线评测集、LLM-as-a-Judge 和评估驱动优化 |
 | [Vibe Coding](./vibe-coding/vibe-coding.md) | Cursor、Codex、Claude Code、Spec Coding、Skill 与产品原型实践 |
+| [AI 工程](./ai-engineering/index.md) | AI Engineering → Agent Engineering → 设计面与设计模式的完整层级 |
 
 ## 按目标选择起点
 

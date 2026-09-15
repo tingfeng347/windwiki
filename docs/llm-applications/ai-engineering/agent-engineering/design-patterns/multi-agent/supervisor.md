@@ -1,8 +1,8 @@
 ---
-description: 区分 Router、Supervisor 与 Orchestrator-Workers，覆盖一次分流、并行汇总、中心调度、上下文隔离和失败传播。
+description: Supervisor 与 Orchestrator-Workers 的中心调度机制，并与 Router、并行汇总比较控制粒度、上下文和失败传播。
 ---
 
-# Router 与 Supervisor
+# Supervisor（含 Router 对比）
 
 Router 和 Supervisor 都可能处于中心位置，但控制粒度不同：Router 通常做一次分类与分发；Supervisor 是一个持续运行的 Agent，会跨多轮决定调用哪个 worker、是否继续以及怎样综合结果。
 

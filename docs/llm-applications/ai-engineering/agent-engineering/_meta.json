@@ -1,0 +1,24 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "Agent 工程概览"
+  },
+  {
+    "type": "dir",
+    "name": "design-surfaces",
+    "label": "设计面（L1～L5）",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "design-patterns",
+    "label": "设计模式",
+    "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "sources-and-coverage",
+    "label": "术语边界与资料索引"
+  }
+]

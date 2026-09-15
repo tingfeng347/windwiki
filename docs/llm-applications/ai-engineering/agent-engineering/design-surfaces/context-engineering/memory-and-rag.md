@@ -47,7 +47,7 @@ RAG 的主索引通常来自共享、版本化知识语料；Memory 更常来自
 - 经验记忆要防止把一次失败或模型幻觉固化成“事实”；
 - 检索结果必须经过重排和证据充足性判断。
 
-完整的文档解析、分块、Embedding、混合检索、Rerank、GraphRAG 和评估见 [RAG 专题](../rag/rag.md)。
+完整的文档解析、分块、Embedding、混合检索、Rerank、GraphRAG 和评估见 [RAG 专题](../../../../rag/rag.md)。
 
 ## 一个可运行的 SQLite 长期记忆
 
@@ -161,4 +161,3 @@ print(recall("tenant-a", "偏好"))  # 不会返回 tenant-b 的内容
 - [LangGraph：Memory](https://docs.langchain.com/oss/python/langgraph/add-memory)
 - [LangGraph：Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)
 - [Anthropic：Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
-

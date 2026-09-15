@@ -1,0 +1,19 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "设计模式总览"
+  },
+  {
+    "type": "dir",
+    "name": "single-agent",
+    "label": "单 Agent（L3 Loop）",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "multi-agent",
+    "label": "多 Agent（L4 Graph）",
+    "collapsed": true
+  }
+]
