@@ -6,6 +6,11 @@
   },
   {
     "type": "file",
+    "name": "agent-abnormal-trajectory-control",
+    "label": "Agent 异常轨迹排除"
+  },
+  {
+    "type": "file",
     "name": "production-practice",
     "label": "生产实践与选型"
   }

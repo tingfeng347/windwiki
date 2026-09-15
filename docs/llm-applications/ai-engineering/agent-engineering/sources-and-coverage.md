@@ -56,11 +56,18 @@ Tool Use 是横切能力。单次函数调用也可以使用工具；ReAct 强�
 | L2 Context Engineering | [上下文工程](./design-surfaces/context-engineering/index.md) |
 | Memory、RAG、外部知识 | [Memory、RAG 与外部知识](./design-surfaces/context-engineering/memory-and-rag.md) |
 | Tool Use、MCP、工具契约 | [Tool Use 与工具工程](./design-surfaces/context-engineering/tool-engineering.md) |
-| L3 Loop Engineering | [循环工程](./design-surfaces/loop-engineering.md) |
+| L3 Loop Engineering | [循环工程](./design-surfaces/loop-engineering/index.md) |
+| CodeAct、PTC、程序化工具编排 | [程序化工具编排](./design-surfaces/loop-engineering/programmatic-tool-orchestration.md) |
 | L4 Graph Engineering | [图工程](./design-surfaces/graph-engineering.md) |
 | L5 Harness Engineering | [主控工程](./design-surfaces/harness-engineering/index.md) |
+| 异常轨迹、预算、停止与恢复 | [Agent 异常轨迹排除](./design-surfaces/harness-engineering/agent-abnormal-trajectory-control.md) |
 | Reflection、ReAct、Planning | [单 Agent 设计模式](./design-patterns/single-agent/index.md) |
 | Supervisor、Swarm、Debate | [多 Agent 设计模式](./design-patterns/multi-agent/index.md) |
+| MCP、A2A、ACP、ANP | [协议与互操作总览](./protocols-and-interoperability/index.md) |
+| MCP Server 与工具/数据互操作 | [MCP](./protocols-and-interoperability/mcp.md) |
+| 跨 Agent 任务、长任务与产物 | [A2A](./protocols-and-interoperability/a2a.md) |
+| ACP 存量系统与 A2A 迁移 | [ACP 历史与迁移](./protocols-and-interoperability/acp.md) |
+| 开放 Agent 网络身份与发现 | [ANP](./protocols-and-interoperability/anp.md) |
 | Eval、Observability、Safety、Cost | [生产实践与选型](./design-surfaces/harness-engineering/production-practice.md) |
 
 ## 经典论文
@@ -88,6 +95,11 @@ Tool Use 是横切能力。单次函数调用也可以使用工具；ReAct 强�
 - [Microsoft Agent Framework](https://github.com/microsoft/agent-framework)
 - [Hugging Face：Agent glossary](https://huggingface.co/blog/agent-glossary)
 - [Model Context Protocol：Architecture](https://modelcontextprotocol.io/specification/2026-07-28/architecture)
+- [A2A 1.0 Specification](https://a2a-protocol.org/latest/specification/)
+- [Agent Communication Protocol](https://agentcommunicationprotocol.dev/introduction/welcome)
+- [Agent Network Protocol 规范状态](https://github.com/agent-network-protocol/AgentNetworkProtocol)
+
+协议章节的逐条事实与固定仓库快照见 [Agent 协议一手资料核验](./research-notes/agent-protocols-primary-sources.md)。
 
 ## Hello-Agents 图片
 
