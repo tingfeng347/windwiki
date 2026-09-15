@@ -43,7 +43,7 @@ flowchart TB
 | --- | --- | --- | --- |
 | [Prompt](./agent-engineering/design-surfaces/prompt-engineering.md) | 模型应完成什么、遵守什么、输出什么 | 指令、示例、工具描述、输出 Schema | 目标含糊、规则冲突、提示注入 |
 | [Context](./agent-engineering/design-surfaces/context-engineering/index.md) | 当前这一步需要哪些信息 | 会话、检索结果、记忆、状态、工具结果 | 上下文污染、缺证据、超预算 |
-| [Loop](./agent-engineering/design-surfaces/loop-engineering.md) | 下一步做什么，何时重试或停止 | observe-decide-act 循环、预算、终止条件 | 死循环、重复副作用、错误累积 |
+| [Loop](./agent-engineering/design-surfaces/loop-engineering/index.md) | 下一步做什么，何时重试或停止 | observe-decide-act 循环、预算、终止条件 | 死循环、重复副作用、错误累积 |
 | [Graph](./agent-engineering/design-surfaces/graph-engineering.md) | 哪些节点以何种条件连接 | 状态图、边、路由器、并行与汇合 | 路由错误、状态竞争、恢复困难 |
 | [Harness](./agent-engineering/design-surfaces/harness-engineering/index.md) | Agent 在什么边界内安全运行 | 工具注册、权限、沙箱、检查点、追踪 | 越权、不可审计、失败不可恢复 |
 

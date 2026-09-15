@@ -17,6 +17,12 @@
     "collapsed": true
   },
   {
+    "type": "dir",
+    "name": "protocols-and-interoperability",
+    "label": "协议与互操作",
+    "collapsed": true
+  },
+  {
     "type": "file",
     "name": "sources-and-coverage",
     "label": "术语边界与资料索引"

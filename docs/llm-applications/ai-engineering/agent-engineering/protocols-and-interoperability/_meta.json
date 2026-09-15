@@ -1,0 +1,32 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "协议层总览"
+  },
+  {
+    "type": "file",
+    "name": "mcp",
+    "label": "MCP：模型与工具"
+  },
+  {
+    "type": "file",
+    "name": "a2a",
+    "label": "A2A：Agent 与 Agent"
+  },
+  {
+    "type": "file",
+    "name": "acp",
+    "label": "ACP：历史与迁移"
+  },
+  {
+    "type": "file",
+    "name": "anp",
+    "label": "ANP：开放 Agent 网络"
+  },
+  {
+    "type": "file",
+    "name": "security-and-selection",
+    "label": "选型、组合与安全"
+  }
+]
