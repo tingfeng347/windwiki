@@ -16,9 +16,10 @@
     "collapsed": true
   },
   {
-    "type": "file",
+    "type": "dir",
     "name": "loop-engineering",
-    "label": "L3 Loop Engineering"
+    "label": "L3 Loop Engineering",
+    "collapsed": true
   },
   {
     "type": "file",

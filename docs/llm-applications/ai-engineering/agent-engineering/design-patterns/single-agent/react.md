@@ -70,7 +70,7 @@ def run(goal: str, max_steps: int = 4) -> str:
 print(run("查询 invoice-42 的状态"))
 ```
 
-接入真实模型时，优先使用 provider-native function calling 或类型化工具，不要依赖正则解析 `Action: Search[...]`。完整的 Agents SDK 工具循环见[循环工程](../../design-surfaces/loop-engineering.md#使用-agents-sdk-运行有界工具循环)。
+接入真实模型时，优先使用 provider-native function calling 或类型化工具，不要依赖正则解析 `Action: Search[...]`。完整的 Agents SDK 工具循环见[循环工程](../../design-surfaces/loop-engineering/index.md#使用-agents-sdk-运行有界工具循环)；当一次动作需要循环、过滤、聚合和组合多个工具时，继续阅读[程序化工具编排](../../design-surfaces/loop-engineering/programmatic-tool-orchestration.md)。
 
 ## 常见失败
 

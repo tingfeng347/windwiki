@@ -8,6 +8,8 @@ Loop Engineering 设计一个 Agent 如何反复“读取状态 → 决策 → �
 
 “Loop Engineering”是新兴工程术语；循环本身则是工具调用 Agent 的成熟结构。Anthropic 将 Agent 简化为“LLM 自主地在循环中使用工具”，OpenAI 的 Agent 指南也把 run 描述为持续到退出条件的循环。
 
+当一个 Action 需要用循环、分支、过滤或聚合组合多个工具时，可以把程序作为动作语言，详见[程序化工具编排：CodeAct 与 PTC](./programmatic-tool-orchestration.md)。
+
 ## Workflow 与 Agent
 
 | 系统 | 路径由谁决定 | 适合场景 |
