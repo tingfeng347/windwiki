@@ -5,6 +5,11 @@
     "label": "设计模式总览"
   },
   {
+    "type": "file",
+    "name": "common-agent-architectures",
+    "label": "主流 Agent 架构"
+  },
+  {
     "type": "dir",
     "name": "single-agent",
     "label": "单 Agent（L3 Loop）",

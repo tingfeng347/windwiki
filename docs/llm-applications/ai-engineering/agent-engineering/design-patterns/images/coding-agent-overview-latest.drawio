@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="六种主流 Agent Runtime">
+    <mxGraphModel dx="1536" dy="1024" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1536" pageHeight="1024" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="1536" height="1024" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="六种主流 Agent Runtime：架构定位与开源边界" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=34;fontStyle=1;fontColor=#111827;" vertex="1" parent="1">
+          <mxGeometry x="120" y="25" width="1296" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="截至 2026-09-16 官方文档与仓库快照 · 比较具体产品与 Runtime，不比较 ReAct / Planner 等抽象范式" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=17;fontColor=#4b5563;" vertex="1" parent="1">
+          <mxGeometry x="170" y="80" width="1196" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="10" value="①  Claude Code" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0b67d1;strokeColor=#0756b3;fontColor=#ffffff;fontSize=22;fontStyle=1;align=left;spacingLeft=18;arcSize=16;" vertex="1" parent="1">
+          <mxGeometry x="35" y="135" width="470" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="&lt;b&gt;产品型 Coding Agent&lt;/b&gt;&#xa;&#xa;规则 / Hooks / Skills / Subagents&#xa;Session / Compact / Permissions&#xa;&#xa;&lt;font color=&quot;#b45309&quot;&gt;公开发行、插件与示例仓库&lt;/font&gt;&#xa;核心产品不能按完整 OSS 源码仓库理解" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef6ff;strokeColor=#0b67d1;fontColor=#1f2937;fontSize=17;align=left;verticalAlign=top;spacing=18;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="35" y="193" width="470" height="255" as="geometry" />
+        </mxCell>
+
+        <mxCell id="12" value="②  OpenAI Codex" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6d4bd1;strokeColor=#5735bb;fontColor=#ffffff;fontSize=22;fontStyle=1;align=left;spacingLeft=18;arcSize=16;" vertex="1" parent="1">
+          <mxGeometry x="533" y="135" width="470" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="&lt;b&gt;开源 Coding Agent 平台&lt;/b&gt;&#xa;&#xa;App Server / codex-core / run_turn&#xa;Thread / Turn / Item / Sandbox&#xa;&#xa;&lt;font color=&quot;#15803d&quot;&gt;Apache-2.0 开源&lt;/font&gt;&#xa;本地 Runtime、协议与核心源码公开&#xa;托管模型和 Codex 云服务不因此开源" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f4f0ff;strokeColor=#6d4bd1;fontColor=#1f2937;fontSize=17;align=left;verticalAlign=top;spacing=18;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="533" y="193" width="470" height="255" as="geometry" />
+        </mxCell>
+
+        <mxCell id="14" value="③  Pi Agent Harness" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0a9ab8;strokeColor=#087f99;fontColor=#ffffff;fontSize=22;fontStyle=1;align=left;spacingLeft=18;arcSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1031" y="135" width="470" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="&lt;b&gt;最小可扩展 Harness&lt;/b&gt;&#xa;&#xa;pi-agent-core / pi-ai / pi-coding-agent&#xa;JSONL Session Tree / Extensions&#xa;&#xa;&lt;font color=&quot;#15803d&quot;&gt;MIT 开源&lt;/font&gt;&#xa;默认无内建文件、进程、网络或凭据沙箱&#xa;隔离交给 Gondolin / Docker / OpenShell" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edfbfd;strokeColor=#0a9ab8;fontColor=#1f2937;fontSize=17;align=left;verticalAlign=top;spacing=18;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1031" y="193" width="470" height="255" as="geometry" />
+        </mxCell>
+
+        <mxCell id="16" value="④  GenericAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#df6b16;strokeColor=#bd5108;fontColor=#ffffff;fontSize=22;fontStyle=1;align=left;spacingLeft=18;arcSize=16;" vertex="1" parent="1">
+          <mxGeometry x="35" y="475" width="470" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="&lt;b&gt;自进化通用 Agent&lt;/b&gt;&#xa;&#xa;L0–L4 Memory / 9 Atomic Tools&#xa;Skill Growth / Goal Hive / Morphling&#xa;&#xa;&lt;font color=&quot;#15803d&quot;&gt;MIT 开源&lt;/font&gt;&#xa;强调真实浏览器与主机环境操作&#xa;自我进化是记忆与 Skill 更新，不是训练权重" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff5eb;strokeColor=#df6b16;fontColor=#1f2937;fontSize=17;align=left;verticalAlign=top;spacing=18;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="35" y="533" width="470" height="255" as="geometry" />
+        </mxCell>
+
+        <mxCell id="18" value="⑤  Hermes Agent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#16925b;strokeColor=#0f7447;fontColor=#ffffff;fontSize=22;fontStyle=1;align=left;spacingLeft=18;arcSize=16;" vertex="1" parent="1">
+          <mxGeometry x="533" y="475" width="470" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="19" value="&lt;b&gt;多入口个人 Agent Runtime&lt;/b&gt;&#xa;&#xa;AIAgent / Toolsets / Execution Backends&#xa;SQLite + FTS5 / Memory Providers&#xa;&#xa;&lt;font color=&quot;#15803d&quot;&gt;MIT 开源&lt;/font&gt;&#xa;CLI、Desktop、Gateway、ACP 与 API 共用核心&#xa;隔离强度取决于 Backend 与审批配置" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecfaf3;strokeColor=#16925b;fontColor=#1f2937;fontSize=17;align=left;verticalAlign=top;spacing=18;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="533" y="533" width="470" height="255" as="geometry" />
+        </mxCell>
+
+        <mxCell id="20" value="⑥  DeepSeek Harness（DSH）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d23e66;strokeColor=#ad294e;fontColor=#ffffff;fontSize=22;fontStyle=1;align=left;spacingLeft=18;arcSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1031" y="475" width="470" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="&lt;b&gt;全插件平台级 Harness&lt;/b&gt;&#xa;&#xa;Cordis / Services / Events / Session Log&#xa;Replaceable Loop / Model / Tool / Storage&#xa;&#xa;&lt;font color=&quot;#15803d&quot;&gt;MIT 开源 · Developer Preview&lt;/font&gt;&#xa;Everything is a plugin&#xa;Every run is traceable" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff0f5;strokeColor=#d23e66;fontColor=#1f2937;fontSize=17;align=left;verticalAlign=top;spacing=18;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1031" y="533" width="470" height="255" as="geometry" />
+        </mxCell>
+
+        <mxCell id="30" value="共同运行链" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#111827;fontColor=#ffffff;fontSize=19;fontStyle=1;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="35" y="825" width="155" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="入口  →  上下文装配  →  模型决策  →  工具执行  →  Observation 回写  →  状态持久化  →  验证与结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf4ff;strokeColor=#3b82f6;fontColor=#1e3a8a;fontSize=19;fontStyle=1;arcSize=16;" vertex="1" parent="1">
+          <mxGeometry x="205" y="825" width="1296" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="开源仓库 ≠ 托管模型或云服务开源；比较时必须分清产品、Runtime、协议与服务边界。" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7e6;strokeColor=#f59e0b;fontColor=#92400e;fontSize=19;fontStyle=1;arcSize=14;" vertex="1" parent="1">
+          <mxGeometry x="190" y="910" width="1156" height="62" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

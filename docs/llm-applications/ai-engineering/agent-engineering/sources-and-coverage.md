@@ -63,6 +63,7 @@ Tool Use 是横切能力。单次函数调用也可以使用工具；ReAct 强�
 | 异常轨迹、预算、停止与恢复 | [Agent 异常轨迹排除](./design-surfaces/harness-engineering/agent-abnormal-trajectory-control.md) |
 | Reflection、ReAct、Planning | [单 Agent 设计模式](./design-patterns/single-agent/index.md) |
 | Supervisor、Swarm、Debate | [多 Agent 设计模式](./design-patterns/multi-agent/index.md) |
+| Claude Code、Codex、Pi、GenericAgent、Hermes、DeepSeek Harness 等 Agent / Runtime 架构 | [主流 Agent 架构](./design-patterns/common-agent-architectures.md) |
 | MCP、A2A、ACP、ANP | [协议与互操作总览](./protocols-and-interoperability/index.md) |
 | MCP Server 与工具/数据互操作 | [MCP](./protocols-and-interoperability/mcp.md) |
 | 跨 Agent 任务、长任务与产物 | [A2A](./protocols-and-interoperability/a2a.md) |

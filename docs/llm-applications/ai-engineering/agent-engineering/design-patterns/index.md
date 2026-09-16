@@ -4,7 +4,9 @@ description: Agent 设计模式总览，区分单 Agent 的循环模式与多 Ag
 
 # 设计模式总览
 
-设计模式描述可复用的控制结构。它们建立在五个设计面之上：单 Agent 模式主要改变 L3 Loop，多 Agent 模式主要改变 L4 Graph。
+设计模式描述可复用的控制结构。它们建立在五个设计面之上：单 Agent 模式主要改变 L3 Loop，多 Agent 模式主要改变 L4 Graph；无论选用哪一种，都需要 L5 Harness 负责状态、权限、预算和停止。
+
+先读[主流 Agent 架构](./common-agent-architectures.md)，了解 Claude Code、Codex、Pi、GenericAgent、Hermes 与 DeepSeek Harness 的产品运行时差异；再按实际问题进入单 Agent 或多 Agent 的专篇。这里比较的是具体产品与 Runtime，不是把 ReAct、Planner、Supervisor 等通用控制模式当成产品名单。
 
 | 类型 | 模式 | 解决的问题 |
 | --- | --- | --- |
