@@ -6,11 +6,6 @@
   },
   {
     "type": "file",
-    "name": "reflection",
-    "label": "Reflection 与 Reflexion"
-  },
-  {
-    "type": "file",
     "name": "react",
     "label": "ReAct"
   },
@@ -18,5 +13,10 @@
     "type": "file",
     "name": "plan-and-execute",
     "label": "Plan-and-Execute"
+  },
+  {
+    "type": "file",
+    "name": "reflection",
+    "label": "Reflection 与 Reflexion"
   }
 ]
