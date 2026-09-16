@@ -512,16 +512,6 @@ npx @deepseek-ai/dsh web
 5. **安全从一句 Prompt 下沉到执行层**：Permission、Approval、Sandbox、Backend 与 Guard 才能约束真实副作用；系统提示词不能替代操作系统和运行时隔离。
 6. **多 Agent 不是默认答案**：六者都能以不同方式委派，但委派会增加上下文隔离、权限继承、成本和失败恢复问题。先明确单 Agent Loop 的瓶颈，再选择 Subagent、Handoff 或外部 Provider。
 
-## 图片说明
-
-本文重新绘制了七张图：一张六系统总览，以及 Claude Code、Codex、Pi、GenericAgent、Hermes、DSH 六张“组件架构 + 运行时序”详图。视觉继续参考用户提供的[原始文章](https://tingfeng347.github.io/2026/07/31/%E4%B8%BB%E6%B5%81agent%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90%E6%8C%87%E5%8D%97/)：白底、彩色分层卡片、编号主链和侧边步骤；技术内容则按本页列出的官方仓库快照重建，不再沿用旧图的组件判断。
-
-六张详图使用图像生成模型绘制，并在正文与 Mermaid 中保留可检索的准确组件名和运行链，避免把图片文字当成唯一事实源。六系统总览使用 Draw.io 精确绘制，源文件随 PNG 一同保留，便于后续版本变化时直接修改。
-
-没有添加只展示终端打字过程、却不能解释组件关系的装饰性 GIF。需要观察交互时，应以各项目当前官方 CLI、Web UI 或仓库演示为准；需要理解架构时，静态分层图和可检索正文更可靠。
-
-更细的一手资料摘录与“已确认 / 不应推断”边界，见 [Coding Agent Runtime 一手资料核验](../research-notes/coding-agent-runtimes-primary-sources.md)。
-
 ## 参考资料
 
 - [Claude Code：Overview](https://code.claude.com/docs/en/overview)、[Memory](https://code.claude.com/docs/en/memory)、[Hooks](https://code.claude.com/docs/en/hooks)、[Subagents](https://code.claude.com/docs/en/sub-agents)
