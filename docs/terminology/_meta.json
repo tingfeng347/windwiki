@@ -1,0 +1,88 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "总览与索引"
+  },
+  {
+    "type": "section-header",
+    "label": "计算机基础"
+  },
+  {
+    "type": "file",
+    "name": "operating-system",
+    "label": "操作系统"
+  },
+  {
+    "type": "file",
+    "name": "computer-network",
+    "label": "计算机网络"
+  },
+  {
+    "type": "file",
+    "name": "algorithms-and-data-structures",
+    "label": "数据结构与算法"
+  },
+  {
+    "type": "section-header",
+    "label": "语言与后端"
+  },
+  {
+    "type": "file",
+    "name": "python-language",
+    "label": "Python 语言"
+  },
+  {
+    "type": "file",
+    "name": "mysql-database",
+    "label": "MySQL 与数据库"
+  },
+  {
+    "type": "file",
+    "name": "redis-cache",
+    "label": "Redis 与缓存"
+  },
+  {
+    "type": "file",
+    "name": "backend-distributed",
+    "label": "后端与分布式"
+  },
+  {
+    "type": "file",
+    "name": "software-engineering",
+    "label": "软件工程与架构"
+  },
+  {
+    "type": "file",
+    "name": "security-auth",
+    "label": "安全与身份认证"
+  },
+  {
+    "type": "section-header",
+    "label": "数据与 AI"
+  },
+  {
+    "type": "file",
+    "name": "data-engineering",
+    "label": "数据工程"
+  },
+  {
+    "type": "file",
+    "name": "machine-learning-and-deep-learning",
+    "label": "机器学习与深度学习"
+  },
+  {
+    "type": "file",
+    "name": "ai-and-llm",
+    "label": "AI 与大模型"
+  },
+  {
+    "type": "section-header",
+    "label": "业务"
+  },
+  {
+    "type": "file",
+    "name": "ecommerce",
+    "label": "电商与零售"
+  }
+]

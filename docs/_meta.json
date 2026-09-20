@@ -15,5 +15,11 @@
     "name": "research",
     "label": "科研",
     "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "terminology",
+    "label": "术语文档",
+    "collapsed": false
   }
 ]
