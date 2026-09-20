@@ -17,7 +17,7 @@ export default defineConfig({
   base,
   siteOrigin,
   title: 'WindWiki',
-  description: 'Tingfeng347 的工程知识库：记录技术学习笔记与工程实践。',
+  description: 'Tingfeng347 的 AI 工程知识库：记录 LLM 原理、Agent 工程、RAG 与训练部署的工程笔记。',
   lang: 'zh',
   icon: '/favicon.svg',
   llms: true,
@@ -28,6 +28,8 @@ export default defineConfig({
   globalUIComponents: [
     path.join(import.meta.dirname, 'components/nav-actions.tsx'),
     path.join(import.meta.dirname, 'components/document-reader.tsx'),
+    // 首页 3D 知识星图：挂载后 portal 进 .rp-home-hero__image，非首页自动跳过。
+    path.join(import.meta.dirname, 'components/home-hero-graph.tsx'),
   ],
   builderConfig: {
     html: {

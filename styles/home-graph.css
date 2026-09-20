@@ -1,0 +1,90 @@
+/*
+ * 首页：3D 知识星图 + 定位信息。
+ *
+ * Hero 不再只是一行标题，而是左侧文案、右侧星图的两栏布局；
+ * 窄屏改为上下堆叠，星图在上、文案在下。
+ */
+
+/* ---- 覆盖默认 Hero 的样式 ---- */
+
+/*
+ * 默认 Hero 是上下 5rem 外边距的居中块。这里让它撑满一屏并改为左对齐，
+ * 由内部的 flex 排布。用重复类名提高特异性，避免被主题覆盖。
+ */
+.rp-home-hero.rp-home-hero {
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--rp-nav-height, 64px));
+  min-height: calc(100svh - var(--rp-nav-height, 64px));
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  overflow: hidden;
+}
+
+/* 默认背景硬编码 1000px 高，Hero 撑满视口后会多出可滚动空白 */
+.rp-home-background.rp-home-background {
+  height: 100vh;
+  height: 100svh;
+}
+
+/* 首页不配置 features，隐藏空容器 */
+.rp-home-feature:empty {
+  display: none;
+}
+
+/* ---- 首页 Hero 右侧：首屏就固定尺寸并藏掉占位图 ---- */
+
+/*
+ * 主题只在配了 hero.image 时才把 Hero 切成两栏，所以 index.mdx 必须给一个 src，
+ * 主题会渲染 light/dark 两张 375×375 的 <img>（类名 .rp-home-hero__image-img）。
+ *
+ * 两个必须解决的问题：
+ *
+ * 1) 视觉：水合前这两张图会按原样画出来。占位已换成透明的
+ *    public/hero-placeholder.svg，本身不可见。
+ *
+ * 2) 尺寸（这才是「整个右侧先白一下」的真正原因）：
+ *    主题的 .rp-home-hero__image 自身**没有 height**，全靠那张 375×375 的图撑开。
+ *    占位图一旦隐藏、画布又还没插入，右栏高度就塌成 0，随后跳到 78vh ——
+ *    表现为整个右半边先变白、再撑出星图。所以这里直接把容器尺寸在首屏定死，
+ *    不依赖 JS 添加的类名，水合前后完全一致。
+ *
+ * 这两条规则都不带 JS 类名，随外链样式表在首屏第一帧生效。
+ */
+.rp-home-hero .rp-home-hero__image {
+  width: 100%;
+  max-width: none;
+  height: 78vh;
+  min-height: 460px;
+  background: none;
+}
+
+.rp-home-hero .rp-home-hero__image .rp-home-hero__image-img,
+.rp-home-hero .rp-home-hero__image img {
+  display: none;
+}
+
+/* ---- 星图容器 ---- */
+
+.windwiki-graph {
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  position: relative;
+}
+
+/* 星图区加一层径向渐变，让节点之外的空间也有纵深 */
+.windwiki-graph::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--rp-c-brand-tint, rgba(59, 130, 246, 0.12)) 0%,
+    transparent 62%
+  );
+  opacity: 0.55;
+}

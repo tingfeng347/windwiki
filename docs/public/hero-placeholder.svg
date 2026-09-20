@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  首页 Hero 右侧插槽的透明占位图。
+
+  背景：主题的 HomeHero 只有在配置了 hero.image 时才会切成左右两栏，
+  所以 index.mdx 必须给一个 src，但真正的星图画布由 HomeGraphPortal 挂载后注入。
+  主题会渲染 light/dark 两张 375×375 的 <img>，在水合完成前它们会按原样显示，
+  用 favicon 就会闪出一个 375×375 的方块 —— 这里给一张全透明 SVG 让空窗期不可见。
+
+  尺寸刻意与主题的 width/height 属性（375×375）一致，避免切换时抖动。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="375" height="375" viewBox="0 0 375 375"
+     role="presentation" aria-hidden="true">
+  <rect width="375" height="375" fill="none"/>
+</svg>

@@ -100,7 +100,7 @@ Tool Use 是横切能力。单次函数调用也可以使用工具；ReAct 强�
 - [Agent Communication Protocol](https://agentcommunicationprotocol.dev/introduction/welcome)
 - [Agent Network Protocol 规范状态](https://github.com/agent-network-protocol/AgentNetworkProtocol)
 
-协议章节的逐条事实与固定仓库快照见 [Agent 协议一手资料核验](./research-notes/agent-protocols-primary-sources.md)。
+协议章节的逐条事实与固定仓库快照见 [Agent 协议一手资料核验](./latest-technologies/agent-protocols-primary-sources.md)。
 
 ## Hello-Agents 图片
 

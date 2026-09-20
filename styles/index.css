@@ -3,6 +3,7 @@
  * globalStyles 只接受单个文件，所以在这里汇总各部分样式。
  */
 @import './home.css';
+@import './home-graph.css';
 @import './panel.css';
 @import './nav-auto-hide.css';
 @import './code.css';

@@ -1,12 +1,23 @@
 ---
 pageType: home
-title: 工程知识库
-description: Tingfeng347 的工程知识库，记录技术学习笔记与工程实践。
+title: WindWiki
+description: WindWiki 是 Tingfeng347 的 AI 工程知识库，覆盖 Python 基础、LLM 原理、Agent 工程、RAG、训练部署与评估优化的完整技术链路，全部是可复现的一手工程笔记。
 
 hero:
+  # 首页文案：只用标题 + 两个按钮，不再堆 tagline。
+  # 早先是「工程知识库」这类通用介绍，现在改成直接点明站点定位。
   name: WindWiki
-  text: 工程知识库
-  tagline: 从开发基础、LLM 原理到 Agent、RAG、训练部署与评估优化。
+  # 这里的 image 不是真的显示图片：HomeHero 只有在配置了 image 时才会把容器切成
+  # 左右两栏。组件 HomeGraphPortal 会把真正的 3D 星图画布 portal 进
+  # .rp-home-hero__image 这个插槽，从而复用主题的两栏布局与响应式行为。
+  #
+  # src 故意指向 public/hero-placeholder.svg —— 一张「完全透明」的空 SVG，
+  # 而不是 favicon.svg：主题会渲染 light/dark 两张 375×375 的 <img>，
+  # 在 React 水合、组件把画布插进去之前，它们会先按原样画出来，
+  # 用 favicon 就会在星图位置闪一个蓝色方块。透明占位图让这段空窗期不可见。
+  image:
+    src: /hero-placeholder.svg
+    alt: WindWiki 知识星图
   actions:
     # 「开始阅读」指向 /llm-applications/ 概览页，而不是直接跳进 Python 基础：Rspress 内建的行为是
     # 「当前页所在的分组自动展开」，一跳进课程就会把整门课的章节铺开、把其它课程挤出
@@ -16,6 +27,6 @@ hero:
       text: 开始阅读
       link: /llm-applications/
     - theme: alt
-      text: 浏览目录
-      link: /llm-applications/
+      text: GitHub
+      link: https://github.com/tingfeng347/windwiki
 ---
