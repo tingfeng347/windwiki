@@ -273,6 +273,9 @@ components/
 ├── nav-actions.tsx    # 导航栏右侧按钮组：全屏 + 标记 + 目录折叠（portal 进 .rp-nav__right）
 ├── nav-actions.css
 ├── nav-state.ts       # 导航栏自动隐藏的滚动监听脚本（内联注入，配 styles/nav-auto-hide.css）
+├── home-hero-graph.tsx  # 把 3D 星图 portal 进首页 Hero 图像位（globalUIComponent）
+├── home-hero-graph.css  # 首页 Hero 两栏版式与文案/按钮样式
+├── knowledge-graph.tsx  # three.js 知识星图本体（动态 import three，见「对默认主题的改动」第 10 条）
 ├── marker-store.ts    # 标记的本地存储与订阅（useSyncExternalStore），见「标记」
 ├── marker-anchor.ts   # 标记的定位：选区 → 锚点、锚点 → 位置并高亮（纯 DOM，不碰 React）
 ├── marker-menu.tsx    # 右键菜单：选中文字或标题后「打标记」
@@ -282,8 +285,9 @@ components/
 └── pdf-viewer.css
 
 styles/
-├── index.css          # globalStyles 入口，汇总下面四份
+├── index.css          # globalStyles 入口，汇总下面五份
 ├── home.css           # 首页 Hero 垂直居中
+├── home-graph.css     # 首页星图容器尺寸与占位图隐藏（首屏防白闪）
 ├── panel.css          # 去掉知识树竖线、两个面板折叠后的布局
 ├── nav-auto-hide.css  # 导航栏滚动后淡出并把高度还给内容（配 components/nav-state.ts）
 └── code.css           # 代码块里注释的配色（默认主题的对比度不够）
@@ -293,7 +297,7 @@ styles/
 
 使用 Rspress 默认主题，**没有 `theme/` 目录、没有 fork 主题组件**：首页使用默认的 `pageType: home` 布局，只配置 `hero`（站点名、标语、按钮），不配置 `features` 卡片，内容都在 `docs/index.mdx` 的 frontmatter 里。默认主题自带知识树、页面大纲、深浅色、代码复制与前后页导航。
 
-对默认主题的改动（目前九处），都记在这里以免以后当成 bug：
+对默认主题的改动（目前十处），都记在这里以免以后当成 bug：
 
 1. **`styles/index.css`（`rspress.config.ts` 的 `globalStyles`）**——首页 Hero 在视口内垂直居中；去掉知识树嵌套项的竖向引导线；两个面板折叠后的布局。`globalStyles` 注入在主题样式**之前**，同特异性会被主题覆盖，所以覆盖规则统一用重复类名提高一级特异性（例如 `.rp-home-hero.rp-home-hero`）。
 2. **`components/nav-actions.tsx`（`globalUIComponents`）**——导航栏右侧按钮组：全屏、标记、知识树折叠、目录折叠。上游 Rspress 没有桌面端折叠功能（PR #2142 关闭未合并，Issue #2143 仍 open），`globalUIComponents` 是官方支持的注入点。
@@ -339,6 +343,11 @@ styles/
    - `--rp-outline-width` 268px → 296px、`--rp-outline-padding-x` 20px → 12px。PDF 的书签标题普遍偏长（「3.2.1 常用大模型服务平台介绍」），原来二级标题只剩 178px 文字宽度，82 条里有 15 条要折成两行；调完只剩 2 条。**要改就改这两个变量，别直接改 `.rp-outline__toc` 的 padding**：选中态的左侧竖条用 `left: calc(-1 * var(--rp-outline-padding-x))` 定位、标题和分隔线也吃这个变量，只动 padding 会让竖条跑到裁切区外面。宽度是吃布局余量换来的，实测 PDF 页面宽度没变（还是 932px）。
 8. **`components/marker-*.tsx`（由 `nav-actions.tsx` 带进 `globalUIComponents`）**——标记（书签），见下面的「标记」一节。
 9. **`components/document-reader.tsx`（`globalUIComponents`）**——普通 Markdown/MDX 正文页的阅读工具条，沿用 PDF 阅读器的底部悬浮交互，提供 60%～200% 缩放、恢复 100%、全文搜索、高亮以及上一处/下一处导航。搜索和标记一样使用 CSS Custom Highlight API，不改写 Rspress 管理的正文 DOM；组件同时按 `doc-wide` 页面类型和 `.windwiki-pdf-viewer` 排除 PDF 课程页，避免出现两套工具条。
+10. **`components/home-hero-graph.tsx` + `components/knowledge-graph.tsx`（`globalUIComponents`）**——首页 Hero 右侧的 3D 知识星图。不 fork 主题：`index.mdx` 的 `hero.image` 给一张透明占位图，主题才会把 Hero 切成两栏；组件再把真正的 three 画布 `createPortal` 进 `.rp-home-hero__image`，复用主题的响应式布局。**布局与占位图的隐藏在 CSS 里（`styles/home-graph.css`），不依赖 JS 类名**，否则水合前右栏会先塌成 0 高度再跳到目标高度、整片白闪。
+
+    > 组件是挂在 App 层的 `globalUIComponent`，只挂载一次、不随路由卸载重挂。所以不能用「挂载时查一次 `.rp-home-hero__image`」来判定：判断当前是否首页要走 `usePage().pageType === 'home'`，用 `MutationObserver` 等 Hero 出现（冷启动时它可能晚一帧）、并在离开首页时卸载画布。这几处时序错位正是「手机上有时图谱加载不出来」的原因。
+
+    three 打包后约 700KB。若在组件顶部静态 `import * as THREE from 'three'`，Rsbuild 会把它提成入口脚本，**每个文档页都要先下载解析它才能水合**；因此改为进首页、且 `requestIdleCallback` 空闲后才 `import('three')`（类型仍走 `import type`），three 只作为异步 chunk 按需加载。移动端另做了 pixelRatio 上限 1.5、球体降段、星点减半、帧率压到 30fps，并在滚出视口或页面不可见时停帧；WebGL 创建失败、2D canvas 拿不到上下文、context lost 都静默降级，由 CSS 背景兜底。改这里时别把 three 改回静态导入，那会让所有文档页多背 700KB。
 
 Mermaid 使用 fenced `mermaid` 代码块，KaTeX 支持 `$...$`、`$$...$$` 与 fenced `math`。Rspress 的代码高亮先于 KaTeX 执行，因此配置仅跳过 `math` 的未知语言错误，让 KaTeX 处理原始公式节点。
 
