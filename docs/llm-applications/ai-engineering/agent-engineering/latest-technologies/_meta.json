@@ -3,5 +3,15 @@
     "type": "file",
     "name": "jev-decision-model",
     "label": "Jev 决策模型调研"
+  },
+  {
+    "type": "file",
+    "name": "agent-protocols-primary-sources",
+    "label": "Agent 协议一手资料核验"
+  },
+  {
+    "type": "file",
+    "name": "coding-agent-runtimes-primary-sources",
+    "label": "Coding Agent Runtime 一手资料核验"
   }
 ]
