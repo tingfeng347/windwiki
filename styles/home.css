@@ -1,37 +1,136 @@
-/*
- * 首页只有 Hero。默认的上下 5rem 外边距会让内容贴着顶部，下方留出大片空白。
- * 这里让 Hero 撑满「视口高度减去导航栏」，并把内容垂直居中，让空白上下均分。
- *
- * globalStyles 在默认主题样式之前注入，同特异性时会被主题覆盖，
- * 因此用重复类名把特异性提高一级，而不是依赖注入顺序。
- */
+/* 首页覆盖集中在此；默认主题的正文与导航功能保持原样。 */
+html:has(.rp-home-hero) {
+  --ww-paper: #f7f9fc;
+  --ww-ink: #172d46;
+  --ww-muted: #53677e;
+  --ww-blue: #315de8;
+  --ww-line: #d7e1ee;
+  --ww-wash: #e9eff8;
+  --ww-surface: #fff;
+  background: var(--ww-paper);
+}
+html.rp-dark:has(.rp-home-hero) {
+  --ww-paper: #101c2d;
+  --ww-ink: #edf3fb;
+  --ww-muted: #afc0d5;
+  --ww-blue: #92b5ff;
+  --ww-line: #30435d;
+  --ww-wash: #192c44;
+  --ww-surface: #142338;
+}
+html:has(.rp-home-hero) body { background: var(--ww-paper); }
+.rp-home-background.rp-home-background { display: none; }
+.rp-home-feature.rp-home-feature { display: none; }
+
 .rp-home-hero.rp-home-hero {
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - var(--rp-nav-height, 64px));
-  /* svh 取移动端工具栏完全展开时的视口高度，避免地址栏收起时 Hero 被截断。 */
-  min-height: calc(100svh - var(--rp-nav-height, 64px));
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-/*
- * 视口 ≤1000px 时 Hero 变为 column-reverse，容器被拉伸到整个高度，
- * 需要由容器自己把内容居中，否则仍然贴顶。
- */
-.rp-home-hero__container {
   justify-content: center;
+  max-width: none;
+  min-height: min(920px, calc(100svh - 64px));
+  margin: 0;
+  padding: 90px 32px 150px;
+  overflow: hidden;
+  color: var(--ww-ink);
 }
-
-/* 首页不再配置 features，隐藏空容器，否则它会在 Hero 下方留出 20px 并撑出滚动条。 */
-.rp-home-feature:empty {
-  display: none;
+.rp-home-hero.rp-home-hero .rp-home-hero__container {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  text-align: center;
 }
-
-/*
- * 默认主题把装饰背景硬编码为 1000px 高。Hero 撑满视口后，多出的部分会变成
- * 下方可滚动的空白，破坏垂直居中，所以让背景正好覆盖一屏。
- */
-.rp-home-background.rp-home-background {
-  height: 100vh;
-  height: 100svh;
+.rp-home-hero.rp-home-hero .rp-home-hero__content { align-items: center; }
+.rp-home-hero.rp-home-hero .rp-home-hero__title {
+  margin-bottom: 28px;
+  font-size: 23px;
+  font-weight: 650;
+  letter-spacing: -.04em;
+  line-height: 1.2;
+}
+.rp-home-hero.rp-home-hero .rp-home-hero__title-brand {
+  background: none;
+  color: var(--ww-blue);
+  -webkit-text-fill-color: currentColor;
+}
+.rp-home-hero.rp-home-hero .rp-home-hero__subtitle {
+  margin: 0;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: clamp(52px, 6.8vw, 104px);
+  font-weight: 750;
+  line-height: 1.16;
+  letter-spacing: -.065em;
+}
+.rp-home-hero.rp-home-hero .rp-home-hero__tagline {
+  max-width: 440px;
+  margin: 4px 0 8px;
+  color: var(--ww-muted);
+  font-size: 17px;
+  line-height: 1.9;
+  text-wrap: balance;
+}
+.rp-home-hero.rp-home-hero .rp-home-hero__actions {
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
+  width: auto;
+}
+.rp-home-hero.rp-home-hero .rp-home-hero__action {
+  min-height: 50px;
+  padding: 0 26px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background .2s;
+}
+.rp-home-hero.rp-home-hero .rp-button--brand {
+  color: #fff;
+  background: #315de8;
+  border: 1px solid #315de8;
+}
+.rp-home-hero.rp-home-hero .rp-button--brand:hover { background: #254ac4; }
+.rp-home-hero.rp-home-hero .rp-button--alt {
+  color: var(--ww-ink);
+  background: var(--ww-surface);
+  border: 1px solid var(--ww-line);
+}
+.rp-home-hero.rp-home-hero .rp-button--alt:hover { background: var(--ww-wash); }
+.rp-home-hero.rp-home-hero .rp-home-hero__image {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  flex: none;
+  pointer-events: none;
+}
+.rp-home-hero.rp-home-hero .rp-home-hero__image-img { display: none; }
+.rp-home-hero.rp-home-hero .rp-home-hero__image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 85%, var(--ww-wash), transparent 65%);
+}
+.rp-home-hero__container { animation: ww-intro 1s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes ww-intro {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 600px) {
+  .rp-home-hero.rp-home-hero {
+    min-height: calc(100svh - 64px);
+    padding: 72px 22px 138px;
+  }
+  .rp-home-hero.rp-home-hero .rp-home-hero__title { font-size: 21px; margin-bottom: 28px; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__subtitle { font-size: clamp(40px, 10.3vw, 61px); }
+  .rp-home-hero.rp-home-hero .rp-home-hero__tagline { font-size: 15px; max-width: 300px; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__action { padding: 0 18px; font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rp-home-hero__container { animation: none; }
 }

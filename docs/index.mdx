@@ -1,32 +1,53 @@
 ---
 pageType: home
 title: WindWiki
-description: WindWiki 是 Tingfeng347 的 AI 工程知识库，覆盖 Python 基础、LLM 原理、Agent 工程、RAG、训练部署与评估优化的完整技术链路，全部是可复现的一手工程笔记。
+description: Tingfeng347 的工程知识库。从 Python、模型原理到 RAG、Agent、训练部署，在这里把知识连成路径，把想法变成可以运行的系统。
 
 hero:
-  # 首页文案：只用标题 + 两个按钮，不再堆 tagline。
-  # 早先是「工程知识库」这类通用介绍，现在改成直接点明站点定位。
   name: WindWiki
-  # 这里的 image 不是真的显示图片：HomeHero 只有在配置了 image 时才会把容器切成
-  # 左右两栏。组件 HomeGraphPortal 会把真正的 3D 星图画布 portal 进
-  # .rp-home-hero__image 这个插槽，从而复用主题的两栏布局与响应式行为。
-  #
-  # src 故意指向 public/hero-placeholder.svg —— 一张「完全透明」的空 SVG，
-  # 而不是 favicon.svg：主题会渲染 light/dark 两张 375×375 的 <img>，
-  # 在 React 水合、组件把画布插进去之前，它们会先按原样画出来，
-  # 用 favicon 就会在星图位置闪一个蓝色方块。透明占位图让这段空窗期不可见。
+  text: |
+    把原理读懂，
+    把想法造出来。
+  tagline: 从第一行 Python，到真正运行的 AI 系统。让零散的知识，在这里连成一条路。
   image:
     src: /hero-placeholder.svg
-    alt: WindWiki 知识星图
+    alt: 风流穿过知识网络的线条示意
   actions:
-    # 「开始阅读」指向 /llm-applications/ 概览页，而不是直接跳进 Python 基础：Rspress 内建的行为是
-    # 「当前页所在的分组自动展开」，一跳进课程就会把整门课的章节铺开、把其它课程挤出
-    # 可视区（运行时 createInitialSidebar 里写死的，没有开关）。概览页不属于任何分组，
-    # 从它进来知识树是全部收起的，需要时自己点开。
     - theme: brand
-      text: 开始阅读
-      link: /llm-applications/
+      text: 开始探索
+      link: ./llm-applications/
     - theme: alt
-      text: GitHub
-      link: https://github.com/tingfeng347/windwiki
+      text: 看看这里有什么
+      link: '#features'
+
+# 默认首页从 features 生成 SSG Markdown；首页组件也从这里取内容。
+# 视觉上由 globalUIComponents 展示学习路径和专题，不重复显示默认卡片。
+features:
+  - title: 写好第一行代码
+    details: 从 Python、数据结构到 Linux、Git、数据库与 API。先建立能读、能写、能调试的开发基础。
+    link: ./llm-applications/python-basics/01-basics.html
+  - title: 看懂模型背后的原理
+    details: 连接数学、机器学习、深度学习与 Transformer。理解模型如何表示、学习和生成，再选择合适的工具。
+    link: ./llm-applications/nlp-and-llm-principles/llm-overview/
+  - title: 把能力接成一个系统
+    details: 从检索与工具调用，到微调、部署与评估。让模型走出对话框，进入可验证的工程流程。
+    link: ./llm-applications/ai-engineering/agent-engineering/
+  - title: RAG 知识系统
+    details: 让回答有据可查。从解析、分块、检索到生成与评估，走完知识库应用的完整链路。
+    link: ./llm-applications/rag/rag.html
+  - title: Agent 工程
+    details: 让模型学会行动。深入上下文、执行循环、工作流、设计模式与协议。
+    link: ./llm-applications/ai-engineering/agent-engineering/
+  - title: 模型训练与部署
+    details: 从 LoRA、QLoRA 到推理服务，把模型放进真实的运行环境。
+    link: ./llm-applications/model-training-and-deployment/training/
+  - title: 终端与开发工具
+    details: tmux、Yazi、LazyVim 与 Vibe Coding，让每天的开发更顺手。
+    link: ./llm-applications/terminal-tool-manuals/tmux.html
+  - title: 科研写作
+    details: 用 LaTeX 组织公式、图表、参考文献与论文，把思考写清楚。
+    link: ./research/latex/latex-manual.html
+  - title: 术语速查
+    details: 按领域查找计算机、后端、数据与 AI 术语，补齐概念之间的连接。
+    link: ./terminology/
 ---

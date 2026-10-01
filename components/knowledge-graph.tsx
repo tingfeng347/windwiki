@@ -74,7 +74,9 @@ const LINKS: [number, number][] = [
 ];
 
 const LABEL_FONT =
-  '600 13px "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif';
+  '500 13px "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif';
+// 缩小后的星图只常驻几个主干标签，其余节点悬停或触摸时显示。
+const MAIN_LABELS = new Set([0, 4, 8, 10, 15]);
 
 /** 从主题 CSS 变量读色，取不到时回退到安全色 */
 function readVar(name: string, fallback: string) {
@@ -187,7 +189,7 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
       depthTest: false,
     });
     const sprite = new three.Sprite(mat);
-    sprite.scale.set((w / h) * 0.3, 0.3, 1);
+    sprite.scale.set((w / h) * 0.19, 0.19, 1);
     sprite.userData.canvas = labelCanvas;
     return sprite;
   };
@@ -278,8 +280,9 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
   let velY = 0;
   let hovered = -1;
   let pointerInside = false;
+  let dragDistance = 0;
 
-  const setPointer = (e: PointerEvent) => {
+  const setPointer = (e: { clientX: number; clientY: number }) => {
     const rect = canvas.getBoundingClientRect();
     pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -287,6 +290,9 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
 
   const onDown = (e: PointerEvent) => {
     dragging = true;
+    dragDistance = 0;
+    pointerInside = true;
+    setPointer(e);
     lastX = e.clientX;
     lastY = e.clientY;
     canvas.setPointerCapture(e.pointerId);
@@ -299,6 +305,7 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
     if (!dragging) return;
     const dx = e.clientX - lastX;
     const dy = e.clientY - lastY;
+    dragDistance += Math.hypot(dx, dy);
     lastX = e.clientX;
     lastY = e.clientY;
     velY = dx * 0.0006;
@@ -320,7 +327,12 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
     hovered = -1;
   };
 
-  const onClick = () => {
+  const onClick = (e: MouseEvent) => {
+    if (dragDistance > 6) return;
+    setPointer(e);
+    raycaster.setFromCamera(pointer, camera);
+    const hits = raycaster.intersectObjects(nodeMeshes, false);
+    hovered = hits.length ? (hits[0].object.userData.index as number) : -1;
     if (hovered < 0) return;
     // 必须走 withBase：link 写的是站内绝对路径（/llm-applications/...），
     // 直接赋给 location.href 会丢掉站点 base（本项目为 /windwiki/），
@@ -329,10 +341,12 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
   };
 
   canvas.style.cursor = 'grab';
-  canvas.style.touchAction = 'none';
+  // 星图位于滚动介绍中：触屏纵向手势交给页面，横向拖动仍可旋转。
+  canvas.style.touchAction = 'pan-y';
   canvas.addEventListener('pointerdown', onDown);
   canvas.addEventListener('pointermove', onMove);
   canvas.addEventListener('pointerup', onUp);
+  canvas.addEventListener('pointercancel', onUp);
   canvas.addEventListener('pointerleave', onLeave);
   canvas.addEventListener('click', onClick);
 
@@ -439,7 +453,7 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
 
     nodeLabels.forEach((s) => {
       const index = s.userData.index as number;
-      const target = hovered === -1 || index === hovered ? 1 : 0.28;
+      const target = index === hovered ? 1 : MAIN_LABELS.has(index) ? (hovered === -1 ? 0.85 : 0.25) : 0;
       const o = (s.material as THREE.SpriteMaterial).opacity;
       (s.material as THREE.SpriteMaterial).opacity =
         o + (target - o) * 0.18;
@@ -447,7 +461,7 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
     if (hovered >= 0 && !dragging) canvas.style.cursor = 'pointer';
     else if (!dragging) canvas.style.cursor = 'grab';
 
-    stars.rotation.y = t * 0.012;
+    if (!reduceMotion) stars.rotation.y = t * 0.012;
     renderer.render(scene, camera);
   };
 
@@ -500,6 +514,7 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
     canvas.removeEventListener('pointerdown', onDown);
     canvas.removeEventListener('pointermove', onMove);
     canvas.removeEventListener('pointerup', onUp);
+    canvas.removeEventListener('pointercancel', onUp);
     canvas.removeEventListener('pointerleave', onLeave);
     canvas.removeEventListener('click', onClick);
     canvas.removeEventListener('webglcontextlost', onContextLost);
