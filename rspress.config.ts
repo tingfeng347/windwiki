@@ -28,7 +28,7 @@ export default defineConfig({
   globalUIComponents: [
     path.join(import.meta.dirname, 'components/nav-actions.tsx'),
     path.join(import.meta.dirname, 'components/document-reader.tsx'),
-    // 首页风流装饰 + SSR 滚动介绍 + 按视口加载的知识星图，非首页自动跳过。
+    // 首页艺术画框 + SSR 滚动介绍 + 按视口加载的知识星图，非首页自动跳过。
     path.join(import.meta.dirname, 'components/home-hero-graph.tsx'),
   ],
   builderConfig: {

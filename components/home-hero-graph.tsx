@@ -17,9 +17,6 @@ const STAGE_TAGS = [
   ['RAG', 'Agent', '训练与部署'],
 ];
 const STAGE_LINKS = ['从开发基础开始', '进入模型原理', '探索 Agent 工程'];
-const WIND_PATHS = Array.from({ length: 28 }, (_, i) =>
-  `M -160 ${390 + i * 12} C 160 ${250 + i * 18}, 360 ${910 - i * 7}, 740 ${760 - i * 3} S 1230 ${350 + i * 13}, 1620 ${550 + i * 11}`,
-);
 
 function Arrow() {
   return <svg className="ww-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -27,37 +24,14 @@ function Arrow() {
   </svg>;
 }
 
-function WindField() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const host = ref.current;
-    if (!host) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      host.dataset.visible = String(entry.isIntersecting);
-    });
-    observer.observe(host);
-    return () => observer.disconnect();
-  }, []);
+function ArtFrame() {
   return <>
-    <div className="ww-wind" ref={ref} aria-hidden="true">
-      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none">
-        <g className="ww-wind__mesh" stroke="currentColor" strokeWidth=".8">
-          {WIND_PATHS.map((d, i) => <path d={d} key={i} />)}
-        </g>
-        <g className="ww-wind__pulse" stroke="currentColor" strokeWidth="1.6">
-          {[3, 11, 21].map(i => <path d={WIND_PATHS[i]} key={i} />)}
-        </g>
-        <g fill="currentColor" opacity=".7">
-          <circle cx="259" cy="568" r="4" />
-          <circle cx="1158" cy="606" r="4" />
-          <circle cx="1004" cy="689" r="3" />
-        </g>
-        <g fill="currentColor" fontSize="12" opacity=".65">
-          <text x="274" y="571">Python</text>
-          <text x="1174" y="610">Agent</text>
-          <text x="1017" y="711">RAG</text>
-        </g>
-      </svg>
+    <div className="ww-art-overlay" aria-hidden="true">
+      {['tl', 'tr', 'bl', 'br'].map(corner => <span key={corner} className={`ww-frame-corner ww-frame-corner--${corner}`} />)}
+      <span className="ww-art-chip ww-art-chip--code">Python</span>
+      <span className="ww-art-chip ww-art-chip--rag">RAG</span>
+      <span className="ww-art-chip ww-art-chip--agent">Agent</span>
+      <span className="ww-art-caption">知识在流动</span>
     </div>
     <div className="ww-hero-foot">
       <span>Tingfeng347 的工程知识库</span>
@@ -160,7 +134,15 @@ function HomeSections({ topics }: { topics: Topic[] }) {
       const next = distances.indexOf(Math.min(...distances));
       if (next >= 0) setStage(next);
       const hero = document.querySelector<HTMLElement>('.rp-home-hero');
-      if (hero) hero.style.setProperty('--ww-wind-offset', motion.matches ? '0px' : `${Math.min(window.scrollY, hero.offsetHeight) * .13}px`);
+      const art = hero?.querySelector<HTMLElement>('.rp-home-hero__image');
+      if (hero && art) {
+        // 当画框靠近视口中心时，由微倾的画布展开为正面，图片不会被移出视口。
+        const rect = art.getBoundingClientRect();
+        const progress = Math.min(1, Math.max(0, (window.innerHeight * .82 - rect.top) / (rect.height * .85)));
+        hero.style.setProperty('--ww-art-progress', motion.matches ? '1' : String(progress));
+        hero.style.setProperty('--ww-art-tilt', motion.matches ? '0deg' : `${(1 - progress) * 8}deg`);
+        hero.style.setProperty('--ww-art-scale', motion.matches ? '1' : String(.96 + progress * .04));
+      }
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     update();
@@ -235,7 +217,7 @@ function HomeSections({ topics }: { topics: Topic[] }) {
 }
 
 /** 默认 HomeLayout 保留；全局组件在 Layout 后直接 SSR 输出滚动介绍。
- * 首屏装饰 portal 到主题的 image 位，不改写 React 管理的 DOM。
+ * 品牌艺术图通过 hero.image 静态渲染；画框装饰 portal 到 image 位，不改写主题 DOM。
  * SSG-MD 由 index.mdx 的 hero / features 生成，路径和专题使用同一份 frontmatter。
  */
 export default function HomeExperience() {
@@ -260,7 +242,7 @@ export default function HomeExperience() {
   if (!isHome) return null;
   const topics = (frontmatter.features ?? []) as Topic[];
   return <>
-    {target && createPortal(<WindField />, target)}
+    {target && createPortal(<ArtFrame />, target)}
     <HomeSections topics={topics} />
   </>;
 }

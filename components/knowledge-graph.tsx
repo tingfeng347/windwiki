@@ -77,6 +77,7 @@ const LABEL_FONT =
   '500 13px "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif';
 // 缩小后的星图只常驻几个主干标签，其余节点悬停或触摸时显示。
 const MAIN_LABELS = new Set([0, 4, 8, 10, 15]);
+const NODE_COLORS = ['--ww-green-ink', '--ww-purple-ink', '--ww-orange-ink', '--ww-cyan-ink'];
 
 /** 从主题 CSS 变量读色，取不到时回退到安全色 */
 function readVar(name: string, fallback: string) {
@@ -201,7 +202,7 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
   const nodePositions = NODES.map(
     (def) => new three.Vector3(def.pos[0], def.pos[1], def.pos[2]),
   );
-  const nodeColors = NODES.map((_, i) => (i % 3 === 0 ? brand : textColor));
+  const nodeColors = NODES.map((_, i) => readVar(NODE_COLORS[i % NODE_COLORS.length], brand));
 
   NODES.forEach((def, i) => {
     const geometry = new three.SphereGeometry(0.045 * def.weight, segments, segments);
@@ -369,7 +370,7 @@ async function createGraphScene(host: HTMLElement): Promise<Cleanup | undefined>
     textColor = readVar('--rp-c-text-1', '#1f2937');
     nodeMeshes.forEach((m, i) => {
       (m.material as THREE.MeshBasicMaterial).color.set(
-        i % 3 === 0 ? brand : textColor,
+        readVar(NODE_COLORS[i % NODE_COLORS.length], brand),
       );
     });
     // 标签是 canvas 贴图，换色要重绘；按 DPR 还原变换后再按逻辑坐标画一次。

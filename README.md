@@ -273,7 +273,7 @@ components/
 ├── nav-actions.tsx    # 导航栏右侧按钮组：全屏 + 标记 + 目录折叠（portal 进 .rp-nav__right）
 ├── nav-actions.css
 ├── nav-state.ts       # 导航栏自动隐藏的滚动监听脚本（内联注入，配 styles/nav-auto-hide.css）
-├── home-hero-graph.tsx  # 首页风流装饰、SSR 滚动介绍与延迟加载的知识星图
+├── home-hero-graph.tsx  # 首页艺术画框、SSR 滚动介绍与延迟加载的知识星图
 ├── home-hero-graph.css  # 滚动介绍、学习路径、专题与星图版式
 ├── knowledge-graph.tsx  # three.js 知识星图本体（动态 import three，见「对默认主题的改动」第 10 条）
 ├── marker-store.ts    # 标记的本地存储与订阅（useSyncExternalStore），见「标记」
@@ -286,7 +286,7 @@ components/
 
 styles/
 ├── index.css          # globalStyles 入口，汇总下面五份
-├── home.css           # 首页色板、默认 Hero 大字排版与响应式
+├── home.css           # 首页多色配色、默认 Hero 艺术画框与响应式
 ├── home-graph.css     # 首页底部知识星图容器尺寸
 ├── panel.css          # 去掉知识树竖线、两个面板折叠后的布局
 ├── nav-auto-hide.css  # 导航栏滚动后淡出并把高度还给内容（配 components/nav-state.ts）
@@ -343,9 +343,9 @@ styles/
    - `--rp-outline-width` 268px → 296px、`--rp-outline-padding-x` 20px → 12px。PDF 的书签标题普遍偏长（「3.2.1 常用大模型服务平台介绍」），原来二级标题只剩 178px 文字宽度，82 条里有 15 条要折成两行；调完只剩 2 条。**要改就改这两个变量，别直接改 `.rp-outline__toc` 的 padding**：选中态的左侧竖条用 `left: calc(-1 * var(--rp-outline-padding-x))` 定位、标题和分隔线也吃这个变量，只动 padding 会让竖条跑到裁切区外面。宽度是吃布局余量换来的，实测 PDF 页面宽度没变（还是 932px）。
 8. **`components/marker-*.tsx`（由 `nav-actions.tsx` 带进 `globalUIComponents`）**——标记（书签），见下面的「标记」一节。
 9. **`components/document-reader.tsx`（`globalUIComponents`）**——普通 Markdown/MDX 正文页的阅读工具条，沿用 PDF 阅读器的底部悬浮交互，提供 60%～200% 缩放、恢复 100%、全文搜索、高亮以及上一处/下一处导航。搜索和标记一样使用 CSS Custom Highlight API，不改写 Rspress 管理的正文 DOM；组件同时按 `doc-wide` 页面类型和 `.windwiki-pdf-viewer` 排除 PDF 课程页，避免出现两套工具条。
-10. **`components/home-hero-graph.tsx` + `components/knowledge-graph.tsx`（`globalUIComponents`）**——首页的风流装饰、滚动介绍与知识星图。保留默认 HomeLayout：`hero.image` 的透明 SVG 只用于提供装饰插槽，客户端将风流 SVG `createPortal` 到 `.rp-home-hero__image`。学习路径、专题、知识地图介绍与页尾由全局组件在 Layout 后直接输出，**静态 HTML 已有正文和链接**，无需等待水合。配色与 Hero 覆盖集中在 `styles/home.css`，介绍版式在 `components/home-hero-graph.css`。
+10. **`components/home-hero-graph.tsx` + `components/knowledge-graph.tsx`（`globalUIComponents`）**——首页的抽象艺术主视觉、滚动介绍与知识星图。保留默认 HomeLayout：`hero.image` 通过主题自带的图片组件静态渲染站点级艺术图 `docs/public/art/knowledge-in-motion.webp`，路径由 Rspress 自动补 base；客户端仅将画框角点、专题标签与滚动提示 `createPortal` 到 `.rp-home-hero__image`。没有手写 HTML `<img>`，没有 fork 主题。艺术图为品牌装饰，不进入课程正文；生成方式、尺寸与完整提示词见 [艺术图记录](./design/knowledge-in-motion.md)。学习路径、专题、知识地图介绍与页尾由全局组件在 Layout 后直接输出，**静态 HTML 已有正文和链接**，无需等待水合。配色与 Hero 覆盖集中在 `styles/home.css`，介绍版式在 `components/home-hero-graph.css`。
 
-    组件按 `usePage().pageType === 'home'` 生效；用 `MutationObserver` 等待主题 Hero 的插槽出现，离开首页时移除装饰并清理滚动监听。桌面端学习路径图保持 sticky，并按视口中心附近的阶段切换高亮；手机端改为普通文档流。首屏风流有缓慢脉冲与滚动视差，离开视口暂停脉冲；`prefers-reduced-motion` 下关闭入场、脉冲、视差和标题色彩过渡。
+    组件按 `usePage().pageType === 'home'` 生效；用 `MutationObserver` 等待主题 Hero 的插槽出现，离开首页时移除装饰并清理滚动监听。桌面端学习路径图保持 sticky，并按视口中心附近的阶段切换高亮；手机端改为普通文档流。首屏艺术画框随滚动由微倾状态展开，标签随画框进度移动。开发基础、模型原理、应用工程分别使用薄荷绿、薰衣草紫、珊瑚橙，专题与星图沿用同一色板，暗色模式单独配色；`prefers-reduced-motion` 下关闭入场、画框与标签变换、标题色彩过渡。
 
     知识星图移到首页下方，接近视口（240px 预加载距离）才挂载。three 仍在空闲任务里 `import('three')`，保持异步 chunk，**不要改回顶部静态导入**。移动端限制 pixelRatio、几何细分与帧率，滚出视口或页面不可见时停帧；触屏纵向手势保留页面滚动，横向拖动可旋转。WebGL 失败时保留周围的专题链接和导航。
 
