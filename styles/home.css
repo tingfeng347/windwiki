@@ -1,21 +1,22 @@
-/* 首页画廊：四种色彩来自抽象艺术图，正文仍使用默认主题。 */
+/* 只覆盖默认首页，文档页继续使用 Rspress 的阅读主题。 */
 html:has(.rp-home-hero) {
-  --ww-paper: #f8faf9;
-  --ww-ink: #253442;
-  --ww-muted: #55666d;
-  --ww-blue: #395aca;
-  --ww-line: #dce3df;
-  --ww-wash: #eef1f6;
+  --ww-paper: #f5f7fb;
+  --ww-ink: #18354a;
+  --ww-muted: #526475;
+  --ww-blue: #4967eb;
+  --ww-line: #d9e1ec;
+  --ww-wash: #eaf0fa;
   --ww-surface: #fff;
-  --ww-mint: #d3f1b5;
-  --ww-lilac: #e4dcfb;
-  --ww-coral: #ffdfcc;
-  --ww-cyan: #d6eff4;
-  --ww-green-ink: #34592b;
-  --ww-purple-ink: #60428e;
-  --ww-orange-ink: #994320;
-  --ww-cyan-ink: #225565;
-  --ww-frame: #88b957;
+  --ww-mint: #c7e9dc;
+  --ww-lilac: #dccdf5;
+  --ww-coral: #ffd5b8;
+  --ww-cyan: #cceaf3;
+  --ww-green-ink: #275c49;
+  --ww-purple-ink: #694598;
+  --ww-orange-ink: #934824;
+  --ww-cyan-ink: #245c70;
+  --ww-frame: #a7b3df;
+  --ww-glass: #ffffffd9;
   background: var(--ww-paper);
 }
 html.rp-dark:has(.rp-home-hero) {
@@ -26,125 +27,131 @@ html.rp-dark:has(.rp-home-hero) {
   --ww-line: #34445a;
   --ww-wash: #19283d;
   --ww-surface: #16263a;
-  --ww-mint: #243c2d;
-  --ww-lilac: #312c4b;
-  --ww-coral: #432f2c;
-  --ww-cyan: #203c48;
-  --ww-green-ink: #c4eaa7;
+  --ww-mint: #243f37;
+  --ww-lilac: #342c4d;
+  --ww-coral: #46312d;
+  --ww-cyan: #203e4c;
+  --ww-green-ink: #b4e6ca;
   --ww-purple-ink: #d5baff;
   --ww-orange-ink: #ffc0a3;
   --ww-cyan-ink: #b0e4ed;
-  --ww-frame: #b5de88;
+  --ww-frame: #718ab8;
+  --ww-glass: #16263ae8;
 }
 html:has(.rp-home-hero) body { background: var(--ww-paper); }
+/* 首页保留悬浮导航；原有阅读页的自动隐藏行为仍由 nav-auto-hide.css 管理。 */
+html:has(.rp-home-hero) .rp-nav.rp-nav {
+  position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+  width: min(calc(100% - 64px), 1280px); height: 64px; margin: 0; padding: 0 24px;
+  border: 1px solid var(--ww-line); border-radius: 20px;
+  background: var(--ww-glass); color: var(--ww-ink);
+  backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: 0 16px 50px -30px #213c6270;
+  opacity: 1; pointer-events: auto;
+}
+html:has(.rp-home-hero) .rp-nav__title a::before {
+  content: 'W'; display: grid; place-items: center; margin-right: 9px;
+  width: 29px; height: 29px; border-radius: 9px; background: #4967eb; color: #fff;
+  font: 700 17px/1 Arial, sans-serif;
+}
 .rp-home-background.rp-home-background, .rp-home-feature.rp-home-feature { display: none; }
 .rp-home-hero.rp-home-hero {
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  max-width: 1440px;
-  min-height: 0;
-  margin: 0 auto;
-  padding: 64px 48px 108px;
-  overflow: visible;
-  color: var(--ww-ink);
+  isolation: isolate; position: relative; overflow: clip;
+  display: grid; grid-template-columns: 1fr 1.06fr; align-items: center; gap: 54px;
+  max-width: 1280px; min-height: 790px; margin: 0 auto;
+  padding: 152px 48px 132px; color: var(--ww-ink);
+}
+.rp-home-hero.rp-home-hero::before {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+  width: min(760px, 100%); height: calc(100% - 80px); right: 0; top: 40px;
+  background: radial-gradient(ellipse 55% 50% at 50% 50%, color-mix(in srgb, var(--ww-lilac) 62%, transparent), transparent 80%),
+    radial-gradient(ellipse 40% 40% at 60% 65%, color-mix(in srgb, var(--ww-cyan) 68%, transparent), transparent 80%);
 }
 .rp-home-hero.rp-home-hero .rp-home-hero__container {
-  position: relative;
-  z-index: 2;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-  text-align: center;
+  position: relative; z-index: 2; flex: none; align-items: start;
+  justify-content: center; gap: 28px; text-align: left; min-width: 0;
 }
-.rp-home-hero.rp-home-hero .rp-home-hero__content { align-items: center; }
+.rp-home-hero.rp-home-hero .rp-home-hero__content { align-items: start; }
 .rp-home-hero.rp-home-hero .rp-home-hero__title {
-  margin-bottom: 24px;
-  font-size: 23px;
-  font-weight: 650;
-  letter-spacing: -.04em;
-  line-height: 1.2;
+  margin-bottom: 28px; font: 700 34px/1.2 Arial, sans-serif; letter-spacing: -.05em;
 }
 .rp-home-hero.rp-home-hero .rp-home-hero__title-brand {
-  background: none;
-  color: var(--ww-ink);
-  -webkit-text-fill-color: currentColor;
+  background: none; color: var(--ww-ink); -webkit-text-fill-color: currentColor;
 }
 .rp-home-hero.rp-home-hero .rp-home-hero__subtitle {
-  margin: 0;
-  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  font-size: clamp(52px, 5.5vw, 80px);
-  font-weight: 750;
-  line-height: 1.16;
-  letter-spacing: -.065em;
+  margin: 0; max-width: none;
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: clamp(48px, 5.3vw, 76px); font-weight: 750; line-height: 1.2; letter-spacing: -.055em;
 }
 .rp-home-hero.rp-home-hero .rp-home-hero__tagline {
-  max-width: 480px;
-  margin: 2px 0 4px;
-  color: var(--ww-muted);
-  font-size: 16px;
-  line-height: 1.9;
-  text-wrap: balance;
+  width: 100%; max-width: 410px; margin: 0;
+  color: var(--ww-muted); font-size: 17px; line-height: 1.9; text-wrap: pretty;
 }
-.rp-home-hero.rp-home-hero .rp-home-hero__actions { flex-direction: row; justify-content: center; gap: 12px; width: auto; }
+.rp-home-hero.rp-home-hero .rp-home-hero__actions { flex-direction: row; justify-content: start; gap: 12px; width: auto; }
 .rp-home-hero.rp-home-hero .rp-home-hero__action {
-  min-height: 50px;
-  padding: 0 24px;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  transition: background .2s;
+  min-height: 52px; padding: 0 23px; border-radius: 28px;
+  font-size: 15px; font-weight: 600; transition: background .2s, box-shadow .2s;
 }
-.rp-home-hero.rp-home-hero .rp-button--brand { color: #fff; background: #253442; border: 1px solid #253442; gap: 12px; }
+.rp-home-hero.rp-home-hero .rp-button--brand {
+  color: #fff; background: #18354a; border: 1px solid #18354a; gap: 12px;
+  box-shadow: 0 8px 18px -13px #18354a;
+}
 .rp-home-hero.rp-home-hero .rp-button--brand::before {
-  content: '↗'; display: grid; place-items: center;
-  width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%; background: #d3f1b5; color: #253442;
-  font: 18px/1 system-ui, sans-serif;
+  content: '↗'; display: grid; place-items: center; width: 27px; height: 27px; flex-shrink: 0;
+  border-radius: 50%; background: #c7e9dc; color: #18354a; font: 18px/1 system-ui, sans-serif;
 }
-.rp-home-hero.rp-home-hero .rp-button--brand:hover { background: #3b515b; }
-.rp-home-hero.rp-home-hero .rp-button--alt { color: var(--ww-ink); background: var(--ww-surface); border: 1px solid var(--ww-line); }
+.rp-home-hero.rp-home-hero .rp-button--brand:hover { background: #2e536a; box-shadow: 0 10px 22px -12px #18354a80; }
+.rp-home-hero.rp-home-hero .rp-button--alt { color: var(--ww-ink); background: var(--ww-glass); border: 1px solid var(--ww-line); }
 .rp-home-hero.rp-home-hero .rp-button--alt:hover { background: var(--ww-lilac); }
 .rp-home-hero.rp-home-hero .rp-home-hero__image {
-  position: relative;
-  z-index: 1;
-  display: block;
-  flex: none;
-  align-self: center;
-  width: min(100%, 1120px);
-  height: auto;
-  aspect-ratio: 2;
-  max-width: none;
-  margin-top: 56px;
-  border: 1px solid var(--ww-frame);
-  border-radius: 2px;
-  background: #f7f8fa;
-  transform: perspective(1600px) rotateX(var(--ww-art-tilt, 8deg)) scale(var(--ww-art-scale, .96));
-  transform-origin: 50% 50%;
-  box-shadow: 0 30px 48px -40px #34425988;
-  /* 默认图片和 portal 同处一个容器；装饰只管理自己的节点。 */
+  position: relative; z-index: 1; display: block; flex: none;
+  width: 100%; height: auto; aspect-ratio: 2; max-width: none; margin: 0;
+  border: 1px solid var(--ww-frame); border-radius: 24px; background: #e3e6ed;
+  transform: perspective(1200px) rotateX(calc(var(--ww-art-tilt, 5deg) + var(--ww-pointer-y, 0deg))) rotateY(var(--ww-pointer-x, 0deg)) rotateZ(calc(-3deg + var(--ww-art-progress, 0) * 3deg)) scale(var(--ww-art-scale, .98));
+  transform-origin: 50% 50%; transition: transform .22s ease-out;
+  box-shadow: 0 26px 60px -26px #3c52864d;
 }
 .rp-home-hero.rp-home-hero .rp-home-hero__image-img {
-  position: absolute; inset: 0;
-  display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%;
-  border-radius: 0;
+  position: absolute; inset: 0; display: block;
+  width: 100%; height: 100%; object-fit: cover; border-radius: 23px;
 }
 .rp-home-hero.rp-home-hero .rp-home-hero__image-img--dark { display: none; }
 html.rp-dark .rp-home-hero.rp-home-hero .rp-home-hero__image-img--light { display: none; }
 html.rp-dark .rp-home-hero.rp-home-hero .rp-home-hero__image-img--dark { display: block; }
-.rp-home-hero__container { animation: ww-intro .85s cubic-bezier(.2,.7,.2,1) both; }
-@keyframes ww-intro { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-@media (max-width: 760px) {
-  .rp-home-hero.rp-home-hero { padding: 52px 24px 94px; }
-  .rp-home-hero.rp-home-hero .rp-home-hero__title { font-size: 21px; margin-bottom: 24px; }
-  .rp-home-hero.rp-home-hero .rp-home-hero__subtitle { font-size: clamp(38px, 10.3vw, 61px); }
-  .rp-home-hero.rp-home-hero .rp-home-hero__tagline { font-size: 15px; max-width: 310px; }
+.rp-home-hero.rp-home-hero .rp-home-hero__title,
+.rp-home-hero.rp-home-hero .rp-home-hero__subtitle,
+.rp-home-hero.rp-home-hero .rp-home-hero__tagline,
+.rp-home-hero.rp-home-hero .rp-home-hero__actions { animation: ww-hero-in .85s cubic-bezier(.2,.7,.2,1) both; }
+.rp-home-hero.rp-home-hero .rp-home-hero__subtitle { animation-delay: .09s; }
+.rp-home-hero.rp-home-hero .rp-home-hero__tagline { animation-delay: .18s; }
+.rp-home-hero.rp-home-hero .rp-home-hero__actions { animation-delay: .27s; }
+@keyframes ww-hero-in { from { opacity: 0; filter: blur(8px); transform: translateY(12px); } to { opacity: 1; filter: blur(0); transform: translateY(0); } }
+@media (max-width: 1100px) and (min-width: 761px) {
+  .rp-home-hero.rp-home-hero { gap: 28px; padding: 140px 40px 118px; min-height: 740px; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__subtitle { font-size: clamp(38px, 5.1vw, 53px); }
+  .rp-home-hero.rp-home-hero .rp-home-hero__tagline { font-size: 15px; }
   .rp-home-hero.rp-home-hero .rp-home-hero__action { padding: 0 16px; font-size: 14px; }
-  .rp-home-hero.rp-home-hero .rp-home-hero__image { margin-top: 38px; }
+}
+@media (max-width: 760px) {
+  html:has(.rp-home-hero) .rp-nav.rp-nav {
+    position: sticky; top: 0; left: 0; transform: none; width: 100%;
+    border: 0; border-radius: 0; box-shadow: none; padding: 0 20px;
+  }
+  .rp-home-hero.rp-home-hero { grid-template-columns: 1fr; gap: 86px; min-height: 0; padding: 46px 28px 116px; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__container { align-items: center; text-align: center; gap: 24px; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__content { align-items: center; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__title { font-size: 26px; margin-bottom: 24px; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__subtitle { font-size: clamp(38px, 10.7vw, 58px); }
+  .rp-home-hero.rp-home-hero .rp-home-hero__tagline { font-size: 15px; max-width: 350px; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__actions { justify-content: center; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__action { padding: 0 16px; font-size: 14px; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__image { border-radius: 18px; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__image-img { border-radius: 17px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rp-home-hero__container { animation: none; }
-  .rp-home-hero.rp-home-hero .rp-home-hero__image { transform: none; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__title,
+  .rp-home-hero.rp-home-hero .rp-home-hero__subtitle,
+  .rp-home-hero.rp-home-hero .rp-home-hero__tagline,
+  .rp-home-hero.rp-home-hero .rp-home-hero__actions { animation: none; }
+  .rp-home-hero.rp-home-hero .rp-home-hero__image { transform: none; transition: none; }
 }

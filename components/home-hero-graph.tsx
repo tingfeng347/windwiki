@@ -3,13 +3,8 @@ import { createPortal } from 'react-dom';
 import { useFrontmatter, usePage } from '@rspress/core/runtime';
 import { Link } from '@rspress/core/theme';
 import { KnowledgeGraph } from './knowledge-graph';
+import { HomeShowcase, type HomeTopic } from './home-showcase';
 import './home-hero-graph.css';
-
-interface Topic {
-  title: string;
-  details: string;
-  link: string;
-}
 
 const STAGE_TAGS = [
   ['Python', 'Linux / Git', 'FastAPI'],
@@ -25,18 +20,64 @@ function Arrow() {
 }
 
 function ArtFrame() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const overlay = ref.current;
+    const canvas = overlay?.parentElement;
+    if (!overlay || !canvas) return;
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    let visible = false;
+    const update = () => {
+      frame = 0;
+      canvas.style.setProperty('--ww-pointer-x', `${x}deg`);
+      canvas.style.setProperty('--ww-pointer-y', `${y}deg`);
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    const reset = () => { x = y = 0; schedule(); };
+    const move = (event: PointerEvent) => {
+      if (motion.matches || !finePointer.matches || event.pointerType === 'touch') return;
+      const rect = canvas.getBoundingClientRect();
+      x = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - .5) * 2)) * 4;
+      y = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - .5) * 2)) * -3;
+      schedule();
+    };
+    const syncVisibility = () => { overlay.dataset.playing = String(visible && !document.hidden && !motion.matches); };
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; syncVisibility(); });
+    observer.observe(canvas);
+    const syncMotion = () => { reset(); syncVisibility(); };
+    canvas.addEventListener('pointermove', move, { passive: true });
+    canvas.addEventListener('pointerleave', reset);
+    document.addEventListener('visibilitychange', syncVisibility);
+    motion.addEventListener('change', syncMotion);
+    return () => {
+      observer.disconnect();
+      canvas.removeEventListener('pointermove', move);
+      canvas.removeEventListener('pointerleave', reset);
+      document.removeEventListener('visibilitychange', syncVisibility);
+      motion.removeEventListener('change', syncMotion);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
   return <>
-    <div className="ww-art-overlay" aria-hidden="true">
+    <div className="ww-art-overlay" ref={ref} aria-hidden="true">
+      <svg className="ww-art-orbits" viewBox="0 0 640 410" fill="none">
+        <ellipse cx="320" cy="205" rx="286" ry="173" transform="rotate(-15 320 205)" />
+        <path d="M38 100h87v63M597 298h-89v-58" />
+        <circle cx="52" cy="258" r="5" /><circle cx="570" cy="97" r="5" />
+      </svg>
       {['tl', 'tr', 'bl', 'br'].map(corner => <span key={corner} className={`ww-frame-corner ww-frame-corner--${corner}`} />)}
-      <span className="ww-art-chip ww-art-chip--code">Python</span>
-      <span className="ww-art-chip ww-art-chip--rag">RAG</span>
-      <span className="ww-art-chip ww-art-chip--agent">Agent</span>
+      <span className="ww-art-chip ww-art-chip--code"><span><i>⌘</i>Python<small>写下第一行代码</small></span></span>
+      <span className="ww-art-chip ww-art-chip--rag"><span><i>↗</i>RAG<small>让知识参与回答</small></span></span>
+      <span className="ww-art-chip ww-art-chip--agent"><span><i>✳</i>Agent<small>让模型学会行动</small></span></span>
       <span className="ww-art-caption">知识在流动</span>
     </div>
     <div className="ww-hero-foot">
-      <span>Tingfeng347 的工程知识库</span>
+      <span>原理与实践，在这里连接</span>
       <a href="#features"><span className="ww-scroll-line" aria-hidden="true" />向下，连接知识</a>
-      <span>原理 / 实现 / 验证</span>
     </div>
   </>;
 }
@@ -69,32 +110,34 @@ function Blueprint({ stage }: { stage: number }) {
   </div>;
 }
 
-function TopicArt({ agent }: { agent: boolean }) {
-  return <div className="ww-topic-art" aria-hidden="true">
-    <svg viewBox="0 0 420 128" fill="none">
-      {agent ? <>
-        <path d="M66 64h89m96 0h95M210 24v16m0 48v18M66 64v42h144" stroke="currentColor" opacity=".5" />
-        <circle cx="210" cy="64" r="31" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="210" cy="64" r="43" stroke="currentColor" opacity=".15" />
-        <rect x="21" y="44" width="80" height="40" rx="5" stroke="currentColor" opacity=".4" />
-        <rect x="315" y="44" width="80" height="40" rx="5" stroke="currentColor" opacity=".4" />
-        <text x="61" y="68" textAnchor="middle">上下文</text>
-        <text x="210" y="68" textAnchor="middle">Agent</text>
-        <text x="355" y="68" textAnchor="middle">工具</text>
-        <text x="210" y="121" textAnchor="middle">观察 · 执行 · 反馈</text>
-      </> : <>
-        {[0, 1, 2].map(i => <g key={i} transform={`translate(${24 + i * 9}, ${24 + i * 9})`}>
-          <rect width="50" height="66" rx="4" fill="var(--ww-surface)" stroke="currentColor" opacity=".6" />
-          <path d="M12 18h26M12 28h26M12 38h17" stroke="currentColor" opacity=".4" />
-        </g>)}
-        <path d="M102 64h67m71 0h64" stroke="currentColor" opacity=".5" />
-        {[0, 1, 2, 3].map(i => <circle key={i} cx={187 + (i % 2) * 30} cy={48 + Math.floor(i / 2) * 30} r="7" stroke="currentColor" fill="var(--ww-wash)" />)}
-        <rect x="304" y="33" width="89" height="64" rx="5" stroke="currentColor" opacity=".5" />
-        <text x="349" y="70" textAnchor="middle">有据可查</text>
-        <text x="206" y="117" textAnchor="middle">检索 · 增强 · 生成</text>
-      </>}
-    </svg>
-  </div>;
+function TechMarquee() {
+  const ref = useRef<HTMLElement>(null);
+  const [ready, setReady] = useState(false);
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    setReady(true);
+    const host = ref.current;
+    if (!host) return;
+    let visible = false;
+    const sync = () => { host.dataset.playing = String(visible && !document.hidden); };
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
+    observer.observe(host);
+    document.addEventListener('visibilitychange', sync);
+    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
+  }, []);
+  const names = ['Python', 'Linux / Git', 'Docker', 'FastAPI', 'Transformer', 'LangGraph', 'RAG', 'Agent', 'LoRA'];
+  return <section className="ww-stack" ref={ref} aria-label="知识库中的技术主题" data-ready={ready} data-paused={paused}>
+    <div className="ww-stack__head ww-wrap"><span>从开发基础，到 AI 工程</span>
+      {ready && <button type="button" aria-label={paused ? '继续技术主题滚动' : '暂停技术主题滚动'} aria-pressed={paused} onClick={() => setPaused(!paused)}>
+        <svg viewBox="0 0 16 16" aria-hidden="true">{paused ? <path d="m5 3 8 5-8 5Z" /> : <path d="M4 3h3v10H4zm5 0h3v10H9z" />}</svg>
+      </button>}
+    </div>
+    <div className="ww-marquee" tabIndex={ready ? 0 : undefined} aria-label="聚焦可暂停技术主题滚动">
+      <div className="ww-marquee__track">{[0, 1].map(copy => <ul key={copy} className="ww-marquee__group" aria-hidden={copy === 1 ? true : undefined}>
+        {names.map((name, index) => <li key={name}><span className={`ww-tech-symbol ww-tech-symbol--${index % 4}`} aria-hidden="true" />{name}</li>)}
+      </ul>)}</div>
+    </div>
+  </section>;
 }
 
 function GraphPreview() {
@@ -114,13 +157,14 @@ function GraphPreview() {
   return <div className="ww-atlas__canvas" ref={ref}>{ready && <KnowledgeGraph />}</div>;
 }
 
-function HomeSections({ topics }: { topics: Topic[] }) {
+function HomeSections({ topics }: { topics: HomeTopic[] }) {
   const ref = useRef<HTMLElement>(null);
   const [stage, setStage] = useState(0);
   useEffect(() => {
     const host = ref.current;
     if (!host) return;
     const steps = Array.from(host.querySelectorAll<HTMLElement>('.ww-stage'));
+    const words = Array.from(host.querySelectorAll<HTMLElement>('.ww-scroll-copy span'));
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let frame = 0;
     const update = () => {
@@ -136,13 +180,16 @@ function HomeSections({ topics }: { topics: Topic[] }) {
       const hero = document.querySelector<HTMLElement>('.rp-home-hero');
       const art = hero?.querySelector<HTMLElement>('.rp-home-hero__image');
       if (hero && art) {
-        // 当画框靠近视口中心时，由微倾的画布展开为正面，图片不会被移出视口。
-        const rect = art.getBoundingClientRect();
-        const progress = Math.min(1, Math.max(0, (window.innerHeight * .82 - rect.top) / (rect.height * .85)));
+        const progress = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / (hero.offsetHeight * .5)));
         hero.style.setProperty('--ww-art-progress', motion.matches ? '1' : String(progress));
-        hero.style.setProperty('--ww-art-tilt', motion.matches ? '0deg' : `${(1 - progress) * 8}deg`);
-        hero.style.setProperty('--ww-art-scale', motion.matches ? '1' : String(.96 + progress * .04));
+        hero.style.setProperty('--ww-art-tilt', motion.matches ? '0deg' : `${(1 - progress) * 5}deg`);
+        hero.style.setProperty('--ww-art-scale', motion.matches ? '1' : String(.98 + progress * .02));
       }
+      const textTop = words[0]?.getBoundingClientRect().top ?? 0;
+      words.forEach((word, index) => {
+        const progress = (window.innerHeight * .82 - textTop) / (window.innerHeight * .38) - index * .07;
+        word.style.setProperty('--ww-word-progress', motion.matches ? '1' : String(Math.min(1, Math.max(0, progress))));
+      });
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     update();
@@ -158,9 +205,10 @@ function HomeSections({ topics }: { topics: Topic[] }) {
   }, []);
   return <main className="ww-home" ref={ref}>
     <h1 className="ww-visually-hidden">WindWiki 工程知识库：把原理读懂，把想法造出来。</h1>
+    <TechMarquee />
     <section className="ww-introduction ww-wrap" aria-labelledby="ww-intro-title">
       <h2 id="ww-intro-title">知识不止于收藏。<br />理解，连接，然后创造。</h2>
-      <p>这里是 Tingfeng347 的工程知识库。把课程笔记、原理拆解与工程实践放在一起，从一个概念出发，找到它在系统里的位置。</p>
+      <p className="ww-scroll-copy"><span>这里是 Tingfeng347 的工程知识库。</span><span>把课程笔记、</span><span>原理拆解</span><span>与工程实践</span><span>放在一起，</span><span>从一个概念出发，</span><span>找到它在系统里的位置。</span></p>
     </section>
     <section className="ww-path" id="features" aria-labelledby="ww-path-title">
       <div className="ww-path__layout ww-wrap">
@@ -179,21 +227,7 @@ function HomeSections({ topics }: { topics: Topic[] }) {
         </div>
       </div>
     </section>
-    <section className="ww-topics" aria-labelledby="ww-topics-title">
-      <div className="ww-wrap">
-        <div className="ww-section-head">
-          <div><h2 id="ww-topics-title">找到你想深入的方向。</h2><p>带着一个问题进来，沿着一个专题走下去。</p></div>
-          <Link className="ww-inline-link" href="/llm-applications/">查看完整知识目录<Arrow /></Link>
-        </div>
-        <div className="ww-topic-grid">
-          {topics.slice(3).map((topic, i) => <article className={`ww-topic${i < 2 ? ' ww-topic--feature' : ''}`} key={topic.title}>
-            <h3>{topic.title}</h3><p>{topic.details}</p>
-            {i < 2 && <TopicArt agent={i === 1} />}
-            <Link className="ww-inline-link" href={topic.link}>阅读专题<Arrow /></Link>
-          </article>)}
-        </div>
-      </div>
-    </section>
+    <HomeShowcase topics={topics} />
     <section className="ww-atlas ww-wrap" aria-labelledby="ww-atlas-title">
       <div>
         <h2 id="ww-atlas-title">每一个知识点，<br />都不是孤岛。</h2>
@@ -240,7 +274,7 @@ export default function HomeExperience() {
     return () => observer.disconnect();
   }, [isHome]);
   if (!isHome) return null;
-  const topics = (frontmatter.features ?? []) as Topic[];
+  const topics = (frontmatter.features ?? []) as HomeTopic[];
   return <>
     {target && createPortal(<ArtFrame />, target)}
     <HomeSections topics={topics} />
