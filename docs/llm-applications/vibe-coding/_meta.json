@@ -3,5 +3,10 @@
     "type": "file",
     "name": "vibe-coding",
     "label": "Vibe Coding"
+  },
+  {
+    "type": "file",
+    "name": "wind-vibe-and-matt-pocock-skills",
+    "label": "wind-vibe 与 Matt Pocock Skills"
   }
 ]

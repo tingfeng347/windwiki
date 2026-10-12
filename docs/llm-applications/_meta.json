@@ -85,9 +85,10 @@
     "collapsed": true
   },
   {
-    "type": "file",
-    "name": "vibe-coding/vibe-coding",
-    "label": "Vibe Coding"
+    "type": "dir",
+    "name": "vibe-coding",
+    "label": "Vibe Coding",
+    "collapsed": true
   },
   {
     "type": "dir",
