@@ -18,5 +18,10 @@
     "type": "file",
     "name": "debate",
     "label": "Debate"
+  },
+  {
+    "type": "file",
+    "name": "terminal-multi-agent-collaboration",
+    "label": "终端多 Agent 协作"
   }
 ]
