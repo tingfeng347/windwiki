@@ -26,6 +26,11 @@
   },
   {
     "type": "file",
+    "name": "oh-my-claudecode",
+    "label": "Oh My ClaudeCode 使用手册"
+  },
+  {
+    "type": "file",
     "name": "lazyvim",
     "label": "LazyVim 使用手册"
   }
